@@ -1,0 +1,12 @@
+{
+  "name": "sapplies",
+  "version": "0.0.1",
+  "homepage": "https://github.com/rodekruis/sapplies",
+  "description": "The bower.json file to install front-end dependencies.",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.2",
+    "angular-route": "~1.2",
+    "angular-resource": "~1.2"
+  }
+}

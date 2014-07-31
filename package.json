@@ -1,0 +1,38 @@
+{
+  "name": "sApplies",
+  "version": "0.0.1",
+  "description": "sApplies helps organizers of relief efforts during disaster recovery to manage needs donations of residents a relief operation supported by a Facebook-page.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rodekruis/sapplies.git"
+  },
+  "keywords": [
+    "facebook-app",
+    "js",
+    "express",
+    "angular",
+    "disaster",
+    "recovery"
+  ],
+  "author": "David van de Vondervoort",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "83f7841cda86c735438f4545330446563d7ecd71",
+  "bugs": {
+    "url": "https://github.com/rodekruis/sapplies/issues"
+  },
+  "dependencies": {
+    "express": ">= 3.2.6",
+    "mongoskin": "~1.4.4",
+    "grunt-cli": "~0.1.13"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-nodemon": "^0.3.0"
+  }
+}
