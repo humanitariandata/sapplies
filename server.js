@@ -12,6 +12,28 @@ var express = require('express'),
 
 app.use(express.static(__dirname + '/app'));
 
+// Enable reverse proxy
+app.enable('trust proxy');
+
+// Redirect all http requests to https
+// If environment is development, remove the port
+app.use(function(req, res, next) {
+	var protocol = req.protocol;
+	if (config.usessl) {
+		if (!req.secure) {
+		    if(process.env.NODE_ENV === 'development') {
+		      return res.redirect('https://localhost' + req.url);
+		    } else {
+		      return res.redirect('https://' + req.headers.host + req.url);
+		    }
+		} else {
+		    return next();
+		}
+	} else {
+		return next();
+	}
+});
+
 // Set a prefix for the REST API
 var apiPrefix = '/api/v1';
 
@@ -79,8 +101,7 @@ if (config.usessl) {
   https.createServer(sslconfig, app).listen(config.sslport);
 
   console.log('Application started on port ' + config.sslport);
-} else {
-  // Use just http instead of https
-  console.log('localhost:3001');
-  app.listen(3001);
 }
+
+  console.log('Application started on port ' + config.mainPort);
+  app.listen(config.mainPort);
