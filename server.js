@@ -40,9 +40,16 @@ var apiPrefix = '/api/v1';
 // Create a db connection using the node module mongoskin
 var db = mongo.db("mongodb://localhost:27017/sapplies", {native_parser:true});
 
+// Init database
+//db.createCollection('offers');
+//db.createCollection('needs');
+
 // Bind all the collections to the db
 db.bind('offers');
 db.bind('needs');
+
+//db.offers.insert({ title: "Init offers" }, function(err) {});
+//db.needs.insert({ title: "Init needs" }, function(err){});
 
 // Root uri for the Angular webapp
 app.get('/', function(req, res) {
@@ -62,6 +69,9 @@ app.get(apiPrefix+'/needs/:id', function(req, res) {
     if(err) throw err;
     res.send(items);
   });
+});
+app.post(apiPrefix+'/needs', function(req, res) {
+  console.log(res);
 });
 
 // CRUD: offers
@@ -102,6 +112,7 @@ if (config.usessl) {
 
   console.log('Application started on port ' + config.sslport);
 }
-
+else {
   console.log('Application started on port ' + config.mainPort);
   app.listen(config.mainPort);
+}
