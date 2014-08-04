@@ -7,6 +7,7 @@ $http({method: 'GET', url: 'https://localhost:3001/api/v1/offers.json'}).
     console.log('error');
   });
 */
-sappliesApp.controller('mainController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
+sappliesApp.controller('MainController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
   $scope.offers = RESTsappliesProvider.offers.find();
+  $scope.needs = RESTsappliesProvider.needs.find();
 }]);
