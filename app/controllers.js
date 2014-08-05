@@ -13,7 +13,7 @@ sappliesApp.controller('MainController', [ '$scope', 'RESTsappliesProvider', fun
 }]);
 
 sappliesApp.controller('NeedsController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
-  $scope.createNeed = function() {
-    console.log('create');
+  $scope.saveNeed = function() {
+    console.log($scope.createNeed);
   }
 }]);

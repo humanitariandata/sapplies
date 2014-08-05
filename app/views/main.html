@@ -1,19 +1,31 @@
 <div class="row">
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label for="form-filter">Filter</label>
+        <input type="text" class="form-control" id="form-filter" data-ng-model="filter" placeholder="Filter hulpaanbod..." />
+      </div>
+    </div>
+  </div>
+
   <div class="col-sm-6">
-    <h2>Hulpvraag</h2>
+    <h2>Hulpaanbod</h2>
+
     <div class="list-group">
-      <a href="#" class="list-group-item" data-ng-repeat="need in needs">
-        <h4 class="list-group-item-heading">{{need.title}}</h4>
-        <p class="list-group-item-text">{{need._id}}</p>
+      <a href="#" class="list-group-item" data-ng-repeat="offer in offers | filter:filter">
+        <h4 class="list-group-item-heading">{{offer.title}}</h4>
+        <p class="list-group-item-text">{{offer._id}}</p>
       </a>
     </div>
   </div>
   <div class="col-sm-6">
-    <h2>Hulpaanbod</h2>
+    <h2>Hulpvraag</h2>
+
     <div class="list-group">
-      <a href="#" class="list-group-item" data-ng-repeat="offer in offers">
-        <h4 class="list-group-item-heading">{{offer.title}}</h4>
-        <p class="list-group-item-text">{{offer._id}}</p>
+      <a href="#" class="list-group-item" data-ng-repeat="need in needs">
+        <h4 class="list-group-item-heading">{{need.title}}</h4>
+        <p class="list-group-item-text">{{need._id}}</p>
       </a>
     </div>
   </div>
