@@ -12,27 +12,27 @@ var express = require('express'),
 
 app.use(express.static(__dirname + '/app'));
 
-// Enable reverse proxy
-app.enable('trust proxy');
-
-// Redirect all http requests to https
-// If environment is development, remove the port
-app.use(function(req, res, next) {
-	var protocol = req.protocol;
-	if (config.usessl) {
-		if (!req.secure) {
-		    if(process.env.NODE_ENV === 'development') {
-		      return res.redirect('https://localhost' + req.url);
-		    } else {
-		      return res.redirect('https://' + req.headers.host + req.url);
-		    }
-		} else {
-		    return next();
-		}
-	} else {
-		return next();
-	}
-});
+// // Enable reverse proxy
+// app.enable('trust proxy');
+//
+// // Redirect all http requests to https
+// // If environment is development, remove the port
+// app.use(function(req, res, next) {
+// 	var protocol = req.protocol;
+// 	if (config.usessl) {
+// 		if (!req.secure) {
+// 		    if(process.env.NODE_ENV === 'development') {
+// 		      return res.redirect('https://localhost' + req.url);
+// 		    } else {
+// 		      return res.redirect('https://' + req.headers.host + req.url);
+// 		    }
+// 		} else {
+// 		    return next();
+// 		}
+// 	} else {
+// 		return next();
+// 	}
+// });
 
 // Set a prefix for the REST API
 var apiPrefix = '/api/v1';
@@ -76,7 +76,10 @@ app.post(apiPrefix+'/needs', function(req, res) {
 
 // CRUD: offers
 app.get(apiPrefix+'/offers.json', function(req, res) {
-	res.send({ "offers": "offers" });
+	db.offers.find().toArray(function(err, items) {
+   if(err) throw err;
+   res.send(items);
+ });
 });
 app.get(apiPrefix+'/offers/:id', function(req, res) {
   //req.params.id
@@ -112,7 +115,6 @@ if (config.usessl) {
 
   console.log('Application started on port ' + config.sslport);
 }
-else {
-  console.log('Application started on port ' + config.mainPort);
-  app.listen(config.mainPort);
-}
+
+console.log('Application started on port ' + config.mainPort);
+app.listen(config.mainPort);

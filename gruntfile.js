@@ -1,5 +1,3 @@
-'use-strict';
-
 module.exports = function(grunt) {
   grunt.initConfig({
 
@@ -15,7 +13,7 @@ module.exports = function(grunt) {
           style: 'nested'
         },
         files: {
-          'app/styles/sapplies.css': 'app/styles/_sapplies.scss'
+          'app/styles/sapplies.css': 'app/styles/sapplies.scss'
         }
       }
     },
@@ -25,11 +23,21 @@ module.exports = function(grunt) {
         files: 'app/styles/_sapplies.scss',
         tasks: 'sass'
       }
-    }
+    },
+
+    concurrent: {
+      tasks: ['nodemon', 'watch'],
+      options: {
+          //limit: 5,
+          logConcurrentOutput: true
+      }
+  }
 
   });
+
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.registerTask('default', ['nodemon', 'watch']);
+  grunt.loadNpmTasks('grunt-concurrent');
+  grunt.registerTask('default', ['concurrent']);
 }

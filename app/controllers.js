@@ -11,3 +11,9 @@ sappliesApp.controller('MainController', [ '$scope', 'RESTsappliesProvider', fun
   $scope.offers = RESTsappliesProvider.offers.find();
   $scope.needs = RESTsappliesProvider.needs.find();
 }]);
+
+sappliesApp.controller('NeedsController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
+  $scope.createNeed = function() {
+    console.log('create');
+  }
+}]);
