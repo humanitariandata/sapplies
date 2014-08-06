@@ -1,11 +1,6 @@
-//http://davidvandevondervoort.nl/restaurant-api/api/v1/dishes.json
-sappliesApp.factory('RESTsappliesProvider', [ '$resource', '$location', function($resource, $location) {
+sappliesApp.factory('RESTsappliesProvider', [ '$resource', function($resource) {
 	return {
-		offers: $resource('api/v1/offers.json', {}, {
-			find: { method: 'GET', isArray: true }
-		}),
-		needs: $resource('api/v1/needs.json', {}, {
-			find: { method: 'GET', isArray: true }
-		})
+		Offer: $resource('api/v1/offers/:id'),
+		Need: $resource('api/v1/needs/:id')
 	};
 }]);

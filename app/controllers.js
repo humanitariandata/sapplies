@@ -1,19 +1,15 @@
-/*
-$http({method: 'GET', url: 'https://localhost:3001/api/v1/offers.json'}).
-  success(function(data, status, headers, config) {
-    console.log(data);
-  }).
-  error(function(data, status, headers, config) {
-    console.log('error');
-  });
-*/
 sappliesApp.controller('MainController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
-  $scope.offers = RESTsappliesProvider.offers.find();
-  $scope.needs = RESTsappliesProvider.needs.find();
+  $scope.offers = RESTsappliesProvider.Offer.query();
+  $scope.needs = RESTsappliesProvider.Need.query();
 }]);
 
 sappliesApp.controller('NeedsController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
+
+  $scope.needs = RESTsappliesProvider.Need.query();
+
   $scope.saveNeed = function() {
-    console.log($scope.createNeed);
+    RESTsappliesProvider.Need.save($scope.createNeed);
+    $scope.needs.unshift($scope.createNeed);
+    $scope.createNeed = null;
   }
 }]);

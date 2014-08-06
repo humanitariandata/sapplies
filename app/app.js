@@ -1,4 +1,4 @@
-var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource']);
+var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ui.bootstrap']);
 
 sappliesApp.config(function($routeProvider, $locationProvider) {
 	$routeProvider

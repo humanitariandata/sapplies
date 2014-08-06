@@ -7,32 +7,36 @@ var express = require('express'),
     https = require('https'),
     fs = require('fs'),
     path = require('path'),
+    bodyParser = require('body-parser'),
     config = require('./config/config.js'),
     secrets = require('./config/secrets.json');
 
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 app.use(express.static(__dirname + '/app'));
 
-// // Enable reverse proxy
-// app.enable('trust proxy');
-//
-// // Redirect all http requests to https
-// // If environment is development, remove the port
-// app.use(function(req, res, next) {
-// 	var protocol = req.protocol;
-// 	if (config.usessl) {
-// 		if (!req.secure) {
-// 		    if(process.env.NODE_ENV === 'development') {
-// 		      return res.redirect('https://localhost' + req.url);
-// 		    } else {
-// 		      return res.redirect('https://' + req.headers.host + req.url);
-// 		    }
-// 		} else {
-// 		    return next();
-// 		}
-// 	} else {
-// 		return next();
-// 	}
-// });
+// Enable reverse proxy
+app.enable('trust proxy');
+
+// Redirect all http requests to https
+// If environment is development, remove the port
+app.use(function(req, res, next) {
+	var protocol = req.protocol;
+	if (config.usessl) {
+		if (!req.secure) {
+		    if(process.env.NODE_ENV === 'development') {
+		      return res.redirect('https://localhost' + req.url);
+		    } else {
+		      return res.redirect('https://' + req.headers.host + req.url);
+		    }
+		} else {
+		    return next();
+		}
+	} else {
+		return next();
+	}
+});
 
 // Set a prefix for the REST API
 var apiPrefix = '/api/v1';
@@ -56,38 +60,55 @@ app.get('/', function(req, res) {
   res.sendfile(__dirname + '/app/index.html');
 });
 
-// CRUD: Needs
-app.get(apiPrefix+'/needs.json', function(req, res) {
-  db.needs.find().toArray(function(err, items) {
+/*
+ * CRUD: Needs
+ */
+
+// FIND
+app.get(apiPrefix+'/needs', function(req, res) {
+  db.needs.find().sort({_id:-1}).toArray(function(err, items) {
     if(err) throw err;
     res.send(items);
   });
 });
+// FIND ONE
 app.get(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
-  db.needs.findById({ _id: req.params.id }).toArray(function(err, items) {
+  db.needs.findById({ _id: req.params.id }).toArray(function(err, docs) {
     if(err) throw err;
-    res.send(items);
+    res.send(docs);
   });
 });
+// CREATE
 app.post(apiPrefix+'/needs', function(req, res) {
-  console.log(res);
+  db.needs.insert(req.body, function(err, docs) {
+    if(err) throw err;
+    console.log(docs);
+  });
 });
 
-// CRUD: offers
-app.get(apiPrefix+'/offers.json', function(req, res) {
-	db.offers.find().toArray(function(err, items) {
+
+/*
+ * CRUD: Offers
+ */
+
+ // FIND
+app.get(apiPrefix+'/offers', function(req, res) {
+	db.offers.find().sort({_id:-1}).toArray(function(err, items) {
    if(err) throw err;
    res.send(items);
  });
 });
+
+// FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {
   //req.params.id
-  db.offers.findById({ _id: req.params.id }).toArray(function(err, items) {
+  db.offers.findById({ _id: req.params.id }).toArray(function(err, docs) {
     if(err) throw err;
-    res.send(items);
+    res.send(docs);
   });
 });
+
 
 // Close the db connection
 db.close();
