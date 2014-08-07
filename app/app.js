@@ -1,10 +1,14 @@
-var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ui.bootstrap']);
+var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ui.bootstrap', 'facebook']);
 
-sappliesApp.config(function($routeProvider, $locationProvider) {
+sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider) {
 	$routeProvider
 	.when('/', {
 	  templateUrl: 'views/main.html',
 	  controller: 'MainController'
+	})
+	.when('/auth', {
+		templateUrl: 'views/auth.html',
+		controller: 'AuthenticationController'
 	})
 	.when('/needs/create', {
 		templateUrl: 'views/needs-create.html',
@@ -17,4 +21,6 @@ sappliesApp.config(function($routeProvider, $locationProvider) {
 	.otherwise({
 	  redirectTo: '/'
 	});
+
+	FacebookProvider.init('339468399539706');
 });

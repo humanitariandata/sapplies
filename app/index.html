@@ -12,6 +12,7 @@
    <script src="./bower_components/angular-route/angular-route.min.js"></script>
    <script src="./bower_components/angular-resource/angular-resource.min.js"></script>
    <script src="./bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+   <script src="./bower_components/angular-facebook/lib/angular-facebook.js"></script>
 
    <script src="./app.js"></script>
    <script src="./ResourceProvider.js"></script>
@@ -39,31 +40,31 @@
    </nav>
 
    <div class="container-fluid">
-   <div class="row">
-      <section id="sidebar">
-         <div class="col-sm-3 col-md-2">
-            <div class="collapse navbar-collapse" id="sidebar-nav">
-               <ul class="nav navbar-nar nav-stacked nav-pills">
-                  <li><a href="/#/">Hulvraag &amp; hulpaanbod</a></li>
-                  <li class="dropdown">
-                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hulpvraag <span class="caret"></span></a>
-                     <ul class="dropdown-menu" role="menu">
-                        <li>
-                           <a href="/#/needs/create">Hulpvraag</a>
-                        </li>
-                     </ul>
-                  </li>
-                  <li><a href="#">Matches</a></li>
-               </ul>
+      <div class="row">
+         <section id="sidebar">
+            <div class="col-sm-3 col-md-2">
+               <div class="collapse navbar-collapse" id="sidebar-nav">
+                  <ul class="nav navbar-nar nav-stacked nav-pills">
+                     <li><a href="/#/">Hulvraag &amp; hulpaanbod</a></li>
+                     <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hulpvraag <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                           <li>
+                              <a href="/#/needs/create">Hulpvraag</a>
+                           </li>
+                        </ul>
+                     </li>
+                     <li><a href="#/matches">Matches</a></li>
+                  </ul>
+               </div>
             </div>
-         </div>
-      </section>
-      <section id="main-content">
-         <div class="col-sm-9 col-md-10">
-            <div data-ng-view=""></div>
-         </div>
+         </section>
+         <section id="main-content">
+            <div class="col-sm-9 col-md-10">
+               <div data-ng-view=""></div>
+            </div>
+         </section>
       </div>
-      </section>
    </div>
 </body>
 </html

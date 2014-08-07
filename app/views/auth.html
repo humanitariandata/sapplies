@@ -1,0 +1,22 @@
+<div class="row">
+   <div class="col-md-12">
+      <h2>FB</h2>
+      <button type="button" class="btn btn-default" data-ng-click="login()">Login met Facebook</button>
+      <button type="button" class="btn btn-default" data-ng-click="me()">me</button>
+
+      <table class="table">
+         <thead>
+           <tr>
+             <th>Facebook-pagina</th>
+             <th>sApplies</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr data-ng-repeat="page in pages">
+             <td>{{page.name}}</td>
+             <td><button type="button" class="btn btn-default" data-ng-click="connectAppToPage()">Koppelen aan sApplies</button></td>
+           </tr>
+         </tbody>
+      </table>
+   </div>
+</div>

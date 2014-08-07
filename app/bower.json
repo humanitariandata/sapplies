@@ -9,6 +9,7 @@
     "angular-route": "~1.2",
     "angular-resource": "~1.2",
     "angular-resource": "~1.2",
+    "angular-facebook": "~0.2",
     "jquery": "~2.1"
   }
 }
