@@ -2,7 +2,7 @@ var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ui.boots
 
 sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider) {
 	$routeProvider
-	.when('/', {
+	.when('/overview', {
 	  templateUrl: 'views/main.html',
 	  controller: 'MainController'
 	})
@@ -19,8 +19,9 @@ sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider)
 		controller: 'NeedsDetailController'
 	})
 	.otherwise({
-	  redirectTo: '/'
+	  redirectTo: '/overview'
 	});
 
+	// Init FacebookProvider with fb app id
 	FacebookProvider.init('339468399539706');
 });

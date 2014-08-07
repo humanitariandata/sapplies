@@ -1,20 +1,19 @@
 <div class="row">
    <div class="col-md-12">
-      <h2>FB</h2>
-      <button type="button" class="btn btn-default" data-ng-click="login()">Login met Facebook</button>
-      <button type="button" class="btn btn-default" data-ng-click="me()">me</button>
+      <h2>Facebook-pagina hulpacties</h2>
+      <button type="button" class="btn btn-default" data-ng-click="login()" data-ng-show="{{!loggedIn}}">Login met Facebook</button>
 
-      <table class="table">
+      <table class="table" data-ng-show="{{loggedIn}}">
          <thead>
            <tr>
              <th>Facebook-pagina</th>
-             <th>sApplies</th>
+             <th>Koppelen aan sApplies</th>
            </tr>
          </thead>
          <tbody>
            <tr data-ng-repeat="page in pages">
              <td>{{page.name}}</td>
-             <td><button type="button" class="btn btn-default" data-ng-click="connectAppToPage()">Koppelen aan sApplies</button></td>
+             <td><button type="button" class="btn btn-default" data-ng-click="connectAppToPage()">{{toggleText}}</button></td>
            </tr>
          </tbody>
       </table>

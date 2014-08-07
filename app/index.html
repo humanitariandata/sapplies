@@ -15,7 +15,7 @@
    <script src="./bower_components/angular-facebook/lib/angular-facebook.js"></script>
 
    <script src="./app.js"></script>
-   <script src="./ResourceProvider.js"></script>
+   <script src="./factories.js"></script>
    <script src="./controllers.js"></script>
 
    <script src="./bower_components/jquery/dist/jquery.min.js"></script>
@@ -25,7 +25,7 @@
    <link href="./styles/sapplies.css" rel="stylesheet">
 </head>
 <body>
-   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+   <nav class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
          <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#sidebar-nav">
@@ -36,34 +36,29 @@
             </button>
             <a class="navbar-brand" href="#">sApplies prototype</a>
          </div>
+         <div class="collapse navbar-collapse" id="sidebar-nav">
+            <ul class="nav navbar-nav">
+               <li class="dropdown">
+                  <a href="/#/overview" class="dropdown-toggle" data-toggle="dropdown">Hulpvraag &amp; hulpaanbod <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                     <li><a href="/#/needs/create">Voeg hulpvraag toe</a></li>
+                  </ul>
+               </li>
+               <li><a href="#/matches">Matches</a></li>
+               <li><a href="#/auth">Facebook management</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+               <li><a href="#/auth">Username</a></li>
+            </ul>
+         </div>
       </div>
    </nav>
 
-   <div class="container-fluid">
+   <div class="container">
       <div class="row">
-         <section id="sidebar">
-            <div class="col-sm-3 col-md-2">
-               <div class="collapse navbar-collapse" id="sidebar-nav">
-                  <ul class="nav navbar-nar nav-stacked nav-pills">
-                     <li><a href="/#/">Hulvraag &amp; hulpaanbod</a></li>
-                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hulpvraag <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                           <li>
-                              <a href="/#/needs/create">Hulpvraag</a>
-                           </li>
-                        </ul>
-                     </li>
-                     <li><a href="#/matches">Matches</a></li>
-                  </ul>
-               </div>
-            </div>
-         </section>
-         <section id="main-content">
-            <div class="col-sm-9 col-md-10">
-               <div data-ng-view=""></div>
-            </div>
-         </section>
+         <div class="col-md-12">
+            <div data-ng-view=""></div>
+         </div>
       </div>
    </div>
 </body>
