@@ -1,15 +1,21 @@
-sappliesApp.controller('MainController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
-  $scope.offers = RESTsappliesProvider.Offer.query();
-  $scope.needs = RESTsappliesProvider.Need.query();
+sappliesApp.controller('MainController', [ '$scope', 'ResourceProvider', function($scope, ResourceProvider) {
+  $scope.offers = ResourceProvider.Offer.query();
+  $scope.needs = ResourceProvider.Need.query();
 }]);
 
-sappliesApp.controller('NeedsController', [ '$scope', 'RESTsappliesProvider', function($scope, RESTsappliesProvider) {
+sappliesApp.controller('NeedsController', [ '$scope', 'ResourceProvider', function($scope, ResourceProvider) {
 
-  $scope.needs = RESTsappliesProvider.Need.query();
+  $scope.needs = ResourceProvider.Need.query();
 
   $scope.saveNeed = function() {
-    RESTsappliesProvider.Need.save($scope.createNeed);
+    ResourceProvider.Need.save($scope.createNeed);
     $scope.needs.unshift($scope.createNeed);
     $scope.createNeed = null;
   }
+}]);
+
+sappliesApp.controller('NeedsDetailController', [ '$scope', '$routeParams','ResourceProvider', function($scope, $routeParams, ResourceProvider) {
+  $scope.detailNeed = ResourceProvider.Need.get({ id: $routeParams.id }, function(need) {
+    console.log(need);
+  });
 }]);

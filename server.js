@@ -16,27 +16,27 @@ app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/app'));
 
-// Enable reverse proxy
-app.enable('trust proxy');
-
-// Redirect all http requests to https
-// If environment is development, remove the port
-app.use(function(req, res, next) {
-	var protocol = req.protocol;
-	if (config.usessl) {
-		if (!req.secure) {
-		    if(process.env.NODE_ENV === 'development') {
-		      return res.redirect('https://localhost' + req.url);
-		    } else {
-		      return res.redirect('https://' + req.headers.host + req.url);
-		    }
-		} else {
-		    return next();
-		}
-	} else {
-		return next();
-	}
-});
+// // Enable reverse proxy
+// app.enable('trust proxy');
+//
+// // Redirect all http requests to https
+// // If environment is development, remove the port
+// app.use(function(req, res, next) {
+// 	var protocol = req.protocol;
+// 	if (config.usessl) {
+// 		if (!req.secure) {
+// 		    if(process.env.NODE_ENV === 'development') {
+// 		      return res.redirect('https://localhost' + req.url);
+// 		    } else {
+// 		      return res.redirect('https://' + req.headers.host + req.url);
+// 		    }
+// 		} else {
+// 		    return next();
+// 		}
+// 	} else {
+// 		return next();
+// 	}
+// });
 
 // Set a prefix for the REST API
 var apiPrefix = '/api/v1';
@@ -60,21 +60,25 @@ app.get('/', function(req, res) {
   res.sendfile(__dirname + '/app/index.html');
 });
 
+app.get('/fb', function(req, res) {
+  res.sendfile(__dirname + '/fb/index.html');
+});
+
 /*
  * CRUD: Needs
  */
 
 // FIND
 app.get(apiPrefix+'/needs', function(req, res) {
-  db.needs.find().sort({_id:-1}).toArray(function(err, items) {
+  db.needs.find().sort({_id:-1}).toArray(function(err, docs) {
     if(err) throw err;
-    res.send(items);
+    res.send(docs);
   });
 });
 // FIND ONE
 app.get(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
-  db.needs.findById({ _id: req.params.id }).toArray(function(err, docs) {
+  db.needs.findOne({ _id: req.params.id }, function(err, docs) {
     if(err) throw err;
     res.send(docs);
   });
@@ -86,7 +90,13 @@ app.post(apiPrefix+'/needs', function(req, res) {
     console.log(docs);
   });
 });
-
+app.delete(apiPrefix+'/needs/:id', function(req, res) {
+  //req.params.id
+  db.needs.remove({ _id: req.params.id }).toArray(function(err, docs) {
+    if(err) throw err;
+    res.send(docs);
+  });
+});
 
 /*
  * CRUD: Offers
@@ -94,16 +104,16 @@ app.post(apiPrefix+'/needs', function(req, res) {
 
  // FIND
 app.get(apiPrefix+'/offers', function(req, res) {
-	db.offers.find().sort({_id:-1}).toArray(function(err, items) {
+	db.offers.find().sort({_id:-1}).toArray(function(err, docs) {
    if(err) throw err;
-   res.send(items);
+   res.send(docs);
  });
 });
 
 // FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {
   //req.params.id
-  db.offers.findById({ _id: req.params.id }).toArray(function(err, docs) {
+  db.offers.findOne({ _id: req.params.id }, function(err, docs) {
     if(err) throw err;
     res.send(docs);
   });

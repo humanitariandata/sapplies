@@ -10,6 +10,10 @@ sappliesApp.config(function($routeProvider, $locationProvider) {
 		templateUrl: 'views/needs-create.html',
 		controller: 'NeedsController'
 	})
+	.when('/needs/:id', {
+		templateUrl: 'views/needs-detail.html',
+		controller: 'NeedsDetailController'
+	})
 	.otherwise({
 	  redirectTo: '/'
 	});
