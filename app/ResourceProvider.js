@@ -1,3 +1,7 @@
+/*
+	ResourceProvider is a factory responsible for getting the data via the REST-API.
+	The object contains all the models in the applications.
+*/
 sappliesApp.factory('ResourceProvider', [ '$resource', function($resource) {
 	return {
 		Offer: $resource('api/v1/offers/:id'),

@@ -1,3 +1,7 @@
 body {
-  padding-top: 70px;
-}
+  padding-top: 70px; }
+
+#needs-offers-overview {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 300px; }

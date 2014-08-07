@@ -11,6 +11,8 @@ var express = require('express'),
     config = require('./config/config.js'),
     secrets = require('./config/secrets.json');
 
+var ObjectID = mongo.ObjectID;
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -78,7 +80,7 @@ app.get(apiPrefix+'/needs', function(req, res) {
 // FIND ONE
 app.get(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
-  db.needs.findOne({ _id: req.params.id }, function(err, docs) {
+  db.needs.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
     if(err) throw err;
     res.send(docs);
   });
@@ -90,6 +92,7 @@ app.post(apiPrefix+'/needs', function(req, res) {
     console.log(docs);
   });
 });
+// DELETE
 app.delete(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
   db.needs.remove({ _id: req.params.id }).toArray(function(err, docs) {
@@ -119,6 +122,17 @@ app.get(apiPrefix+'/offers/:id', function(req, res) {
   });
 });
 
+/*
+ * CRUD: Matches
+ */
+
+// FIND
+app.get(apiPrefix+'/matches', function(req, res) {
+   db.matches.find().sort({ id: -1 }).toArray(function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
+});
 
 // Close the db connection
 db.close();
@@ -144,8 +158,10 @@ if (config.usessl) {
 
   https.createServer(sslconfig, app).listen(config.sslport);
 
+  // https start
   console.log('Application started on port ' + config.sslport);
 }
 
+// http start as well
 console.log('Application started on port ' + config.mainPort);
 app.listen(config.mainPort);

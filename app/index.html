@@ -1,53 +1,69 @@
 <!DOCTYPE html>
 <html data-ng-app="sapplies">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <base href="/" />
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <base href="/" />
 
-  <title>sApplies</title>
+   <title>sApplies</title>
 
-  <script src="./bower_components/angular/angular.min.js"></script>
-	<script src="./bower_components/angular-route/angular-route.min.js"></script>
-  <script src="./bower_components/angular-resource/angular-resource.min.js"></script>
-  <script src="./bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+   <script src="./bower_components/angular/angular.min.js"></script>
+   <script src="./bower_components/angular-route/angular-route.min.js"></script>
+   <script src="./bower_components/angular-resource/angular-resource.min.js"></script>
+   <script src="./bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
 
-  <script src="./app.js"></script>
-  <script src="./ResourceProvider.js"></script>
-  <script src="./controllers.js"></script>
+   <script src="./app.js"></script>
+   <script src="./ResourceProvider.js"></script>
+   <script src="./controllers.js"></script>
 
-  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="./bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>-->
+   <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+   <script src="./bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 
-  <link href="./bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="./styles/sapplies.css" rel="stylesheet">
+   <link href="./bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+   <link href="./styles/sapplies.css" rel="stylesheet">
 </head>
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-      <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">sApplies prototype</a>
-    </div>
-  </nav>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3 col-md-2">
-        <ul class="nav nav-sidebar">
-          <li class="active"><a href="/#/needs/create">Voeg Hulpvraag toe</a></li>
-          <li><a href="#">Gekoppelde hulpvraag &amp; hulpaanbod</a></li>
-        </ul>
+   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+         <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#sidebar-nav">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">sApplies prototype</a>
+         </div>
       </div>
-      <div class="col-sm-9 col-md-10">
-        <div data-ng-view=""></div>
+   </nav>
+
+   <div class="container-fluid">
+   <div class="row">
+      <section id="sidebar">
+         <div class="col-sm-3 col-md-2">
+            <div class="collapse navbar-collapse" id="sidebar-nav">
+               <ul class="nav navbar-nar nav-stacked nav-pills">
+                  <li><a href="/#/">Hulvraag &amp; hulpaanbod</a></li>
+                  <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hulpvraag <span class="caret"></span></a>
+                     <ul class="dropdown-menu" role="menu">
+                        <li>
+                           <a href="/#/needs/create">Hulpvraag</a>
+                        </li>
+                     </ul>
+                  </li>
+                  <li><a href="#">Matches</a></li>
+               </ul>
+            </div>
+         </div>
+      </section>
+      <section id="main-content">
+         <div class="col-sm-9 col-md-10">
+            <div data-ng-view=""></div>
+         </div>
       </div>
-    </div>
-  </div>
+      </section>
+   </div>
 </body>
 </html
