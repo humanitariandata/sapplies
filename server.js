@@ -97,7 +97,7 @@ app.post(apiPrefix+'/needs', function(req, res) {
 // DELETE
 app.delete(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
-  db.needs.remove({ _id: req.params.id }).toArray(function(err, docs) {
+  db.needs.remove({ _id: new ObjectID(req.params.id) }).toArray(function(err, docs) {
     if(err) throw err;
     res.send(docs);
   });
@@ -118,7 +118,7 @@ app.get(apiPrefix+'/offers', function(req, res) {
 // FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {
   //req.params.id
-  db.offers.findOne({ _id: req.params.id }, function(err, docs) {
+  db.offers.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
     if(err) throw err;
     res.send(docs);
   });

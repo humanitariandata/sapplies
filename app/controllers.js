@@ -5,8 +5,8 @@ sappliesApp.controller('MainController', [ '$scope', 'RESTResourceProvider', fun
    $scope.categories = RESTResourceProvider.Category.query();
 
    $scope.showSuggestionsNeed = function(p, index) {
-     $scope.suggestions = p;
-     $scope.selected = index;
+      $scope.suggestions = p;
+      $scope.selected = index;
    }
 }]);
 
