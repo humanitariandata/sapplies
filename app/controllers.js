@@ -1,19 +1,33 @@
 // Controller for the main page /#
 sappliesApp.controller('MainController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
-  $scope.offers = RESTResourceProvider.Offer.query();
-  $scope.needs = RESTResourceProvider.Need.query();
+   $scope.offers = RESTResourceProvider.Offer.query();
+   $scope.needs = RESTResourceProvider.Need.query();
+   $scope.categories = RESTResourceProvider.Category.query();
+
+   $scope.showSuggestionsNeed = function(p, index) {
+     $scope.suggestions = p;
+     $scope.selected = index;
+   }
 }]);
 
 // Controller for viewing and creating needs.
 sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
 
    $scope.needs = RESTResourceProvider.Need.query();
+   $scope.categories = RESTResourceProvider.Category.query();
+   $scope.alerts = [];
 
    $scope.saveNeed = function() {
-      RESTResourceProvider.Need.save($scope.createNeed);
-      $scope.needs.unshift($scope.createNeed);
+      $scope.createNeed.category = $scope.createNeed.category.name;
+      // RESTResourceProvider.Need.save($scope.createNeed);
+      // $scope.needs.unshift($scope.createNeed);
+      $scope.alerts.push({ type: 'success', msg: $scope.createNeed.title +' is toegegoegd!'});
       $scope.createNeed = null;
    }
+
+   $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+   };
 }]);
 
 // Controller for reading a specific need
@@ -28,7 +42,9 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
             $scope.loggedIn = true;
-            console.log('connected')
+            console.log('connected');
+            $scope.$apply();
+
             fetchFBPages();
          } else {
             console.log('not con')
@@ -79,4 +95,8 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
          })
       });
    }
+}]);
+
+sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RESTResourceProvider', function($scope, $routeParams, RESTResourceProvider) {
+   $scope.detailOffer = RESTResourceProvider.Offer.get({id: $routeParams.id});
 }]);

@@ -18,6 +18,10 @@ sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider)
 		templateUrl: 'views/needs-detail.html',
 		controller: 'NeedsDetailController'
 	})
+	.when('/offers/:id', {
+		templateUrl: 'views/offers-detail.html',
+		controller: 'OffersDetailController'
+	})
 	.otherwise({
 	  redirectTo: '/overview'
 	});

@@ -12,4 +12,5 @@ To install the dependencies run:
 >npm install
 
 And:
+>cd app
 >bower install

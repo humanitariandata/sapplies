@@ -5,6 +5,7 @@
 sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 	return {
 		Offer: $resource('api/v1/offers/:id'),
-		Need: $resource('api/v1/needs/:id')
+		Need: $resource('api/v1/needs/:id'),
+		Category: $resource('api/v1/categories/:id'),
 	};
 }]);

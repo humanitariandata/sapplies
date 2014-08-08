@@ -1,9 +1,10 @@
 <div class="row">
    <div class="col-md-12">
       <h2>Facebook-pagina hulpacties</h2>
-      <button type="button" class="btn btn-default" data-ng-click="login()" data-ng-show="{{!loggedIn}}">Login met Facebook</button>
+      {{loggedIn}}
 
-      <table class="table" data-ng-show="{{loggedIn}}">
+      <button type="button" class="btn btn-default" data-ng-click="login()" data-ng-hide="{{loggedIn}}">Login met Facebook</button>
+      <table class="table" data-ng-show="{{!loggedIn}}">
          <thead>
            <tr>
              <th>Facebook-pagina</th>

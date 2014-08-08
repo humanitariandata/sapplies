@@ -54,6 +54,7 @@ var db = mongo.db("mongodb://localhost:27017/sapplies", {native_parser:true});
 // Bind all the collections to the db
 db.bind('offers');
 db.bind('needs');
+db.bind('categories');
 
 //db.offers.insert({ title: "Init offers" }, function(err) {});
 //db.needs.insert({ title: "Init needs" }, function(err){});
@@ -73,10 +74,10 @@ app.get('/fb', function(req, res) {
 
 // FIND
 app.get(apiPrefix+'/needs', function(req, res) {
-  db.needs.find().sort({_id:-1}).toArray(function(err, docs) {
-    if(err) throw err;
-    res.send(docs);
-  });
+   db.needs.find().sort({_id:-1}).toArray(function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
 });
 // FIND ONE
 app.get(apiPrefix+'/needs/:id', function(req, res) {
@@ -130,6 +131,16 @@ app.get(apiPrefix+'/offers/:id', function(req, res) {
 // FIND
 app.get(apiPrefix+'/matches', function(req, res) {
    db.matches.find().sort({ id: -1 }).toArray(function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
+});
+
+/*
+ * Categories
+ */
+app.get(apiPrefix+'/categories', function(req, res) {
+   db.categories.find().sort({ name: 1 }).toArray(function(err, docs) {
       if(err) throw err;
       res.send(docs);
    });
