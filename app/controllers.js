@@ -3,12 +3,15 @@ sappliesApp.controller('MainController', [ '$scope', 'RESTResourceProvider', fun
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
    $scope.categories = RESTResourceProvider.Category.query();
-   $scope.r = true;//toggle
 
    $scope.showSuggestionsNeed = function(sug, index) {
-      $scope.suggestions = sug;
-      $scope.selected = index;
-      $scope.r = !$scope.r;
+      if (index === $scope.selected) {
+         $scope.selected = null;
+         $scope.suggestions = null
+      } else {
+         $scope.suggestions = sug;
+         $scope.selected = index;
+      }
    }
 
    $scope.deleteNeed = function(needId) {
@@ -48,8 +51,6 @@ sappliesApp.controller('NeedsDetailController', [ '$scope', '$routeParams','REST
 sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', function($scope, Facebook) {
 
    (function init() {
-      $scope.loggedIn = false;
-
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
             $scope.loggedIn = true;
@@ -57,7 +58,6 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
 
             fetchFBPages();
             $scope.$apply();
-
          }
       });
    }());

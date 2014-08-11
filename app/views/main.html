@@ -8,7 +8,7 @@
   <div class="col-sm-3">
     <div class="form-group">
       <label for="form-category">Categorie</label>
-      <select data-ng-model="filterCategory" data-ng-options="category.name for category in categories" class="form-control" id="form-category">
+      <select data-ng-model="filterCategory" data-ng-options="category.name as category.name for category in categories" class="form-control" id="form-category">
          <option value="">Filter op categorie</option>
       </select>
     </div>
@@ -49,7 +49,7 @@
      <div class="col-xs-6">
         <h2>Hulpaanbod</h2>
        <div class="list-group">
-         <a href="/#/offers/{{offer._id}}" class="list-group-item" data-ng-repeat="offer in offers | filter:suggestions">
+         <a href="/#/offers/{{offer._id}}" class="list-group-item" data-ng-repeat="offer in offers | filter:filterCategory | filter:suggestions">
            <h4 class="list-group-item-heading">{{offer.title}}</h4>
            <p class="list-group-item-text">{{offer.description}}</p>
            <p class="list-group-item-text">
