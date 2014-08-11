@@ -69,8 +69,7 @@ app.get('/fb', function(req, res) {
 });
 
 app.post('/fb', function(req, res) {
-   res.send(200);
-   res.end();
+   res.sendfile(__dirname + '/fb/index.html');
 });
 
 /*
