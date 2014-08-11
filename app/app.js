@@ -6,8 +6,8 @@ sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider)
 	  templateUrl: 'views/main.html',
 	  controller: 'MainController'
 	})
-	.when('/auth', {
-		templateUrl: 'views/auth.html',
+	.when('/facebook-management', {
+		templateUrl: 'views/fb-management.html',
 		controller: 'AuthenticationController'
 	})
 	.when('/needs/create', {
@@ -21,6 +21,10 @@ sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider)
 	.when('/offers/:id', {
 		templateUrl: 'views/offers-detail.html',
 		controller: 'OffersDetailController'
+	})
+	.when('/matches', {
+		templateUrl: 'views/matches.html',
+		controller: 'MatchesController'
 	})
 	.otherwise({
 	  redirectTo: '/overview'

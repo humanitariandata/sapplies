@@ -68,6 +68,11 @@ app.get('/fb', function(req, res) {
   res.sendfile(__dirname + '/fb/index.html');
 });
 
+app.post('/fb', function(req, res) {
+   res.send(200);
+   res.end();
+});
+
 /*
  * CRUD: Needs
  */
@@ -97,7 +102,7 @@ app.post(apiPrefix+'/needs', function(req, res) {
 // DELETE
 app.delete(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
-  db.needs.remove({ _id: new ObjectID(req.params.id) }).toArray(function(err, docs) {
+  db.needs.remove({ _id: new ObjectID(req.params.id) }, function(err, docs) {
     if(err) throw err;
     res.send(docs);
   });

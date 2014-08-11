@@ -8,7 +8,9 @@
   <div class="col-sm-3">
     <div class="form-group">
       <label for="form-category">Categorie</label>
-      <select required data-ng-model="filterCategory" data-ng-options="category.name for category in categories" class="form-control" id="form-category"></select>
+      <select data-ng-model="filterCategory" data-ng-options="category.name for category in categories" class="form-control" id="form-category">
+         <option value="">Filter op categorie</option>
+      </select>
     </div>
   </div>
 </div>
@@ -27,10 +29,10 @@
 
 <section id="needs-offers-overview">
    <div class="row">
-     <div class="col-sm-6">
+     <div class="col-xs-6">
         <h2>Hulpvraag</h2>
        <div class="list-group">
-         <a data-ng-click="showSuggestionsNeed(need.category, $index)" ng-class="{active: $index == selected}" class="list-group-item" data-ng-repeat="need in needs | filter:filter">
+         <a data-ng-click="showSuggestionsNeed(need.category, $index)" ng-class="{active: $index == selected}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
            <h4 class="list-group-item-heading">{{need.title}}</h4>
            <p class="list-group-item-text">{{need.description}}</p>
            <p class="list-group-item-text">
@@ -44,7 +46,7 @@
          </a>
        </div>
      </div>
-     <div class="col-sm-6">
+     <div class="col-xs-6">
         <h2>Hulpaanbod</h2>
        <div class="list-group">
          <a href="/#/offers/{{offer._id}}" class="list-group-item" data-ng-repeat="offer in offers | filter:suggestions">

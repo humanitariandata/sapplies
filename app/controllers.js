@@ -3,10 +3,19 @@ sappliesApp.controller('MainController', [ '$scope', 'RESTResourceProvider', fun
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
    $scope.categories = RESTResourceProvider.Category.query();
+   $scope.r = true;//toggle
 
-   $scope.showSuggestionsNeed = function(p, index) {
-      $scope.suggestions = p;
+   $scope.showSuggestionsNeed = function(sug, index) {
+      $scope.suggestions = sug;
       $scope.selected = index;
+      $scope.r = !$scope.r;
+   }
+
+   $scope.deleteNeed = function(needId) {
+      console.log(needId);
+      RESTResourceProvider.Need.delete({ id: needId }, function() {
+         console.log('delete done');
+      });
    }
 }]);
 
@@ -19,8 +28,8 @@ sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', fu
 
    $scope.saveNeed = function() {
       $scope.createNeed.category = $scope.createNeed.category.name;
-      // RESTResourceProvider.Need.save($scope.createNeed);
-      // $scope.needs.unshift($scope.createNeed);
+      RESTResourceProvider.Need.save($scope.createNeed);
+      $scope.needs.unshift($scope.createNeed);
       $scope.alerts.push({ type: 'success', msg: $scope.createNeed.title +' is toegegoegd!'});
       $scope.createNeed = null;
    }
@@ -39,16 +48,16 @@ sappliesApp.controller('NeedsDetailController', [ '$scope', '$routeParams','REST
 sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', function($scope, Facebook) {
 
    (function init() {
+      $scope.loggedIn = false;
+
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
             $scope.loggedIn = true;
             console.log('connected');
-            $scope.$apply();
 
             fetchFBPages();
-         } else {
-            console.log('not con')
-            $scope.loggedIn = false;
+            $scope.$apply();
+
          }
       });
    }());
@@ -99,4 +108,8 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
 
 sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RESTResourceProvider', function($scope, $routeParams, RESTResourceProvider) {
    $scope.detailOffer = RESTResourceProvider.Offer.get({id: $routeParams.id});
+}]);
+
+sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
+
 }]);
