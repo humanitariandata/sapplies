@@ -38,8 +38,8 @@
            <p class="list-group-item-text">
              <small>
                 <em>{{need.category}}</em>
-                <button type="button" class="btn btn-link" data-ng-click="deleteNeed(need._id)">
-                   <span class="glyphicon glyphicon-remove"></span>
+                <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need)">
+                   <span class="glyphicon glyphicon-remove"></span> Verwijder
                </button>
             </small>
             </p>
@@ -56,7 +56,7 @@
              <small>
                 <em>{{offer.category}}</em>
                  <button type="button" class="btn btn-link">
-                   <span class="glyphicon glyphicon-remove"></span>
+                   <span class="glyphicon glyphicon-remove"></span> Verwijder
                 </button>
              </small>
            </p>

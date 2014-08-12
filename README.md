@@ -8,9 +8,19 @@ sApplies helps organizers of relief efforts during disaster recovery to manage n
 * A webapp to manage needs and offers.
 
 ## Dependicies
-To install the dependencies run:
+To install the dependencies:
 >npm install
 
-And:
->cd app
->bower install
+For the app:
+>$ cd app
+
+>$ bower install
+
+
+For the Facebook app:
+>$ cd fb
+
+>$ bower install
+
+## Run
+>$ sudo grunt

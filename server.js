@@ -64,11 +64,11 @@ app.get('/', function(req, res) {
   res.sendfile(__dirname + '/app/index.html');
 });
 
-app.get('/fb', function(req, res) {
+app.get('/fb/', function(req, res) {
   res.sendfile(__dirname + '/fb/index.html');
 });
 
-app.post('/fb', function(req, res) {
+app.post('/fb/', function(req, res) {
    res.sendfile(__dirname + '/fb/index.html');
 });
 

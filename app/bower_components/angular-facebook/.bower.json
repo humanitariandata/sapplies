@@ -32,7 +32,6 @@
     "commit": "dffa80782655ca2ba5b484bba204611779a8a539"
   },
   "_source": "git://github.com/Ciul/Angularjs-Facebook.git",
-  "_target": "~0.2.2",
-  "_originalSource": "angular-facebook",
-  "_direct": true
+  "_target": "~0.2",
+  "_originalSource": "angular-facebook"
 }

@@ -1,0 +1,23 @@
+{
+  "name": "sApplies Facebook-app",
+  "version": "0.0.1",
+  "homepage": "https://github.com/rodekruis/sapplies",
+  "authors": [
+    "David <d.vandevondervoort@gmail.com>"
+  ],
+  "description": "Facebook-app which can be linked to a Facebook-page for submitting supplies or services by the responding community.",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "angular": "~1.2",
+    "angular-route": "~1.2"
+  }
+}

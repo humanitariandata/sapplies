@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-app="fbapp">
 <head>
   <meta charset="utf-8">
-  <title>sApplies</title>
+  <title>sApplies Facebook app</title>
+  <base href="/" />
+
+  <script src="./bower_components/angular/angular.min.js"></script>
+  <script src="./bower_components/angular-route/angular-route.min.js"></script>
+  <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="./bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+  <script src="./fbapp.js"></script>
+
+  <link href="./bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./fbapp.css" rel="stylesheet">
 </head>
 <body>
-	<h1>sApplies Facebook app</h1>
+   <div class="container">
+      <div class="page-header">
+	     <h1>sApplies Facebook app</h1>
+     </div>
+
+     <section data-ng-view=""></section>
+   </div>
 </body>
 </html>

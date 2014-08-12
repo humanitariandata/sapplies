@@ -1,6 +1,6 @@
-var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ui.bootstrap', 'facebook']);
+var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ngAnimate', 'ui.bootstrap', 'facebook']);
 
-sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider) {
+sappliesApp.config(function($routeProvider, FacebookProvider) {
 	$routeProvider
 	.when('/overview', {
 	  templateUrl: 'views/main.html',
@@ -15,8 +15,8 @@ sappliesApp.config(function($routeProvider, $locationProvider, FacebookProvider)
 		controller: 'NeedsController'
 	})
 	.when('/needs/:id', {
-		templateUrl: 'views/needs-detail.html',
-		controller: 'NeedsDetailController'
+		templateUrl: 'views/need-detail.html',
+		controller: 'NeedDetailController'
 	})
 	.when('/offers/:id', {
 		templateUrl: 'views/offers-detail.html',

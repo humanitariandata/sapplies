@@ -14,11 +14,9 @@ sappliesApp.controller('MainController', [ '$scope', 'RESTResourceProvider', fun
       }
    }
 
-   $scope.deleteNeed = function(needId) {
-      console.log(needId);
-      RESTResourceProvider.Need.delete({ id: needId }, function() {
-         console.log('delete done');
-      });
+   $scope.deleteNeed = function(index, need) {
+      RESTResourceProvider.Need.delete({ id: need._id });
+      $scope.needs.splice(index, 1);
    }
 }]);
 
@@ -33,17 +31,13 @@ sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', fu
       $scope.createNeed.category = $scope.createNeed.category.name;
       RESTResourceProvider.Need.save($scope.createNeed);
       $scope.needs.unshift($scope.createNeed);
-      $scope.alerts.push({ type: 'success', msg: $scope.createNeed.title +' is toegegoegd!'});
+      $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
       $scope.createNeed = null;
    }
-
-   $scope.closeAlert = function(index) {
-      $scope.alerts.splice(index, 1);
-   };
 }]);
 
 // Controller for reading a specific need
-sappliesApp.controller('NeedsDetailController', [ '$scope', '$routeParams','RESTResourceProvider', function($scope, $routeParams, RESTResourceProvider) {
+sappliesApp.controller('NeedDetailController', [ '$scope', '$routeParams','RESTResourceProvider', function($scope, $routeParams, RESTResourceProvider) {
   $scope.detailNeed = RESTResourceProvider.Need.get({id: $routeParams.id});
 }]);
 
@@ -54,10 +48,7 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
             $scope.loggedIn = true;
-            console.log('connected');
-
             fetchFBPages();
-            $scope.$apply();
          }
       });
    }());
@@ -98,8 +89,10 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
    function isAppConnectedToPage(pageid) {
       Facebook.api('/'+pageid+'/tabs', function(response) {
          response.data.forEach(function(tab) {
-            if(tab.hasOwnProperty('application') && tab.application.id == '339468399539706') {
-               $scope.toggleText = 'Koppel';
+            if(tab.hasOwnProperty('application')) {
+               // if facebook page has sapplies added
+               if(tab.application.id == '339468399539706') $scope.connected = true;
+               else $scope.connected = false;
             }
          })
       });

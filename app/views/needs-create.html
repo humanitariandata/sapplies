@@ -15,7 +15,9 @@
       </div>
       <div class="form-group">
          <label for="form-need-category">Categorie</label>
-         <select required data-ng-model="createNeed.category" data-ng-options="category.name for category in categories" class="form-control" id="form-need-category"></select>
+         <select required data-ng-model="createNeed.category" data-ng-options="category.name for category in categories" class="form-control" id="form-need-category">
+            <option value="">Kies een categorie</option>
+         </select>
       </div>
       <button type="submit" class="btn btn-default" data-ng-click="saveNeed()">Bewaar</button>
     </form>
@@ -29,8 +31,8 @@
         <p class="list-group-item-text">
            <small>
              <em>{{need.category}}</em>
-             <button type="button" class="btn btn-link" data-ng-click="deleteNeed(need._id)">
-                <span class="glyphicon glyphicon-remove"></span>
+             <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need._id)">
+                <span class="glyphicon glyphicon-remove"></span> Verwijder
             </button>
          </small>
       </p>
