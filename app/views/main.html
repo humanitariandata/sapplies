@@ -49,13 +49,13 @@
      <div class="col-xs-6">
         <h2>Hulpaanbod</h2>
        <div class="list-group overflow-column">
-         <a href="/#/offers/{{offer._id}}" class="list-group-item" data-ng-repeat="offer in offers | filter:filterCategory | filter:suggestions">
+         <a class="list-group-item" data-ng-repeat="offer in offers | filter:filterCategory | filter:suggestions">
            <h4 class="list-group-item-heading">{{offer.title}}</h4>
            <p class="list-group-item-text">{{offer.description}}</p>
            <p class="list-group-item-text">
              <small>
                 <em>{{offer.category}}</em>
-                 <button type="button" class="btn btn-link">
+                 <button type="button" class="btn btn-link" data-ng-click="deleteOffer($index, offer)">
                    <span class="glyphicon glyphicon-remove"></span> Verwijder
                 </button>
              </small>

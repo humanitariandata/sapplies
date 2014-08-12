@@ -50,11 +50,17 @@ fbApp.controller('DonateController', ['$scope', '$http', 'Facebook', function($s
       }
    });
 
+   //https://sapplies.rodekruis.nl/api/v1/categories
    $http.get('http://localhost:3001/api/v1/categories').success(function(categories) {
       $scope.categories = categories;
    });
 
    $scope.saveDonation = function() {
+      $scope.createDonation.category = $scope.createDonation.category.name;
+
+      $http.post('http://localhost:3001/api/v1/offers', $scope.createDonation).success(function(response) {
+         console.log(response);
+      });
    }
 }]);
 

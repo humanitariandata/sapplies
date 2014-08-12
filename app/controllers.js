@@ -18,6 +18,12 @@ sappliesApp.controller('MainController', [ '$scope', 'RESTResourceProvider', fun
       RESTResourceProvider.Need.delete({ id: need._id });
       $scope.needs.splice(index, 1);
    }
+
+   $scope.deleteOffer = function(index, offer) {
+      console.log('delete')
+      RESTResourceProvider.Offer.delete({ id: offer._id });
+      $scope.offers.splice(index, 1);
+   }
 }]);
 
 // Controller for viewing and creating needs.

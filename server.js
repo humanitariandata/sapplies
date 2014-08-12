@@ -87,6 +87,7 @@ app.get(apiPrefix+'/needs', function(req, res) {
       res.send(docs);
    });
 });
+
 // FIND ONE
 app.get(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
@@ -95,6 +96,7 @@ app.get(apiPrefix+'/needs/:id', function(req, res) {
     res.send(docs);
   });
 });
+
 // CREATE
 app.post(apiPrefix+'/needs', function(req, res) {
   db.needs.insert(req.body, function(err, docs) {
@@ -102,6 +104,7 @@ app.post(apiPrefix+'/needs', function(req, res) {
     console.log(docs);
   });
 });
+
 // DELETE
 app.delete(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
@@ -127,6 +130,22 @@ app.get(apiPrefix+'/offers', function(req, res) {
 app.get(apiPrefix+'/offers/:id', function(req, res) {
   //req.params.id
   db.offers.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
+    if(err) throw err;
+    res.send(docs);
+  });
+});
+
+// CREATE
+app.post(apiPrefix+'/offers', function(req, res) {
+  db.offers.insert(req.body, function(err, docs) {
+    if(err) throw err;
+    console.log(docs);
+  });
+});
+
+app.delete(apiPrefix+'/offers/:id', function(req, res) {
+  //req.params.id
+  db.offers.remove({ _id: new ObjectID(req.params.id) }, function(err, docs) {
     if(err) throw err;
     res.send(docs);
   });
