@@ -1,4 +1,4 @@
-var fbApp = angular.module('fbapp', ['ngRoute']).config(function($routeProvider) {
+var fbApp = angular.module('fbapp', ['ngRoute', 'facebook']).config(function($routeProvider, FacebookProvider) {
    $routeProvider.when('/main', {
       controller: 'FBMainController',
       templateUrl: 'views/fbmain.html'
@@ -14,17 +14,48 @@ var fbApp = angular.module('fbapp', ['ngRoute']).config(function($routeProvider)
    .otherwise({
      redirectTo: '/main'
    });
+
+   // Init FacebookProvider with fb app id
+   FacebookProvider.init('339468399539706');
 });
 
-fbApp.controller('FBMainController', ['$scope', '$location', function($scope, $location) {
+fbApp.controller('FBMainController', ['$scope', '$location', 'Facebook', function($scope, $location, Facebook) {
+
+   Facebook.getLoginStatus(function(response) {
+      if(response.status !== 'connected') {
+         Facebook.login(function(response) {
+            $scope.accessToken = response.authResponse.accesToken;
+         }, {
+            scope: 'public_profile',
+            auth_type: 'rerequest'
+         });
+      }
+   });
+
    $scope.goto = function(goto) {
       $location.path(goto);
    }
 }]);
 
+fbApp.controller('DonateController', ['$scope', '$http', 'Facebook', function($scope, $http, Facebook) {
+   Facebook.api('/me?fields=name,picture', function(response) {
+      if (response && !response.error) {
+         $scope.fb = {
+            profilepic: response.picture.data.url,
+            name: response.name
+         }
+      }
+      else {
+         console.log(response);
+      }
+   });
 
-fbApp.controller('DonateController', ['$scope', function($scope) {
+   $http.get('http://localhost:3001/api/v1/categories').success(function(categories) {
+      $scope.categories = categories;
+   });
 
+   $scope.saveDonation = function() {
+   }
 }]);
 
 

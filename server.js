@@ -19,6 +19,10 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/app'));
 app.use(express.static(__dirname + '/fb'));
 
+/*
+To run local use http://localhost instead of https. Otherwise ssl error.
+Comment app.enable('trust proxy'); and the app.use(function(req, res, next) function
+*/
 // Enable reverse proxy
 app.enable('trust proxy');
 

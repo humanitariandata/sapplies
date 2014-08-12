@@ -1,1 +1,31 @@
-donate
+<h2>Doneer hulpgoederen</h2>
+
+<form role="form" name="create-need-form">
+  <div class="form-group">
+    <label for="form-donate-title">Titel</label>
+    <input ng-minlength="3" type="text" class="form-control" id="form-donate-title" data-ng-model="createDonation.title" placeholder="Bijvoorbeeld: tweepersoonsbed">
+  </div>
+  <div class="form-group">
+    <label for="form-donate-description">Beschrijving</label>
+    <textarea class="form-control" id="form-donate-description" data-ng-model="createDonation.description" placeholder="Een bed wat te demonteren is. Eventueel met matras."></textarea>
+  </div>
+  <div class="form-group">
+     <label for="form-need-category">Categorie</label>
+     <select required data-ng-model="createDonation.category" data-ng-options="category.name for category in categories" class="form-control" id="form-donate-category">
+        <option value="">Kies een categorie</option>
+     </select>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Facebook</h3>
+    </div>
+    <div class="panel-body">
+       <p>Alleen je naam en een link naar je Facebook-profiel wordt opgeslagen, zodat de [hulpactie] contact met je kan opnemen als dat nodig is.</p>
+       <img data-ng-src="{{fb.profilepic}}" alt="" />
+       {{fb.name}}
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-default" data-ng-click="saveDonation()">Verstuur</button>
+</form>

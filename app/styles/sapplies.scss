@@ -10,10 +10,22 @@ a {
   padding-top: 70px;
 }
 
-#needs-offers-overview {
+.overflow-column {
    overflow-y: auto;
    overflow-x: hidden;
    height: 400px;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+   background-color: lighten(#428bca, 5%) !important;
+}
+.list-group-item {
+   &.active {
+      .btn-link {
+         color: #fff;
+      }
+   }
+
 }
 
 /* Animations - default from: https://docs.angularjs.org/guide/animations */

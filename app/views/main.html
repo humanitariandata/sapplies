@@ -27,11 +27,11 @@
    </div>
 </div>
 
-<section id="needs-offers-overview">
+<section>
    <div class="row">
      <div class="col-xs-6">
         <h2>Hulpvraag</h2>
-       <div class="list-group">
+       <div class="list-group overflow-column">
          <a data-ng-click="showSuggestionsNeed(need.category, $index)" ng-class="{active: $index == selected}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
            <h4 class="list-group-item-heading">{{need.title}}</h4>
            <p class="list-group-item-text">{{need.description}}</p>
@@ -48,7 +48,7 @@
      </div>
      <div class="col-xs-6">
         <h2>Hulpaanbod</h2>
-       <div class="list-group">
+       <div class="list-group overflow-column">
          <a href="/#/offers/{{offer._id}}" class="list-group-item" data-ng-repeat="offer in offers | filter:filterCategory | filter:suggestions">
            <h4 class="list-group-item-heading">{{offer.title}}</h4>
            <p class="list-group-item-text">{{offer.description}}</p>
