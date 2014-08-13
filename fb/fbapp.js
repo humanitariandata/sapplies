@@ -60,6 +60,7 @@ fbApp.controller('DonateController', ['$scope', '$http', 'Facebook', function($s
       $scope.createDonation.category = $scope.createDonation.category.name;
 
       //http://localhost:3001/api/v1/offers
+      //https://sapplies.rodekruis.nl/api/v1/offers
       $http.post('https://sapplies.rodekruis.nl/api/v1/offers', $scope.createDonation).success(function(response) {
          console.log(response);
       });
