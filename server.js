@@ -102,6 +102,7 @@ app.post(apiPrefix+'/needs', function(req, res) {
   db.needs.insert(req.body, function(err, docs) {
     if(err) throw err;
     console.log(docs);
+    res.send(200);
   });
 });
 
@@ -139,7 +140,7 @@ app.get(apiPrefix+'/offers/:id', function(req, res) {
 app.post(apiPrefix+'/offers', function(req, res) {
   db.offers.insert(req.body, function(err, docs) {
     if(err) throw err;
-    console.log(docs);
+    res.send(200);
   });
 });
 
