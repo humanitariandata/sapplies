@@ -9,16 +9,18 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
       $scope.match.need = selectedNeed;
 
       if (index === $scope.selected) {
-         $scope.selected = null;
+         $scope.pickedNeed = null;
          $scope.suggestions = null
       } else {
          $scope.suggestions = selectedNeed.category;
-         $scope.selected = index;
+         $scope.pickedNeed = index;
       }
    }
 
    $scope.selectOffer = function(selectedOffer, index) {
+      console.log
       $scope.match.offer = selectedOffer;
+      $scope.pickedOffer = index === $scope.pickedOffer && null || index;
    }
 
    $scope.showDetailOffer = function(offerId) {
@@ -131,5 +133,5 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 }]);
 
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
-   $scope.matches = RESTResourceProvider.Matches.query();
+   //$scope.matches = RESTResourceProvider.Matches.query();
 }]);

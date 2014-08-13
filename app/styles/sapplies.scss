@@ -1,3 +1,5 @@
+$base-color: #dd4814;
+
 body {
    padding-top: 70px;
 }
@@ -16,16 +18,16 @@ a {
    height: 400px;
 }
 
-.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
-   background-color: lighten(#428bca, 5%) !important;
-}
 .list-group-item {
    &.active {
       .btn-link {
          color: #fff;
       }
    }
+}
 
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+   background-color: lighten($base-color, 15%) !important;
 }
 
 /* Animations - default from: https://docs.angularjs.org/guide/animations */
