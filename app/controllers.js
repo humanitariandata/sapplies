@@ -1,17 +1,28 @@
 // Controller for the main page /#
-sappliesApp.controller('MainController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
+sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceProvider', function($scope, $location, RESTResourceProvider) {
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
    $scope.categories = RESTResourceProvider.Category.query();
+   $scope.match = {};
 
-   $scope.showSuggestionsNeed = function(sug, index) {
+   $scope.selectNeed = function(selectedNeed, index) {
+      $scope.match.need = selectedNeed;
+
       if (index === $scope.selected) {
          $scope.selected = null;
          $scope.suggestions = null
       } else {
-         $scope.suggestions = sug;
+         $scope.suggestions = selectedNeed.category;
          $scope.selected = index;
       }
+   }
+
+   $scope.selectOffer = function(selectedOffer, index) {
+      $scope.match.offer = selectedOffer;
+   }
+
+   $scope.showDetailOffer = function(offerId) {
+      $location.path('/offers/'+offerId);
    }
 
    $scope.deleteNeed = function(index, need) {
@@ -48,7 +59,7 @@ sappliesApp.controller('NeedDetailController', [ '$scope', '$routeParams','RESTR
 }]);
 
 // Controller to login in with Facebook to connect facebook-app from the page to this app.
-sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', function($scope, Facebook) {
+sappliesApp.controller('FBManagementController', ['$scope', 'Facebook', function($scope, Facebook) {
 
    (function init() {
       Facebook.getLoginStatus(function(response) {
@@ -62,8 +73,10 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
    // Login into with Facebook and ask manage_pages permissions to get fb-pages of the user (admin)
    $scope.login = function() {
       Facebook.login(function(response) {
-         $scope.loggedIn = true;
-         fetchFBPages();
+         if (response && !response.error) {
+            $scope.loggedIn = true;
+            fetchFBPages();
+         }
       }, {
          scope: 'manage_pages',
          auth_type: 'rerequest'
@@ -76,6 +89,7 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
          redirect_uri: 'http://localhost:3001/fb'
       }, function(response) {
          console.log(response);
+         isAppConnectedToPage();
       });
    }
 
@@ -83,24 +97,31 @@ sappliesApp.controller('AuthenticationController', ['$scope', 'Facebook', functi
       $scope.pages = [];
 
       Facebook.api('/me/accounts', function(response) {
-         response.data.forEach(function(page) {
-            if(page.hasOwnProperty('category') && page.category === 'Community') {
-               $scope.pages.push(page);
-               isAppConnectedToPage(page.id);
-            }
-         });
+         if (response && !response.error) {
+            response.data.forEach(function(page) {
+               if(page.hasOwnProperty('category') && page.category === 'Community') {
+                  Facebook.api('/'+page.id+'/picture', { "type": "small" }, function(pic) {
+                     page.picture = pic.data.url;
+                  });
+                  $scope.pages.push(page);
+                  isAppConnectedToPage(page.id);
+               }
+            });
+         }
       });
    };
 
    function isAppConnectedToPage(pageid) {
       Facebook.api('/'+pageid+'/tabs', function(response) {
-         response.data.forEach(function(tab) {
-            if(tab.hasOwnProperty('application')) {
-               // if facebook page has sapplies added
-               if(tab.application.id == '339468399539706') $scope.connected = true;
-               else $scope.connected = false;
-            }
-         })
+         if (response && !response.error) {
+            response.data.forEach(function(tab) {
+               if(tab.hasOwnProperty('application')) {
+                  // if facebook page has sapplies added
+                  if(tab.application.id == '339468399539706') $scope.connected = true;
+                  else $scope.connected = false;
+               }
+            })
+         }
       });
    }
 }]);
@@ -110,5 +131,5 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 }]);
 
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
-
+   $scope.matches = RESTResourceProvider.Matches.query();
 }]);

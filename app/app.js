@@ -8,7 +8,7 @@ sappliesApp.config(function($routeProvider, FacebookProvider) {
 	})
 	.when('/facebook-management', {
 		templateUrl: 'views/fb-management.html',
-		controller: 'AuthenticationController'
+		controller: 'FBManagementController'
 	})
 	.when('/needs/create', {
 		templateUrl: 'views/needs-create.html',

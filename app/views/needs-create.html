@@ -31,7 +31,7 @@
         <p class="list-group-item-text">
            <small>
              <em>{{need.category}}</em>
-             <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need._id)">
+             <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need._id);$event.stopPropagation()">
                 <span class="glyphicon glyphicon-remove"></span> Verwijder
             </button>
          </small>

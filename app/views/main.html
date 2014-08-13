@@ -19,8 +19,8 @@
       <div class="panel panel-default">
          <div class="panel-body">
             <div class="row">
-               <div class="col-xs-12 col-md-6"><div class="well">Hulpvraag</div></div>
-               <div class="col-xs-12 col-md-6"><div class="well">Hulpaanbod</div></div>
+               <div class="col-xs-12 col-md-6"><div class="well">Hulpvraag {{match.need.title}}</div></div>
+               <div class="col-xs-12 col-md-6"><div class="well">Hulpaanbod {{match.offer.title}}</div></div>
             </div>
          </div>
       </div>
@@ -32,13 +32,13 @@
      <div class="col-xs-6">
         <h2>Hulpvraag</h2>
        <div class="list-group overflow-column">
-         <a data-ng-click="showSuggestionsNeed(need.category, $index)" ng-class="{active: $index == selected}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
+         <a data-ng-click="selectNeed(need, $index)" ng-class="{active: $index == selected}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
            <h4 class="list-group-item-heading">{{need.title}}</h4>
            <p class="list-group-item-text">{{need.description}}</p>
            <p class="list-group-item-text">
              <small>
                 <em>{{need.category}}</em>
-                <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need)">
+                <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need);$event.stopPropagation()">
                    <span class="glyphicon glyphicon-remove"></span> Verwijder
                </button>
             </small>
@@ -49,15 +49,18 @@
      <div class="col-xs-6">
         <h2>Hulpaanbod</h2>
        <div class="list-group overflow-column">
-         <a class="list-group-item" data-ng-repeat="offer in offers | filter: filter | filter:filterCategory | filter:suggestions">
+         <a data-ng-click="selectOffer(offer, $index)" class="list-group-item" data-ng-repeat="offer in offers | filter: filter | filter:filterCategory | filter:suggestions">
            <h4 class="list-group-item-heading">{{offer.title}}</h4>
            <p class="list-group-item-text">{{offer.description}}</p>
            <p class="list-group-item-text">
              <small>
                 <em>{{offer.category}}</em>
-                 <button type="button" class="btn btn-link" data-ng-click="deleteOffer($index, offer)">
+                 <button type="button" class="btn btn-link" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
                    <span class="glyphicon glyphicon-remove"></span> Verwijder
                 </button>
+                <button type="button" class="btn btn-link" data-ng-click="showDetailOffer(offer._id);$event.stopPropagation()">
+                 <span class="glyphicon glyphicon-cog"></span> Meer
+              </button>
              </small>
            </p>
          </a>

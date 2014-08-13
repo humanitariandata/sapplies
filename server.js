@@ -23,27 +23,30 @@ app.use(express.static(__dirname + '/fb'));
 To run local use http://localhost instead of https. Otherwise ssl error.
 Comment app.enable('trust proxy'); and the app.use(function(req, res, next) function
 */
-// Enable reverse proxy
-app.enable('trust proxy');
+if(process.env.NODE_ENV === 'production') {
 
-// Redirect all http requests to https
-// If environment is development, remove the port
-app.use(function(req, res, next) {
-	var protocol = req.protocol;
-	if (config.usessl) {
-		if (!req.secure) {
-		    if(process.env.NODE_ENV === 'development') {
-		      return res.redirect('https://localhost' + req.url);
-		    } else {
-		      return res.redirect('https://' + req.headers.host + req.url);
-		    }
-		} else {
-		    return next();
-		}
-	} else {
-		return next();
-	}
-});
+   // Enable reverse proxy
+   app.enable('trust proxy');
+
+   // Redirect all http requests to https
+   // If environment is development, remove the port
+   app.use(function(req, res, next) {
+   	var protocol = req.protocol;
+   	if (config.usessl) {
+   		if (!req.secure) {
+   		    if(process.env.NODE_ENV === 'development') {
+   		      return res.redirect('https://localhost' + req.url);
+   		    } else {
+   		      return res.redirect('https://' + req.headers.host + req.url);
+   		    }
+   		} else {
+   		    return next();
+   		}
+   	} else {
+   		return next();
+   	}
+   });
+}
 
 // Set a prefix for the REST API
 var apiPrefix = '/api/v1';

@@ -12,3 +12,8 @@ var offers = [
    { title: "Ik kan helpen met het leggen van laminaat", description: "Op woensdagen zou ik kunnen komen helpen", category: "Bouw", type: "Dienst"},
    { title: "Leren fauteuil met uiklapbaar voetenbankje", description: "Weegt ongeveer 15kg in de kleur bruin", category: "Meubilair", type: "Goederen"}
 ]
+
+// Mongo shell
+db.categories.remove({})
+db.needs.remove({})
+db.offers.remove({})

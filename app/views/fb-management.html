@@ -6,16 +6,17 @@
       <table class="table" data-ng-show="loggedIn">
          <thead>
            <tr>
-             <th>Facebook-pagina</th>
-             <th>Koppelen aan sApplies</th>
+             <th colspan="2">Facebook-pagina</th>
+             <th>Status</th>
            </tr>
          </thead>
          <tbody>
            <tr data-ng-repeat="page in pages">
+             <td><img data-ng-src="{{page.picture}}" alt="" /></td>
              <td>{{page.name}}</td>
              <td>
                 <button type="button" class="btn btn-default" data-ng-hide="connected" data-ng-click="connectAppToPage()">Koppel</button>
-                <span data-ng-show="connected">sApplies is reeds gekoppeld aan {{page.name}}.</span>
+                <span data-ng-show="connected">sApplies is reeds gekoppeld.</span>
             </td>
            </tr>
          </tbody>
