@@ -13,29 +13,35 @@
       </select>
     </div>
   </div>
+  <div class="col-sm-3">
+    <div class="radio">
+       <label>
+          <input type="radio" name="filterMatched" id="optionsRadios1" value="option1" checked>
+          Nog niet gekoppeld
+       </label>
+       <label>
+          <input type="radio" name="filterMatched" id="optionsRadios2" value="option1">
+          Gekoppeld
+       </label>
+</div>
+  </div>
 </div>
 <div class="row">
-   <div class="col-md-12">
-      <div class="panel panel-default">
-         <div class="panel-body">
-            <div class="col-xs-12 col-md-6">
-               <div class="well well-sm">
-                  <p class="lead">{{match.need.title || '[Selecteer een hulpvraag]'}}</p>
-               </div>
-            </div>
-            <div class="col-xs-12 col-md-6">
-               <div class="well well-sm">
-                  <p class="lead">{{match.offer.title || '[Selecteer een hulpaanbod]'}}</p>
-               </div>
-            </div>
-            <div class="col-xs-12">
-               <button type="button" class="btn btn-default btn-lg" data-ng-click="confirmMatch()">
-                  <span class="glyphicon glyphicon-link"></span>
-                  Koppel
-               </button>
-            </div>
-         </div>
+   <div class="col-xs-12 col-md-6">
+      <div class="well well-sm" data-animate-on-change="match.need.title">
+         <p>{{match.need.title || '[Selecteer een hulpvraag]'}}</p>
       </div>
+   </div>
+   <div class="col-xs-12 col-md-6">
+      <div class="well well-sm" data-animate-on-change="match.offer.title">
+         <p>{{match.offer.title || '[Selecteer een hulpaanbod]'}}</p>
+      </div>
+   </div>
+   <div class="col-xs-12">
+      <button type="button" class="btn btn-default btn-lg" data-ng-click="confirmMatch()">
+         <span class="glyphicon glyphicon-link"></span>
+         Koppel
+      </button>
    </div>
 </div>
 
@@ -81,3 +87,21 @@
      </div>
    </div>
 </section>
+
+<script type="text/ng-template" id="myModalContent.html">
+  <div class="modal-header">
+      <h3 class="modal-title">Im a modal!</h3>
+  </div>
+  <div class="modal-body">
+      <ul>
+          <li ng-repeat="item in items">
+              <a ng-click="selected.item = item">{{ item }}</a>
+          </li>
+      </ul>
+      Selected: <b>{{ selected.item }}</b>
+  </div>
+  <div class="modal-footer">
+      <button class="btn btn-primary" ng-click="ok()">OK</button>
+      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+  </div>
+</script>

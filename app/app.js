@@ -33,3 +33,16 @@ sappliesApp.config(function($routeProvider, FacebookProvider) {
 	// Init FacebookProvider with fb app id
 	FacebookProvider.init('339468399539706');
 });
+
+sappliesApp.directive('animateOnChange', [ '$animate', function($animate) {
+  return function(scope, elem, attr) {
+		scope.$watch(attr.animateOnChange, function(nv,ov) {
+			if (nv!=ov) {
+				var cssClass = 'change';
+				$animate.addClass(elem, cssClass, function() {
+					$animate.removeClass(elem, cssClass);
+				});
+			}
+		});
+   };
+}]);
