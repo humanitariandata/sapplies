@@ -4,8 +4,9 @@
 */
 sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 	return {
-		Offer: $resource('api/v1/offers/:id'),
+		Offer: $resource('api/v1/offers/:id', {}, { update: {	method: 'PUT' } }),
 		Need: $resource('api/v1/needs/:id'),
 		Category: $resource('api/v1/categories/:id'),
+		Match: $resource('api/v1/matches/:id')
 	};
 }]);

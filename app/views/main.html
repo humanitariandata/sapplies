@@ -18,17 +18,21 @@
    <div class="col-md-12">
       <div class="panel panel-default">
          <div class="panel-body">
-            <div class="row">
-               <div class="col-xs-12 col-md-6">
-                  <div class="well">
-                     <p class="lead">{{match.need.title || '[Hulpvraag]'}}</p>
-                  </div>
+            <div class="col-xs-12 col-md-6">
+               <div class="well well-sm">
+                  <p class="lead">{{match.need.title || '[Selecteer een hulpvraag]'}}</p>
                </div>
-               <div class="col-xs-12 col-md-6">
-                  <div class="well">
-                     <p class="lead">{{match.offer.title || '[Hulpaanbod]'}}</p>
-                  </div>
+            </div>
+            <div class="col-xs-12 col-md-6">
+               <div class="well well-sm">
+                  <p class="lead">{{match.offer.title || '[Selecteer een hulpaanbod]'}}</p>
                </div>
+            </div>
+            <div class="col-xs-12">
+               <button type="button" class="btn btn-default btn-lg" data-ng-click="confirmMatch()">
+                  <span class="glyphicon glyphicon-link"></span>
+                  Koppel
+               </button>
             </div>
          </div>
       </div>
@@ -54,6 +58,7 @@
          </a>
        </div>
      </div>
+
      <div class="col-xs-6">
         <h2>Hulpaanbod</h2>
        <div class="list-group overflow-column">

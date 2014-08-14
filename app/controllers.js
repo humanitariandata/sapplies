@@ -1,41 +1,71 @@
-// Controller for the main page /#
+/* Controller for the main page
+   - Loading resources
+   - Matching needs and offers
+*/
 sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceProvider', function($scope, $location, RESTResourceProvider) {
+   // Query the resources
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
    $scope.categories = RESTResourceProvider.Category.query();
+
+   // Set de default to empty object
    $scope.match = {};
 
+   // Event listener for selecting a need fromt the list-group
    $scope.selectNeed = function(selectedNeed, index) {
+      // Set the match model
       $scope.match.need = selectedNeed;
 
+      // Prepare for filtering suggestions and undo the selection when selected again
       if (index === $scope.selected) {
+         // Undo selection
          $scope.pickedNeed = null;
-         $scope.suggestions = null
-      } else {
+
+         // Reset suggestion filter
+         $scope.suggestions = null;
+      } else { // Not yet selected
+         // Set the suggestions by category
          $scope.suggestions = selectedNeed.category;
          $scope.pickedNeed = index;
+         $scope.pickedOffer = null;
       }
    }
 
+   // Event listener for selecting a offer from the list-group
    $scope.selectOffer = function(selectedOffer, index) {
-      console.log
       $scope.match.offer = selectedOffer;
       $scope.pickedOffer = index === $scope.pickedOffer && null || index;
    }
 
+   // Event listener for going to the detail page (fix: regular a href not working in this case)
    $scope.showDetailOffer = function(offerId) {
       $location.path('/offers/'+offerId);
    }
 
+   // Event listener for deleting a need
    $scope.deleteNeed = function(index, need) {
+      // Delete in the db
       RESTResourceProvider.Need.delete({ id: need._id });
+
+      // Remove from the scope
       $scope.needs.splice(index, 1);
    }
 
    $scope.deleteOffer = function(index, offer) {
-      console.log('delete')
+      // Delete in the db
       RESTResourceProvider.Offer.delete({ id: offer._id });
+
+      // Remove from the scope
       $scope.offers.splice(index, 1);
+   }
+
+   $scope.confirmMatch = function() {
+      var postPayload = {
+         need: $scope.match.need,
+         offer: $scope.match.offer
+      };
+      RESTResourceProvider.Match.save(postPayload);
+      RESTResourceProvider.Offer.update({ id: $scope.match.offer._id }, { matched: true });
    }
 }]);
 
@@ -133,5 +163,5 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 }]);
 
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
-   //$scope.matches = RESTResourceProvider.Matches.query();
+   $scope.matches = RESTResourceProvider.Match.query();
 }]);

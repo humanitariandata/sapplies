@@ -11,11 +11,14 @@ var express = require('express'),
     config = require('./config/config.js'),
     secrets = require('./config/secrets.json');
 
+// ObjectID for casting a number in an ObjectID
 var ObjectID = mongo.ObjectID;
 
+// BodyParser for getting the POST-values in JSON
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// Use directories for the client
 app.use(express.static(__dirname + '/app'));
 app.use(express.static(__dirname + '/fb'));
 
@@ -54,27 +57,23 @@ var apiPrefix = '/api/v1';
 // Create a db connection using the node module mongoskin
 var db = mongo.db("mongodb://localhost:27017/sapplies", {native_parser:true});
 
-// Init database
-//db.createCollection('offers');
-//db.createCollection('needs');
-
 // Bind all the collections to the db
 db.bind('offers');
 db.bind('needs');
 db.bind('categories');
-
-//db.offers.insert({ title: "Init offers" }, function(err) {});
-//db.needs.insert({ title: "Init needs" }, function(err){});
+db.bind('matches');
 
 // Root uri for the Angular webapp
 app.get('/', function(req, res) {
   res.sendfile(__dirname + '/app/index.html');
 });
 
+// Root uri for the FB-app
 app.get('/fb/', function(req, res) {
   res.sendfile(__dirname + '/fb/index.html');
 });
 
+// Post route required for embedding in Facebook
 app.post('/fb/', function(req, res) {
    res.sendfile(__dirname + '/fb/index.html');
 });
@@ -147,6 +146,15 @@ app.post(apiPrefix+'/offers', function(req, res) {
   });
 });
 
+// UPDATE
+app.put(apiPrefix+'/offers/:id', function(req, res) {
+   db.offers.update({ _id: new ObjectID(req.params.id)}, { $set: req.body }, function(err, docs) {
+      if(err) throw err;
+      res.send(200);
+   });
+});
+
+// DELETE
 app.delete(apiPrefix+'/offers/:id', function(req, res) {
   //req.params.id
   db.offers.remove({ _id: new ObjectID(req.params.id) }, function(err, docs) {
@@ -159,10 +167,36 @@ app.delete(apiPrefix+'/offers/:id', function(req, res) {
  * CRUD: Matches
  */
 
+// CREATE
+app.post(apiPrefix+'/matches', function(req, res) {
+   // req.body.need = new ObjectID(req.body.need);
+   // req.body.offer = new ObjectID(req.body.offer);
+
+   db.matches.insert(req.body, function(err, docs) {
+      if(err) throw err;
+      res.send(200);
+   });
+});
+
 // FIND
 app.get(apiPrefix+'/matches', function(req, res) {
    db.matches.find().sort({ id: -1 }).toArray(function(err, docs) {
       if(err) throw err;
+
+      // var representation = docs;
+      // docs.forEach(function(match, i) {
+      //    db.needs.findOne({ _id: match.need }, function(err, n) {
+      //       representation[i].need = n;
+      //       db.offers.findOne({ _id: match.offer }, function(err, o) {
+      //          representation[i].offer = o;
+      //
+      //          // Dirty: bit of a hack
+      //          if(i == representation.length-1) {
+      //             res.send(representation);
+      //          }
+      //       });
+      //    });
+      // });
       res.send(docs);
    });
 });
@@ -170,6 +204,8 @@ app.get(apiPrefix+'/matches', function(req, res) {
 /*
  * Categories
  */
+
+// FIND
 app.get(apiPrefix+'/categories', function(req, res) {
    db.categories.find().sort({ name: 1 }).toArray(function(err, docs) {
       if(err) throw err;
