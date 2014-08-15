@@ -13,20 +13,11 @@
       </select>
     </div>
   </div>
-  <div class="col-sm-3">
-    <div class="radio">
-       <label>
-          <input type="radio" name="filterMatched" id="optionsRadios1" value="option1" checked>
-          Nog niet gekoppeld
-       </label>
-       <label>
-          <input type="radio" name="filterMatched" id="optionsRadios2" value="option1">
-          Gekoppeld
-       </label>
-</div>
-  </div>
 </div>
 <div class="row">
+   <div class="col-md-12">
+      <h3>Hulpvraag &amp; aanbod koppelen</h3>
+   </div>
    <div class="col-xs-12 col-md-6">
       <div class="well well-sm" data-animate-on-change="match.need.title">
          <p>{{match.need.title || '[Selecteer een hulpvraag]'}}</p>
@@ -48,7 +39,7 @@
 <section>
    <div class="row">
      <div class="col-xs-6">
-        <h2>Hulpvraag</h2>
+        <h3>Hulpvraag</h3>
        <div class="list-group overflow-column">
          <a data-ng-click="selectNeed(need, $index)" ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
            <h4 class="list-group-item-heading">{{need.title}}</h4>
@@ -66,7 +57,7 @@
      </div>
 
      <div class="col-xs-6">
-        <h2>Hulpaanbod</h2>
+        <h3>Hulpaanbod</h3>{{filterMatched}}
        <div class="list-group overflow-column">
          <a data-ng-click="selectOffer(offer, $index)" ng-class="{active: $index == pickedOffer}" class="list-group-item" data-ng-repeat="offer in offers | filter: filter | filter:filterCategory | filter:suggestions">
            <h4 class="list-group-item-heading">{{offer.title}}</h4>

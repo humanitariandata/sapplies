@@ -62,6 +62,7 @@ db.bind('offers');
 db.bind('needs');
 db.bind('categories');
 db.bind('matches');
+db.bind('fbusers');
 
 // Root uri for the Angular webapp
 app.get('/', function(req, res) {
@@ -131,7 +132,6 @@ app.get(apiPrefix+'/offers', function(req, res) {
 
 // FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {
-  //req.params.id
   db.offers.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
     if(err) throw err;
     res.send(docs);
@@ -210,6 +210,25 @@ app.get(apiPrefix+'/categories', function(req, res) {
    db.categories.find().sort({ name: 1 }).toArray(function(err, docs) {
       if(err) throw err;
       res.send(docs);
+   });
+});
+
+/*
+ * Facebook users
+ */
+// FINE ONE
+app.get(apiPrefix+'/fbusers/:id', function(req, res) {
+   db.fbusers.findOne({ userID: req.params.userID }, function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
+});
+
+// CREATE
+app.post(apiPrefix+'/fbusers', function(req, res) {
+   db.fbusers.insert(req.body, function(err, docs) {
+      if(err) throw err;
+      res.send(200);
    });
 });
 

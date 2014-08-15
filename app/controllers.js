@@ -72,14 +72,12 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
 // Controller for viewing and creating needs.
 sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
 
-   $scope.needs = RESTResourceProvider.Need.query();
    $scope.categories = RESTResourceProvider.Category.query();
    $scope.alerts = [];
 
    $scope.saveNeed = function() {
       $scope.createNeed.category = $scope.createNeed.category.name;
       RESTResourceProvider.Need.save($scope.createNeed);
-      $scope.needs.unshift($scope.createNeed);
       $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
       $scope.createNeed = null;
    }
@@ -98,22 +96,18 @@ sappliesApp.controller('FBManagementController', ['$scope', 'Facebook', function
          if(response.status === 'connected') {
             $scope.loggedIn = true;
             fetchFBPages();
+         } else {
+            Facebook.login(function(response) {
+               if (response && !response.error) {
+                  $scope.loggedIn = true;
+                  fetchFBPages();
+               }
+            }, {
+               scope: 'manage_pages,public_profile'
+            });
          }
       });
    }());
-
-   // Login into with Facebook and ask manage_pages permissions to get fb-pages of the user (admin)
-   $scope.login = function() {
-      Facebook.login(function(response) {
-         if (response && !response.error) {
-            $scope.loggedIn = true;
-            fetchFBPages();
-         }
-      }, {
-         scope: 'manage_pages',
-         auth_type: 'rerequest'
-      });
-   };
 
    $scope.connectAppToPage = function() {
       Facebook.ui({
@@ -130,6 +124,7 @@ sappliesApp.controller('FBManagementController', ['$scope', 'Facebook', function
 
       Facebook.api('/me/accounts', function(response) {
          if (response && !response.error) {
+            console.log(response);
             response.data.forEach(function(page) {
                if(page.hasOwnProperty('category') && page.category === 'Community') {
                   Facebook.api('/'+page.id+'/picture', { "type": "small" }, function(pic) {
@@ -139,6 +134,8 @@ sappliesApp.controller('FBManagementController', ['$scope', 'Facebook', function
                   isAppConnectedToPage(page.id);
                }
             });
+         } else {
+            console.log(response);
          }
       });
    };

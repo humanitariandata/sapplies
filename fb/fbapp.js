@@ -1,4 +1,4 @@
-var fbApp = angular.module('fbapp', ['ngRoute', 'facebook']).config(function($routeProvider, FacebookProvider) {
+var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook']).config(function($routeProvider, FacebookProvider) {
    $routeProvider.when('/main', {
       controller: 'FBMainController',
       templateUrl: 'views/fbmain.html'
@@ -24,10 +24,9 @@ fbApp.controller('FBMainController', ['$scope', '$location', 'Facebook', functio
    Facebook.getLoginStatus(function(response) {
       if(response.status !== 'connected') {
          Facebook.login(function(response) {
-            $scope.accessToken = response.authResponse.accesToken;
+            console.log(response.authResponse.accessToken);
          }, {
-            scope: 'public_profile',
-            auth_type: 'rerequest'
+            scope: 'manage_pages,public_profile'
          });
       }
    });
@@ -37,34 +36,51 @@ fbApp.controller('FBMainController', ['$scope', '$location', 'Facebook', functio
    }
 }]);
 
-fbApp.controller('DonateController', ['$scope', '$http', 'Facebook', function($scope, $http, Facebook) {
-   Facebook.api('/me?fields=name,picture', function(response) {
-      if (response && !response.error) {
-         $scope.fb = {
-            profilepic: response.picture.data.url,
-            name: response.name
-         }
-      }
-      else {
-         console.log(response);
+fbApp.controller('DonateController', ['$scope', '$resource', 'Facebook', function($scope, $resource, Facebook) {
+
+   Facebook.getLoginStatus(function(response) {
+      if(response.status !== 'connected') {
+         Facebook.login(function(response) {
+
+         }, {
+            scope: 'manage_pages,public_profile'
+         });
+      } else if(response.status === 'connected') {
+         Facebook.api('/me', { access_token: response.authResponse.accessToken }, function(response) {
+            if (response && !response.error) {
+               console.log(response);
+
+               $scope.createDonation.fb = {
+                  name: response.name,
+                  link: response.link
+               }
+            } else {
+               console.log(response);
+            }
+         });
+
+         Facebook.api('/me/picture', { access_token: response.authResponse.accessToken }, function(response) {
+            if (response && !response.error) {
+               $scope.createDonation.fb = {
+                  profilepic: response.data.url
+               }
+            } else {
+               console.log(response);
+            }
+         });
+
       }
    });
 
-   //https://sapplies.rodekruis.nl/api/v1/categories
-   //http://localhost:3001/api/v1/categories
-   $http.get('https://sapplies.rodekruis.nl/api/v1/categories').success(function(categories) {
-      $scope.categories = categories;
-   });
+   $scope.categories = $resource('/api/v1/categories/:id').query();
 
    $scope.saveDonation = function() {
       $scope.createDonation.category = $scope.createDonation.category.name;
       $scope.createDonation.type = 'Dienst';
-
-      //http://localhost:3001/api/v1/offers
-      //https://sapplies.rodekruis.nl/api/v1/offers
-      $http.post('https://sapplies.rodekruis.nl/api/v1/offers', $scope.createDonation).success(function(response) {
-         console.log(response);
-      });
+      console.log($scope.createDonation);
+      // $http.post('http://localhost:3001/api/v1/offers', $scope.createDonation).success(function(response) {
+      //    console.log(response);
+      // });
       $scope.createDonation = null;
    }
 }]);

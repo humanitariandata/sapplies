@@ -11,9 +11,23 @@
   </div>
   <div class="form-group">
      <label for="form-need-category">Categorie</label>
-     <select data-ng-model="createDonation.category" data-ng-options="category.name for category in categories" class="form-control" id="form-donate-category">
+     <select data-ng-model="createDonation.category" data-ng-options="category.name for category in categories" class="form-control input-smaller" id="form-donate-category">
         <option value="">Kies een categorie</option>
      </select>
+  </div>
+  <strong>Bezorging</strong>
+
+  <div class="radio">
+     <label>
+        <input type="radio" name="deliverPick" data-ng-model="createDonation.deliverPick" data-ng-value="createDonation.deliverPick" />
+        Ik kan bezorgen.
+    </label>
+    </div>
+   <div class="radio">
+    <label>
+      <input type="radio" name="deliverPick" data-ng-model="createDonation.deliverPick" data-ng-value="createDonation.deliverPick" />
+      Ik hulp nodig met het vervoer.
+  </label>
   </div>
 
   <div class="panel panel-default">
@@ -21,9 +35,10 @@
       <h3 class="panel-title">Facebook</h3>
     </div>
     <div class="panel-body">
-       <p>Alleen je naam en een link naar je Facebook-profiel wordt opgeslagen, zodat de hulpactie contact met je kan opnemen als dat nodig is.</p>
-       <img data-ng-src="{{fb.profilepic}}" alt="" />
-       {{fb.name}}
+       <p>Alleen je naam en een link naar je Facebook-profiel wordt opgeslagen, zodat de hulpactie contact met je kan opnemen.</p>
+       <img data-ng-src="{{createDonation.fb.profilepic}}" alt="" />
+       <span>{{fb.name}}</span>
+       <p><a href="{{createDonation.fb.link}}">Link van je Facebook-profiel</a></p>
     </div>
   </div>
 
