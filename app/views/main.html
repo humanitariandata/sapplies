@@ -17,6 +17,8 @@
 <div class="row">
    <div class="col-md-12">
       <h3>Hulpvraag &amp; aanbod koppelen</h3>
+
+      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
    </div>
    <div class="col-xs-12 col-md-6">
       <div class="well well-sm" data-animate-on-change="match.need.title">
@@ -28,8 +30,11 @@
          <p>{{match.offer.title || '[Selecteer een hulpaanbod]'}}</p>
       </div>
    </div>
-   <div class="col-xs-12">
-      <button type="button" class="btn btn-default btn-lg" data-ng-click="confirmMatch()">
+</div>
+
+<div class="row">
+   <div class="col-md-2 col-md-offset-5">
+      <button type="submit" class="btn btn-primary" data-ng-click="confirmMatch()">
          <span class="glyphicon glyphicon-link"></span>
          Koppel
       </button>
@@ -69,7 +74,7 @@
                    <span class="glyphicon glyphicon-remove"></span> Verwijder
                 </button>
                 <button type="button" class="btn btn-link" data-ng-click="showDetailOffer(offer._id);$event.stopPropagation()">
-                 <span class="glyphicon glyphicon-cog"></span> Meer
+                 <span class="glyphicon glyphicon-cog"></span> Bekijk details
               </button>
              </small>
            </p>

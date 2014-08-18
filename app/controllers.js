@@ -10,6 +10,7 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
 
    // Set de default to empty object
    $scope.match = {};
+   $scope.alerts = [];
 
    // Event listener for selecting a need fromt the list-group
    $scope.selectNeed = function(selectedNeed, index) {
@@ -17,7 +18,7 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
       $scope.match.need = selectedNeed;
 
       // Prepare for filtering suggestions and undo the selection when selected again
-      if (index === $scope.selected) {
+      if (index === $scope.pickedNeed) {
          // Undo selection
          $scope.pickedNeed = null;
 
@@ -66,7 +67,14 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
       };
       RESTResourceProvider.Match.save(postPayload);
       RESTResourceProvider.Offer.update({ id: $scope.match.offer._id }, { matched: true });
+
+      $scope.alerts.push({ type: 'success', msg: '"'+$scope.match.need.title +'" en "'+$scope.match.offer.title+'" zijn gekoppeld!'});
+
+      $scope.match = null;
    }
+   $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+  };
 }]);
 
 // Controller for viewing and creating needs.
@@ -76,11 +84,19 @@ sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', fu
    $scope.alerts = [];
 
    $scope.saveNeed = function() {
-      $scope.createNeed.category = $scope.createNeed.category.name;
-      RESTResourceProvider.Need.save($scope.createNeed);
-      $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
-      $scope.createNeed = null;
+      if ($scope.createNeedForm.$valid) {
+         $scope.createNeed.category = $scope.createNeed.category.name;
+         RESTResourceProvider.Need.save($scope.createNeed);
+         $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
+         $scope.createNeed = null;
+      } else {
+         $scope.createNeedForm.submitted = true;
+      }
    }
+
+   $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
+  };
 }]);
 
 // Controller for reading a specific need
