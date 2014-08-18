@@ -29,12 +29,17 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
          $scope.suggestions = selectedNeed.category;
          $scope.pickedNeed = index;
          $scope.pickedOffer = null;
+
+         // Reset match offer to prevent wrong match
+         $scope.match.offer = null;
       }
    }
 
    // Event listener for selecting a offer from the list-group
    $scope.selectOffer = function(selectedOffer, index) {
-      $scope.match.offer = selectedOffer;
+      if(!selectedOffer.matched) {
+         $scope.match.offer = selectedOffer;
+      }
       $scope.pickedOffer = index === $scope.pickedOffer && null || index;
    }
 
@@ -70,7 +75,7 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
 
       $scope.alerts.push({ type: 'success', msg: '"'+$scope.match.need.title +'" en "'+$scope.match.offer.title+'" zijn gekoppeld!'});
 
-      $scope.match = null;
+      $scope.match.offer = null;
    }
    $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);

@@ -32,21 +32,18 @@
    </div>
 </div>
 
-<div class="row">
+<!-- <div class="row">
    <div class="col-md-2 col-md-offset-5">
-      <button type="submit" class="btn btn-primary" data-ng-click="confirmMatch()">
-         <span class="glyphicon glyphicon-link"></span>
-         Koppel
-      </button>
+
    </div>
-</div>
+</div> -->
 
 <section>
    <div class="row">
      <div class="col-xs-6">
         <h3>Hulpvraag</h3>
        <div class="list-group overflow-column">
-         <a data-ng-click="selectNeed(need, $index)" ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
+         <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
            <h4 class="list-group-item-heading">{{need.title}}</h4>
            <p class="list-group-item-text">{{need.description}}</p>
            <p class="list-group-item-text">
@@ -64,7 +61,7 @@
      <div class="col-xs-6">
         <h3>Hulpaanbod</h3>{{filterMatched}}
        <div class="list-group overflow-column">
-         <a data-ng-click="selectOffer(offer, $index)" ng-class="{active: $index == pickedOffer}" class="list-group-item" data-ng-repeat="offer in offers | filter: filter | filter:filterCategory | filter:suggestions">
+         <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in offers | filter: filter | filter:filterCategory | filter:suggestions">
            <h4 class="list-group-item-heading">{{offer.title}}</h4>
            <p class="list-group-item-text">{{offer.description}}</p>
            <p class="list-group-item-text">
@@ -77,6 +74,13 @@
                  <span class="glyphicon glyphicon-cog"></span> Bekijk details
               </button>
              </small>
+          </p>
+          <p class="list-group-item-text">
+             <button type="submit" class="btn btn-primary btn-sm"
+             data-ng-show="$index == pickedOffer && !offer.matched && match.need.title && match.offer.title" data-ng-click="confirmMatch()">
+                <span class="glyphicon glyphicon-link"></span>
+                Koppel hulpvraag en aanbod
+             </button>
            </p>
          </a>
        </div>
