@@ -2,9 +2,13 @@ var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ngAnimat
 
 sappliesApp.config(function($routeProvider, FacebookProvider) {
 	$routeProvider
+	.when('/login', {
+		templateUrl: 'views/login.html',
+		controller: 'LoginController'
+	})
 	.when('/overview', {
-	  templateUrl: 'views/main.html',
-	  controller: 'MainController'
+	  templateUrl: 'views/overview.html',
+	  controller: 'OverviewController'
 	})
 	.when('/facebook-management', {
 		templateUrl: 'views/fb-management.html',

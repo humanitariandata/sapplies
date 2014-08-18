@@ -26,6 +26,10 @@ a {
    }
 }
 
+.fb-btn, .fb-btn:focus, .fb-btn:hover {
+   background-color:#3b5998;
+}
+
 .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
    background-color: lighten($base-color, 15%) !important;
 }

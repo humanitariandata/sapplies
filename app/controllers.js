@@ -1,8 +1,9 @@
 /* Controller for the main page
    - Loading resources
    - Matching needs and offers
+   - filtering / sorting
 */
-sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceProvider', function($scope, $location, RESTResourceProvider) {
+sappliesApp.controller('OverviewController', [ '$scope', '$location', 'RESTResourceProvider', function($scope, $location, RESTResourceProvider) {
    // Query the resources
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
@@ -110,22 +111,17 @@ sappliesApp.controller('NeedDetailController', [ '$scope', '$routeParams','RESTR
 }]);
 
 // Controller to login in with Facebook to connect facebook-app from the page to this app.
-sappliesApp.controller('FBManagementController', ['$scope', 'Facebook', function($scope, Facebook) {
+sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebook', function($scope, $location, Facebook) {
 
-   (function init() {
+   // Simple solution for authentication with Facebook.
+   // This kind of checks should be handled by the $routeProvider in app.js
+   (function() {
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
             $scope.loggedIn = true;
             fetchFBPages();
          } else {
-            Facebook.login(function(response) {
-               if (response && !response.error) {
-                  $scope.loggedIn = true;
-                  fetchFBPages();
-               }
-            }, {
-               scope: 'manage_pages,public_profile'
-            });
+            $location.path('/login');
          }
       });
    }());
@@ -182,4 +178,17 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
    $scope.matches = RESTResourceProvider.Match.query();
+}]);
+
+sappliesApp.controller('LoginController', [ '$scope', 'Facebook', function($scope, Facebook) {
+
+   $scope.loginWithFacebook = function() {
+      Facebook.getLoginStatus(function(response) {
+         if(response.status === 'connected') {
+            $scope.loggedIn = true;
+         } else {
+            console.log(response);
+         }
+      });
+   }
 }]);
