@@ -5,23 +5,23 @@
     <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 
     <form role="form" name="createNeedForm" novalidate>
-      <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.title.$invalid && createNeedForm.title.$dirty || createNeedForm.submitted }">
+      <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.title.$invalid }">
         <label for="form-need-title">Titel</label>
         <input required type="text" class="form-control" name="title" id="form-need-title" data-ng-model="createNeed.title" placeholder="Bijvoorbeeld: Met spoed is een tweepersoonsbed nodig.">
-        <p class="help-block" data-ng-show="createNeedForm.title.$invalid && createNeedForm.title.$dirty || createNeedForm.submitted">Vul een duidelijk hulpvraag in.</p>
+        <p class="help-block" data-ng-show="createNeedForm.title.$invalid && createNeedForm.title.$dirty">Vul een duidelijk hulpvraag in.</p>
       </div>
       <div class="form-group">
         <label for="form-need-description">Beschrijving</label>
         <textarea class="form-control" id="form-need-description" data-ng-model="createNeed.description" placeholder="Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
       </div>
-      <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.category.$invalid && createNeedForm.category.$dirty || createNeedForm.submitted }">
+      <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.category.$invalid }">
          <label for="form-need-category">Categorie</label>
          <select required data-ng-model="createNeed.category" name="category" data-ng-options="category.name for category in categories" class="form-control" id="form-need-category">
             <option value="">Kies een categorie</option>
          </select>
-         <p class="help-block" data-ng-show="createNeedForm.category.$invalid && createNeedForm.category.$dirty || createNeedForm.submitted">Selecteer een categorie waarin de hulpvraag het beste past.</p>
+         <p class="help-block" data-ng-show="createNeedForm.category.$invalid && createNeedForm.category.$dirty">Selecteer een categorie waarin de hulpvraag het beste past.</p>
       </div>
-      <button type="button" class="btn btn-primary" data-ng-click="saveNeed()">Bewaar</button>
+      <button type="button" class="btn btn-primary" data-ng-disabled="createNeedForm.$invalid" data-ng-click="saveNeed()">{{ createNeedForm.$valid && 'Bewaar hulpvraag' || 'Vul de verplichte velden in...' }}</button>
     </form>
   </div>
 </div>
