@@ -2,17 +2,23 @@
   <div class="col-sm-3">
     <div class="form-group">
       <label for="form-filter">Filter</label>
-      <input type="text" class="form-control" id="form-filter" data-ng-model="filter" placeholder="Filter..." />
+      <input type="text" class="form-control" id="form-filter" data-ng-model="byText" placeholder="Filter..." />
     </div>
   </div>
   <div class="col-sm-3">
     <div class="form-group">
       <label for="form-category">Categorie</label>
-      <select data-ng-model="filterCategory" data-ng-options="category.name as category.name for category in categories" class="form-control" id="form-category">
+      <select data-ng-model="byCategory" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-category">
          <option value="">Filter op categorie</option>
       </select>
     </div>
   </div>
+  <div class="col-sm-3">
+     <div class="btn-group">
+        <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Diensten</label>
+        <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Goederen</label>
+    </div>
+   </div>
 </div>
 <div class="row">
    <div class="col-md-12">
@@ -32,23 +38,20 @@
    </div>
 </div>
 
-<!-- <div class="row">
-   <div class="col-md-2 col-md-offset-5">
-
-   </div>
-</div> -->
-
 <section>
    <div class="row">
      <div class="col-xs-6">
         <h3>Hulpvraag</h3>
        <div class="list-group overflow-column">
-         <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter:filter | filter:filterCategory">
-           <h4 class="list-group-item-heading">{{need.title}}</h4>
+         <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter:byText | filter:byCategory | filter:bySuppliesServices">
+           <h4 class="list-group-item-heading">
+             <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
+             <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
+              {{need.title}}</h4>
            <p class="list-group-item-text">{{need.description}}</p>
            <p class="list-group-item-text">
              <small>
-                <em>{{need.category}}</em>
+                <span class="label label-default">{{need.category}}</span>
                 <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need);$event.stopPropagation()">
                    <span class="glyphicon glyphicon-remove"></span> Verwijder
                </button>
@@ -59,14 +62,17 @@
      </div>
 
      <div class="col-xs-6">
-        <h3>Hulpaanbod</h3>{{filterMatched}}
+        <h3>Hulpaanbod</h3>
        <div class="list-group overflow-column">
-         <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in offers | filter: filter | filter:filterCategory | filter:suggestions">
-           <h4 class="list-group-item-heading">{{offer.title}}</h4>
+         <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices">
+           <h4 class="list-group-item-heading">
+             <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
+             <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
+              {{offer.title}}</h4>
            <p class="list-group-item-text">{{offer.description}}</p>
            <p class="list-group-item-text">
              <small>
-                <em>{{offer.category}}</em>
+                <span class="label label-default">{{offer.category}}</span>
                  <button type="button" class="btn btn-link" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
                    <span class="glyphicon glyphicon-remove"></span> Verwijder
                 </button>
@@ -87,21 +93,3 @@
      </div>
    </div>
 </section>
-
-<script type="text/ng-template" id="myModalContent.html">
-  <div class="modal-header">
-      <h3 class="modal-title">Im a modal!</h3>
-  </div>
-  <div class="modal-body">
-      <ul>
-          <li ng-repeat="item in items">
-              <a ng-click="selected.item = item">{{ item }}</a>
-          </li>
-      </ul>
-      Selected: <b>{{ selected.item }}</b>
-  </div>
-  <div class="modal-footer">
-      <button class="btn btn-primary" ng-click="ok()">OK</button>
-      <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-  </div>
-</script>

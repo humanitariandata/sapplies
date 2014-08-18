@@ -16,6 +16,7 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
    $scope.selectNeed = function(selectedNeed, index) {
       // Set the match model
       $scope.match.need = selectedNeed;
+      console.log($scope.offers);
 
       // Prepare for filtering suggestions and undo the selection when selected again
       if (index === $scope.pickedNeed) {
@@ -23,10 +24,10 @@ sappliesApp.controller('MainController', [ '$scope', '$location', 'RESTResourceP
          $scope.pickedNeed = null;
 
          // Reset suggestion filter
-         $scope.suggestions = null;
+         $scope.bySuggestions = null;
       } else { // Not yet selected
          // Set the suggestions by category
-         $scope.suggestions = selectedNeed.category;
+         $scope.bySuggestions = selectedNeed.category;
          $scope.pickedNeed = index;
          $scope.pickedOffer = null;
 
@@ -132,7 +133,7 @@ sappliesApp.controller('FBManagementController', ['$scope', 'Facebook', function
    $scope.connectAppToPage = function() {
       Facebook.ui({
          method: 'pagetab',
-         redirect_uri: 'http://localhost:3001/fb'
+         redirect_uri: 'https://sapplies.rodekruis.nl/fb'
       }, function(response) {
          console.log(response);
          isAppConnectedToPage();
