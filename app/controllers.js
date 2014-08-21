@@ -3,7 +3,7 @@
    - Matching needs and offers
    - filtering / sorting
 */
-sappliesApp.controller('OverviewController', [ '$scope', '$location', 'RESTResourceProvider', function($scope, $location, RESTResourceProvider) {
+sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', function($scope, $location, $modal, RESTResourceProvider) {
    // Query the resources
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
@@ -17,7 +17,6 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', 'RESTResou
    $scope.selectNeed = function(selectedNeed, index) {
       // Set the match model
       $scope.match.need = selectedNeed;
-      console.log($scope.offers);
 
       // Prepare for filtering suggestions and undo the selection when selected again
       if (index === $scope.pickedNeed) {
@@ -46,8 +45,18 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', 'RESTResou
    }
 
    // Event listener for going to the detail page (fix: regular a href not working in this case)
-   $scope.showDetailOffer = function(offerId) {
-      $location.path('/offers/'+offerId);
+   $scope.showDetailOffer = function(offer) {
+      $scope.detailItem = offer;
+      $modal.open({
+         templateUrl: 'detailOfferModalContent.html',
+         controller: DetailOfferModalInstanceCtrl,
+         size: '',
+         resolve: {
+            detailItem: function () {
+               return $scope.detailItem;
+            }
+         }
+      });
    }
 
    // Event listener for deleting a need
@@ -75,6 +84,8 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', 'RESTResou
       RESTResourceProvider.Match.save(postPayload);
       RESTResourceProvider.Offer.update({ id: $scope.match.offer._id }, { matched: true });
 
+      offer.matched = true;
+
       $scope.alerts.push({ type: 'success', msg: '"'+$scope.match.need.title +'" en "'+$scope.match.offer.title+'" zijn gekoppeld!'});
 
       $scope.match.offer = null;
@@ -84,19 +95,38 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', 'RESTResou
   };
 }]);
 
+var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem, Facebook) {
+
+  $scope.detailItem = detailItem;
+  console.log(detailItem);
+
+  Facebook.api('/'+detailItem.userID, function(response) {
+     if (response && !response.error) {
+        console.log(response);
+     }
+  });
+
+  $scope.ok = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
 // Controller for viewing and creating needs.
 sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
 
    $scope.categories = RESTResourceProvider.Category.query();
    $scope.alerts = [];
+   $scope.createNeed = { type: 'Goederen' };
+   $scope.submitted = false;
 
    $scope.saveNeed = function() {
       if ($scope.createNeedForm.$valid) {
          $scope.createNeed.category = $scope.createNeed.category.name;
          RESTResourceProvider.Need.save($scope.createNeed);
          $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
+         console.log($scope.createNeed);
       } else {
-         $scope.createNeedForm.submitted = true;
+         $scope.submitted = true;
       }
    }
 
@@ -180,14 +210,32 @@ sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 
    $scope.matches = RESTResourceProvider.Match.query();
 }]);
 
-sappliesApp.controller('LoginController', [ '$scope', 'Facebook', function($scope, Facebook) {
+sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', 'RESTResourceProvider', function($scope, $location, Facebook, RESTResourceProvider) {
 
    $scope.loginWithFacebook = function() {
+
       Facebook.getLoginStatus(function(response) {
+         console.log(response);
          if(response.status === 'connected') {
             $scope.loggedIn = true;
+
+            // Save to the database if not already exists (upsert true)
+            RESTResourceProvider.FBUser.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID, blaat: 'blaat' }, function() {
+               // done
+            });
          } else {
-            console.log(response);
+            FB.login(function(response) {
+               if (response.status === 'connected') {
+                  $scope.loggedIn = true;
+
+                  // Save to the database if not already exists (upsert true)
+                  RESTResourceProvider.FBUser.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID, blaat: 'blaat' });
+
+                  $location.path('/overview');
+               } else {
+                  console.log('User cancelled login or did not fully authorize.');
+               }
+            });
          }
       });
    }

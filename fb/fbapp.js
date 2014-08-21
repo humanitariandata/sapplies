@@ -78,9 +78,7 @@ fbApp.controller('DonateController', ['$scope', '$resource', 'Facebook', functio
       $scope.createDonation.category = $scope.createDonation.category.name;
       $scope.createDonation.type = 'Dienst';
       console.log($scope.createDonation);
-      // $http.post('http://localhost:3001/api/v1/offers', $scope.createDonation).success(function(response) {
-      //    console.log(response);
-      // });
+      
       $scope.createDonation = null;
    }
 }]);

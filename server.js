@@ -169,9 +169,6 @@ app.delete(apiPrefix+'/offers/:id', function(req, res) {
 
 // CREATE
 app.post(apiPrefix+'/matches', function(req, res) {
-   // req.body.need = new ObjectID(req.body.need);
-   // req.body.offer = new ObjectID(req.body.offer);
-
    db.matches.insert(req.body, function(err, docs) {
       if(err) throw err;
       res.send(200);
@@ -224,12 +221,68 @@ app.get(apiPrefix+'/fbusers/:id', function(req, res) {
    });
 });
 
-// CREATE
-app.post(apiPrefix+'/fbusers', function(req, res) {
-   db.fbusers.insert(req.body, function(err, docs) {
+// Save to the database if not already exists (upsert true)
+app.put(apiPrefix+'/fbusers/:userID', function(req, res) {
+   console.log(req.params);
+   db.fbusers.update({ userID: req.params.userID }, { userID: req.params.userID }, { upsert: true }, function(err, docs) {
       if(err) throw err;
       res.send(200);
    });
+});
+
+// A route for resetting the database and injecting fake data
+app.get(apiPrefix+'/resetdb', function(req, res) {
+
+   db.needs.remove({}, function() {});
+   db.offers.remove({}, function() {});
+   db.matches.remove({}, function() {});
+   db.categories.remove({}, function() {});
+   db.fbusers.remove({}, function() {});
+
+   db.needs.insert([
+      { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten" },
+      { title : "Tweepersoonsbank", description : "Het liefst een bank die ook te demonteren is.", category : "Meubilair", type: "Goederen" },
+      { title : "Keukengerei", description : "Diverse keukenhulpmiddelen zijn nodig. Bestek, pannen, borden, koppen en mokken.", category : "Keuken", type: "Goederen" },
+      { title : "Vervangde laptop", description : "Een tijdelijk laptop waarop internetverbinding werkt.", category : "Electronica", type: "Goederen" }
+   ], function(err, docs) {
+      if(err) throw err;
+   });
+
+   db.offers.insert([
+      { title: "Ik kan helpen met het leggen van laminaat", description: "Op woensdagen zou ik kunnen komen helpen", category: "Bouw", type: "Diensten", userID: "915046055178662"},
+      { title: "Leren fauteuil met uiklapbaar voetenbankje", description: "Weegt ongeveer 15kg in de kleur bruin", category: "Meubilair", type: "Goederen", userID: "915046055178662"},
+      { title: "Pannenset van Ikea", description: "De pannen passen in elkaar.", category: "Keuken", type: "Goederen", userID: "915046055178662"},
+      { title: "Kluservaring", description: "Ik heb ervaring met het monteren en verbouwen van keukens.", category: "Keuken", type: "Diensten", userID: "915046055178662"},
+      { title: "Bordenset", description: "Het zijn witte diepe borden", category: "Keuken", type: "Diensten", userID: "915046055178662"},
+      { title: "Koken", description: "Iedere dinsdag en donderdag biedt ik mij aan om een maaltijd voor te bereiden", category: "Maaltijden", type: "Diensten", userID: "915046055178662"},
+   ], function(err, docs) {
+      if(err) throw err;
+   });
+
+   db.categories.insert([
+      { type: 'Goederen', name: "Algemeen"},
+      { type: 'Goederen', name: "Kleding"},
+      { type: 'Goederen', name: "Hygiëne"},
+      { type: 'Goederen', name: "Voedsel"},
+      { type: 'Goederen', name: "Electronica"},
+      { type: 'Goederen', name: "Maaltijden"},
+      { type: 'Goederen', name: "Meubilair"},
+      { type: 'Goederen', name: "Gereedschap"},
+      { type: 'Goederen', name: "Speelgoed"},
+      { type: 'Goederen', name: "Keuken"},
+      { type: 'Diensten', name: "Onderdak"},
+      { type: 'Diensten', name: "Elektricien"},
+      { type: 'Diensten', name: "Loodgieter"},
+      { type: 'Diensten', name: "Bouw" },
+      { type: 'Diensten', name: "Financieel"},
+      { type: 'Diensten', name: "Juridisch"},
+      { type: 'Diensten', name: "Medische begeleiding"},
+      { type: 'Diensten', name: "Vertaling"},
+      { type: 'Diensten', name: "Vervoer"},
+   ], function(err, docs) {
+      if(err) throw err;
+   });
+   res.send(200);
 });
 
 // Close the db connection

@@ -77,13 +77,13 @@ a {
   that has the .list-group-item class
 */
 .list-group-item.ng-leave {
-  -webkit-animation:0.5s my_animation;
-  -moz-animation:0.5s my_animation;
-  -o-animation:0.5s my_animation;
-  animation:0.5s my_animation;
+  -webkit-animation:0.5s fadeout;
+  -moz-animation:0.5s fadeout;
+  -o-animation:0.5s fadeout;
+  animation:0.5s fadeout;
 }
 
-@keyframes my_animation {
+@keyframes fadeout {
   from { opacity:1; }
   to { opacity:0; }
 }
@@ -92,17 +92,30 @@ a {
   Unfortunately each browser vendor requires
   its own definition of keyframe animation code...
 */
-@-webkit-keyframes my_animation {
+@-webkit-keyframes fadeout {
   from { opacity:1; }
   to { opacity:0; }
 }
 
-@-moz-keyframes my_animation {
+@-moz-keyframes fadeout {
   from { opacity:1; }
   to { opacity:0; }
 }
 
-@-o-keyframes my_animation {
+@-o-keyframes fadeout {
   from { opacity:1; }
   to { opacity:0; }
+}
+
+// Turn off animation modal
+// http://stackoverflow.com/questions/18873428/turn-off-animation-modal-angular-ui
+.modal.fade {
+  opacity: 1;
+}
+
+.modal.fade .modal-dialog, .modal.in .modal-dialog {
+   -webkit-transform: translate(0, 0);
+   -webkit-transform: translate(0, 0);
+   -ms-transform: translate(0, 0);
+   transform: translate(0, 0);
 }

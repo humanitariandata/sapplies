@@ -1,7 +1,7 @@
-<h1>Opgelost</h1>
-
 <div class="row">
    <div class="col-md-12">
+      <h1>Gekoppelde hulpvraag en aanbod</h1>
+
       <div class="panel panel-default" data-ng-repeat="match in matches">
          <div class="panel-heading">
             <h3 class="panel-title">{{match.need.title}}</h3>
@@ -10,5 +10,6 @@
             <p>{{match.offer.title}}</p>
          </div>
       </div>
+      <p class="help-block" data-ng-hide="matches.length">Geen gekoppelde hulpvraag en aanbod gevonden.</p>
    </div>
 </div>

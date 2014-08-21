@@ -23,8 +23,6 @@
 <div class="row">
    <div class="col-md-12">
       <h3>Hulpvraag &amp; aanbod koppelen</h3>
-
-      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
    </div>
    <div class="col-xs-12 col-md-6">
       <div class="well well-sm" data-animate-on-change="match.need.title">
@@ -40,10 +38,15 @@
 
 <section>
    <div class="row">
+      <div class="col-xs-12 col-md-6">
+         <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+      </div>
+   </div>
+   <div class="row">
      <div class="col-xs-6">
         <h3>Hulpvraag</h3>
        <div class="list-group overflow-column">
-         <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter:byText | filter:byCategory | filter:bySuppliesServices">
+         <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in filteredNeeds = (needs | filter:byText | filter:byCategory | filter:bySuppliesServices)">
            <h4 class="list-group-item-heading">
              <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
              <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
@@ -58,13 +61,14 @@
             </small>
             </p>
          </a>
+         <p class="help-block text-center" data-ng-hide="filteredNeeds.length">Geen hulpvragen gevonden.</p>
        </div>
      </div>
 
      <div class="col-xs-6">
         <h3>Hulpaanbod</h3>
        <div class="list-group overflow-column">
-         <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices">
+         <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices)">
            <h4 class="list-group-item-heading">
              <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
              <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
@@ -76,7 +80,7 @@
                  <button type="button" class="btn btn-link" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
                    <span class="glyphicon glyphicon-remove"></span> Verwijder
                 </button>
-                <button type="button" class="btn btn-link" data-ng-click="showDetailOffer(offer._id);$event.stopPropagation()">
+                <button type="button" class="btn btn-link" data-ng-click="showDetailOffer(offer);$event.stopPropagation()">
                  <span class="glyphicon glyphicon-cog"></span> Bekijk details
               </button>
              </small>
@@ -89,7 +93,22 @@
              </button>
            </p>
          </a>
+         <p class="help-block text-center" data-ng-hide="filteredOffers.length">Geen hulpaanbod gevonden.</p>
        </div>
      </div>
    </div>
 </section>
+
+<!-- // Todo: put this in a file. For now.. inline -->
+<script type="text/ng-template" id="detailOfferModalContent.html">
+   <div class="modal-header">
+       <h3 class="modal-title">{{item.title}}</h3>
+   </div>
+   <div class="modal-body">
+       <ul>
+       </ul>
+   </div>
+   <div class="modal-footer">
+       <button class="btn btn-default" ng-click="ok()">OK</button>
+   </div>
+</script>

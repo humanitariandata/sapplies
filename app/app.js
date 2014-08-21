@@ -30,6 +30,11 @@ sappliesApp.config(function($routeProvider, FacebookProvider) {
 		templateUrl: 'views/matches.html',
 		controller: 'MatchesController'
 	})
+	// Reset for fake data
+	.when('/resetdb', {
+		templateUrl: 'views/resetdb.html',
+		controller: 'ResetDBController'
+	})
 	.otherwise({
 	  redirectTo: '/overview'
 	});

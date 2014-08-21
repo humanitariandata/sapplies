@@ -7,6 +7,7 @@ sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 		Offer: $resource('api/v1/offers/:id', {}, { update: {	method: 'PUT' } }),
 		Need: $resource('api/v1/needs/:id'),
 		Category: $resource('api/v1/categories/:id'),
-		Match: $resource('api/v1/matches/:id')
+		Match: $resource('api/v1/matches/:id'),
+		FBUser: $resource('api/v1/fbusers/:userID', { userID: '@userID'}, { update: {	method: 'PUT' } })
 	};
 }]);

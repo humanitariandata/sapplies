@@ -1,25 +1,26 @@
 <h2>Doneer hulpgoederen</h2>
 
-<form role="form" name="create-need-form">
-  <div class="form-group">
+<form role="form" name="createDonationForm" novalidate>
+  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.title.$invalid }">
     <label for="form-donate-title">Titel</label>
-    <input type="text" class="form-control" id="form-donate-title" data-ng-model="createDonation.title" placeholder="Bijvoorbeeld: tweepersoonsbed">
+    <input required type="text" data-ng-show="createDonationForm.title.$invalid && createDonationForm.title.$dirty" class="form-control" id="form-donate-title" data-ng-model="createDonation.title" placeholder="Bijvoorbeeld: tweepersoonsbed">
   </div>
-  <div class="form-group">
+  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.description.$invalid }">
     <label for="form-donate-description">Beschrijving</label>
-    <textarea class="form-control" id="form-donate-description" data-ng-model="createDonation.description" placeholder="Een bed wat te demonteren is. Eventueel met matras."></textarea>
+    <textarea class="form-control" data-ng-show="createDonationForm.description.$invalid && createDonationForm.description.$dirty" id="form-donate-description" data-ng-model="createDonation.description" placeholder="Een bed wat te demonteren is. Eventueel met matras."></textarea>
   </div>
-  <div class="form-group">
-     <label for="form-need-category">Categorie</label>
-     <select data-ng-model="createDonation.category" data-ng-options="category.name for category in categories" class="form-control input-smaller" id="form-donate-category">
+  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.category.$invalid }">
+     <label for="form-donation-category">Categorie</label>
+     <select required data-ng-model="createDonation.category" data-ng-options="category.name for category in categories" class="form-control input-smaller" id="form-donate-category">
         <option value="">Kies een categorie</option>
      </select>
+     <p class="help-block" data-ng-show="createDonationForm.category.$invalid && createDonationForm.category.$dirty">Selecteer een categorie waarin het hulpaanbod het beste past.</p>
   </div>
   <strong>Bezorging</strong>
 
   <div class="radio">
      <label>
-        <input type="radio" name="deliverPick" data-ng-model="createDonation.deliverPick" data-ng-value="createDonation.deliverPick" />
+        <input type="radio" name="deliverPick" data-ng-model="createDonation.deliverPick" data-ng-value="createDonation.deliverPick" checked />
         Ik kan bezorgen.
     </label>
     </div>

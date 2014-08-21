@@ -10,6 +10,8 @@
 
    <link rel="shortcut icon" href="./images/icon.ico">
 
+   <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+
    <script src="./bower_components/angular/angular.min.js"></script>
    <script src="./bower_components/angular-route/angular-route.min.js"></script>
    <script src="./bower_components/angular-resource/angular-resource.min.js"></script>
@@ -22,7 +24,6 @@
    <script src="./factories.js"></script>
    <script src="./controllers.js"></script>
 
-   <script src="./bower_components/jquery/dist/jquery.min.js"></script>
    <script src="./bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
 
    <link href="./bootstrap-3.2.0-dist/css/bootstrap-edit.min.css" rel="stylesheet">
@@ -54,7 +55,7 @@
                <li><a href="#/facebook-management"><i class="fa fa-facebook fa-lg"></i> Facebook management</a></li>
             </ul>
             <!-- <ul class="nav navbar-nav navbar-right">
-               <li></li>
+               <li>{{}}</li>
             </ul> -->
          </div>
       </div>
@@ -66,8 +67,10 @@
             <div data-ng-view=""></div>
          </div>
       </div>
-      <footer>
+      <footer class="text-center">
          <hr />
+         <img class="text-center" src="./images/cobacore-logo.png" alt="" />
+         <img src="./images/rk-logo.png" alt="" />
       </footer>
    </div>
 </body>
