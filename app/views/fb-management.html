@@ -13,8 +13,7 @@
              <td><img data-ng-src="{{page.picture}}" alt="" /></td>
              <td>{{page.name}}</td>
              <td>
-                <button type="button" class="btn btn-default" data-ng-hide="connected" data-ng-click="connectAppToPage()">Koppel</button>
-                <span data-ng-show="connected">sApplies is reeds gekoppeld.</span>
+                <button type="button" class="btn btn-default" data-ng-disabled="connected" data-ng-click="connectAppToPage()">{{connected && 'sApplies is reeds gekoppeld.' ||'Koppel'}}</button>
             </td>
            </tr>
          </tbody>

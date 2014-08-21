@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-5 col-xs-12">
     <h2>Voeg hulpvraag toe</h2>
 
     <alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
@@ -16,8 +16,8 @@
       </div>
       <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.category.$invalid && submitted }">
          <label for="form-need-category">Categorie</label>
-         <select required data-ng-model="createNeed.category" name="category" data-ng-options="category.name for category in categories" class="form-control" id="form-need-category">
-            <option value="">Kies een categorie</option>
+         <select required data-ng-model="createNeed.category" name="category" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-need-category">
+            <option value="">Kies een passende categorie</option>
          </select>
          <p class="help-block" data-ng-show="createNeedForm.title.$invalid && submitted">Selecteer een passende categorie.</p>
       </div>

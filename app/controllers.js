@@ -76,7 +76,7 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       $scope.offers.splice(index, 1);
    }
 
-   $scope.confirmMatch = function() {
+   $scope.confirmMatch = function(offer) {
       var postPayload = {
          need: $scope.match.need,
          offer: $scope.match.offer
@@ -85,10 +85,14 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       RESTResourceProvider.Offer.update({ id: $scope.match.offer._id }, { matched: true });
 
       offer.matched = true;
-
       $scope.alerts.push({ type: 'success', msg: '"'+$scope.match.need.title +'" en "'+$scope.match.offer.title+'" zijn gekoppeld!'});
-
       $scope.match.offer = null;
+
+      //Facebook Notification
+   //    /{recipient_userid}/notifications?
+   //   access_token= … &
+   //   href= … &
+   //   template=You have people waiting to play with you, play now!
    }
    $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
@@ -100,9 +104,14 @@ var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem,
   $scope.detailItem = detailItem;
   console.log(detailItem);
 
-  Facebook.api('/'+detailItem.userID, function(response) {
+  Facebook.api('/'+detailItem.userID+'?fields=name,picture,link', function(response) {
      if (response && !response.error) {
         console.log(response);
+        $scope.detailItem.fb = {
+           name: response.name,
+           picture: response.picture.data.url,
+           link: response.link
+        }
      }
   });
 
@@ -133,11 +142,6 @@ sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', fu
    $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
   };
-}]);
-
-// Controller for reading a specific need
-sappliesApp.controller('NeedDetailController', [ '$scope', '$routeParams','RESTResourceProvider', function($scope, $routeParams, RESTResourceProvider) {
-  $scope.detailNeed = RESTResourceProvider.Need.get({id: $routeParams.id});
 }]);
 
 // Controller to login in with Facebook to connect facebook-app from the page to this app.
@@ -206,8 +210,18 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
    $scope.detailOffer = RESTResourceProvider.Offer.get({id: $routeParams.id});
 }]);
 
-sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
-   $scope.matches = RESTResourceProvider.Match.query();
+sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 'Facebook', function($scope, RESTResourceProvider, Facebook) {
+   RESTResourceProvider.Match.query(function(matches) {
+      $scope.matches = matches;
+      matches.forEach(function(match) {
+         console.log(match);
+         Facebook.api('/'+match.offer.userID+'?fields=name,picture,link', function(response) {
+            if(response && !response.error) {
+               console.log(response);
+            }
+         });
+      });
+   });
 }]);
 
 sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', 'RESTResourceProvider', function($scope, $location, Facebook, RESTResourceProvider) {

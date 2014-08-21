@@ -4,10 +4,16 @@
 
       <div class="panel panel-default" data-ng-repeat="match in matches">
          <div class="panel-heading">
-            <h3 class="panel-title">{{match.need.title}}</h3>
+            <h3 class="panel-title">
+               <i class="fa fa-archive" data-ng-show="detailItem.type == 'Goederen'"></i>
+               <i class="fa fa-user-md" data-ng-show="detailItem.type == 'Diensten'"></i>
+               {{match.need.title}}</h3>
+               <p>{{match.need.description}}</p>
          </div>
          <div class="panel-body">
             <p>{{match.offer.title}}</p>
+            <p>{{match.offer.description}}</p>
+            <hr />
          </div>
       </div>
       <p class="help-block" data-ng-hide="matches.length">Geen gekoppelde hulpvraag en aanbod gevonden.</p>
