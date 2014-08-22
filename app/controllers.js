@@ -25,6 +25,7 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
 
          // Reset suggestion filter
          $scope.bySuggestions = null;
+         $scope.match.need = null;
       } else { // Not yet selected
          // Set the suggestions by category
          $scope.bySuggestions = selectedNeed.category;
@@ -253,4 +254,10 @@ sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', '
          }
       });
    }
+}]);
+
+sappliesApp.controller('NavController', [ '$scope', '$location', function($scope, $location) {
+   $scope.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
+    };
 }]);
