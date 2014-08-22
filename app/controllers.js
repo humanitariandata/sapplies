@@ -3,7 +3,7 @@
    - Matching needs and offers
    - filtering / sorting
 */
-sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', function($scope, $location, $modal, RESTResourceProvider) {
+sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', 'Facebook', function($scope, $location, $modal, RESTResourceProvider, Facebook) {
    // Query the resources
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
@@ -25,6 +25,8 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
 
          // Reset suggestion filter
          $scope.bySuggestions = null;
+
+         // Reset match
          $scope.match.need = null;
       } else { // Not yet selected
          // Set the suggestions by category
@@ -45,9 +47,11 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       $scope.pickedOffer = index === $scope.pickedOffer && null || index;
    }
 
-   // Event listener for going to the detail page (fix: regular a href not working in this case)
+   // show detail info
    $scope.showDetailOffer = function(offer) {
       $scope.detailItem = offer;
+
+      // Open Angular bootstrap modal
       $modal.open({
          templateUrl: 'detailOfferModalContent.html',
          controller: DetailOfferModalInstanceCtrl,
@@ -62,38 +66,44 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
 
    // Event listener for deleting a need
    $scope.deleteNeed = function(index, need) {
-      // Delete in the db
-      RESTResourceProvider.Need.delete({ id: need._id });
+      if(confirm('Weet je zeker dat je '+need.title+' wilt verwijderen?')) {
+         // Delete in the db
+         RESTResourceProvider.Need.delete({ id: need._id });
 
-      // Remove from the scope
-      $scope.needs.splice(index, 1);
+         // Remove from the scope
+         $scope.needs.splice(index, 1);
+      }
    }
 
+   // Event listener for deleting an offer
    $scope.deleteOffer = function(index, offer) {
-      // Delete in the db
-      RESTResourceProvider.Offer.delete({ id: offer._id });
+      if(confirm('Weet je zeker dat je '+offer.title+' wilt verwijderen? De hulpaanbieder wordt via een Facebook-notificatie op de hoogte gesteld.')) {
+         // Delete in the db
+         RESTResourceProvider.Offer.delete({ id: offer._id });
 
-      // Remove from the scope
-      $scope.offers.splice(index, 1);
+         // Remove from the scope
+         $scope.offers.splice(index, 1);
+
+         // NOTIFICATION: BEDANKT VOOR JE HULPAANBOD, MAAR WE HEBBEN ER NU GEEN GEBRUIK VAN GEMAAKT O.I.D.
+      }
    }
 
    $scope.confirmMatch = function(offer) {
       var postPayload = {
          need: $scope.match.need,
-         offer: $scope.match.offer
+         offers: [$scope.match.offer] // has to be an array
       };
-      RESTResourceProvider.Match.save(postPayload);
+
+      console.log(postPayload);
+
       RESTResourceProvider.Offer.update({ id: $scope.match.offer._id }, { matched: true });
+      RESTResourceProvider.Match.save(postPayload);
 
       offer.matched = true;
       $scope.alerts.push({ type: 'success', msg: '"'+$scope.match.need.title +'" en "'+$scope.match.offer.title+'" zijn gekoppeld!'});
       $scope.match.offer = null;
 
-      //Facebook Notification
-   //    /{recipient_userid}/notifications?
-   //   access_token= … &
-   //   href= … &
-   //   template=You have people waiting to play with you, play now!
+      // Facebook Notification?
    }
    $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
@@ -117,7 +127,7 @@ var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem,
   });
 
   $scope.ok = function () {
-    $modalInstance.dismiss('cancel');
+     $modalInstance.dismiss('cancel');
   };
 };
 
@@ -149,7 +159,7 @@ sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', fu
 sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebook', function($scope, $location, Facebook) {
 
    // Simple solution for authentication with Facebook.
-   // This kind of checks should be handled by the $routeProvider in app.js
+   // This kind of checks should be handled by the $routeProvider in app.js or as a factory/service
    (function() {
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
@@ -195,11 +205,17 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
    function isAppConnectedToPage(pageid) {
       Facebook.api('/'+pageid+'/tabs', function(response) {
          if (response && !response.error) {
-            response.data.forEach(function(tab) {
+            console.log(response);
+            response.data.some(function(tab) {
                if(tab.hasOwnProperty('application')) {
                   // if facebook page has sapplies added
-                  if(tab.application.id == '339468399539706') $scope.connected = true;
-                  else $scope.connected = false;
+                  if(tab.application.id === '339468399539706') {
+                     $scope.connected = true;
+                     return true;
+                  } else {
+                     $scope.connected = false;
+                     return false;
+                  }
                }
             })
          }
@@ -213,12 +229,19 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 'Facebook', function($scope, RESTResourceProvider, Facebook) {
    RESTResourceProvider.Match.query(function(matches) {
+
       $scope.matches = matches;
+      console.log(matches);
+
       matches.forEach(function(match) {
-         console.log(match);
          Facebook.api('/'+match.offer.userID+'?fields=name,picture,link', function(response) {
             if(response && !response.error) {
                console.log(response);
+               match.offer.fb = {
+                  name: response.name,
+                  picture: response.picture.data.url,
+                  link: response.link
+               }
             }
          });
       });
@@ -226,6 +249,18 @@ sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 
 }]);
 
 sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', 'RESTResourceProvider', function($scope, $location, Facebook, RESTResourceProvider) {
+
+   // Simple solution for authentication with Facebook.
+   // This kind of checks should be handled by the $routeProvider in app.js or as a factory/service
+   (function() {
+      Facebook.getLoginStatus(function(response) {
+         if(response.status === 'connected') {
+            $scope.loggedIn = true;
+         } else {
+            $scope.loggedIn = false;
+         }
+      });
+   }());
 
    $scope.loginWithFacebook = function() {
 
@@ -248,7 +283,7 @@ sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', '
 
                   $location.path('/overview');
                } else {
-                  console.log('User cancelled login or did not fully authorize.');
+                  $scope.loggedIn = false;
                }
             });
          }

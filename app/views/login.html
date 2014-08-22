@@ -9,6 +9,8 @@
                <li>Hulpvragen aan te maken</li>
                <li>Hulpvraag en aanbod te organiseren</li>
             </ul>
+            <hr />
+            <p data-ng-show="loggedIn">Je bent al reeds ingelogd met Facebook. <a href="#/overview">Beheer de Facebook-hulpactie</a></p>
             <button data-ng-hide="loggedIn" data-ng-click="loginWithFacebook()" type="button" class="btn btn-default fb-btn"><i class="fa fa-facebook fa-lg"></i> Login met Facebook</button>
          </div>
       </div>

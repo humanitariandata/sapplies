@@ -4,16 +4,33 @@
 
       <div class="panel panel-default" data-ng-repeat="match in matches">
          <div class="panel-heading">
-            <h3 class="panel-title">
-               <i class="fa fa-archive" data-ng-show="detailItem.type == 'Goederen'"></i>
-               <i class="fa fa-user-md" data-ng-show="detailItem.type == 'Diensten'"></i>
+            <h3>
+               <i class="fa fa-archive" data-ng-show="match.need.type == 'Goederen'"></i>
+               <i class="fa fa-user-md" data-ng-show="match.need.type == 'Diensten'"></i>
                {{match.need.title}}</h3>
                <p>{{match.need.description}}</p>
+               <p>{{match.need.category}}</p>
          </div>
          <div class="panel-body">
-            <p>{{match.offer.title}}</p>
-            <p>{{match.offer.description}}</p>
-            <hr />
+            <div class="col-md-6">
+               <div class="panel panel-default">
+                  <div class="panel-body">
+                     <h4><i class="fa fa-archive" data-ng-show="match.offer.type == 'Goederen'"></i>
+                     <i class="fa fa-user-md" data-ng-show="match.offer.type == 'Diensten'"></i> {{match.offer.title}}</h4>
+                     <p>{{match.offer.description}}</p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="panel panel-default">
+                  <div class="panel-body">
+                     <h4>Hulpaanbieder</h4>
+                     <img data-ng-src="{{match.offer.fb.picture}}" alt="" />
+                     {{match.offer.fb.name}}
+                     <p><a href="{{match.offer.fb.link}}">Contacteer hulpaanbieder</a></p>
+                  </div>
+               </div>
+            </div>
          </div>
       </div>
       <p class="help-block" data-ng-hide="matches.length">Geen gekoppelde hulpvraag en aanbod gevonden.</p>

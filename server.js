@@ -167,11 +167,21 @@ app.delete(apiPrefix+'/offers/:id', function(req, res) {
  * CRUD: Matches
  */
 
-// CREATE
 app.post(apiPrefix+'/matches', function(req, res) {
-   db.matches.insert(req.body, function(err, docs) {
-      if(err) throw err;
-      res.send(200);
+   var postData = req.body;
+
+   db.matches.find({ "need.title": postData.need.title}).count(function(err, c) {
+      if(c == 0) {
+         db.matches.insert(postData, function(err, docs) {
+            if(err) throw err;
+            res.send(200);
+         });
+      } else {
+         db.matches.update({ "need.title": postData.need.title}, { $push: { offers: postData.offers }}, function(err, docs) {
+            if(err) throw err;
+            res.send(200);
+         });
+      }
    });
 });
 
@@ -287,6 +297,8 @@ app.get(apiPrefix+'/resetdb', function(req, res) {
 
 // Close the db connection
 db.close();
+
+/* Get Facebook app acces token server side. Because it is
 
 /*
  * HTTPS and SSL configuration
