@@ -56,12 +56,13 @@
                     {{need.title}}</h4>
                  <p class="list-group-item-text">{{need.description}}</p>
                  <p class="list-group-item-text">
-                   <small>
-                      <span class="label label-default">{{need.category}}</span>
-                      <button type="button" class="btn btn-link" data-ng-click="deleteNeed($index, need);$event.stopPropagation()">
-                         <span class="glyphicon glyphicon-remove"></span> Verwijder
-                     </button>
-                  </small>
+                   <span class="label label-default">{{need.category}}</span>
+                   <button type="button" class="btn btn-link btn-sm" data-ng-click="showEditNeedModal(need);$event.stopPropagation()">
+                      <span class="glyphicon glyphicon-edit"></span> Pas aan
+                  </button>
+                   <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteNeed($index, need);$event.stopPropagation()">
+                      <span class="glyphicon glyphicon-remove"></span> Verwijder
+                  </button>
                   </p>
                </a>
                <p class="help-block text-center" data-ng-hide="filteredNeeds.length"><strong>Geen hulpvragen gevonden.</strong></p>
@@ -80,15 +81,13 @@
                     {{offer.title}}</h4>
                  <p class="list-group-item-text">{{offer.description}}</p>
                  <p class="list-group-item-text">
-                   <small>
-                      <span class="label label-default">{{offer.category}}</span>
-                       <button type="button" class="btn btn-link" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
-                         <span class="glyphicon glyphicon-remove"></span> Verwijder
-                      </button>
-                      <button type="button" class="btn btn-link" data-ng-click="showDetailOffer(offer);$event.stopPropagation()">
-                       <span class="glyphicon glyphicon-cog"></span> Bekijk details
-                    </button>
-                   </small>
+                   <span class="label label-default">{{offer.category}}</span>
+                   <button type="button" class="btn btn-link btn-sm" data-ng-click="showDetailOfferModal(offer);$event.stopPropagation()">
+                    <span class="glyphicon glyphicon-cog"></span> Bekijk details
+                 </button>
+                 <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
+                   <span class="glyphicon glyphicon-remove"></span> Verwijder
+                </button>
                 </p>
                 <p class="list-group-item-text">
                    <button type="submit" class="btn btn-primary btn-sm"
@@ -118,6 +117,8 @@
         <dd>{{detailItem.matched && 'Ja' || 'Nee' }}</dd>
         <dt>Categorie</dt>
         <dd><span class="label label-default">{{detailItem.category}}</label></dd>
+        <dt>Aangemaakt</dt>
+        <dd><span class="label label-default">{{detailItem.created}}</label></dd>
       </dl>
    </div>
    <div class="modal-body">
@@ -128,5 +129,43 @@
    </div>
    <div class="modal-footer">
        <button class="btn btn-default" ng-click="ok()">OK</button>
+   </div>
+</script>
+
+<script type="text/ng-template" id="editNeedModalContent.html">
+      <div class="modal-header">
+         <h3 class="modal-title">{{editNeed.title || '[Hulpvraag]'}}</h3>
+      </div>
+      <div class="modal-body">
+      <form role="form" name="$parent.editNeedForm" novalidate data-ng-submit="ok()">
+
+        <div class="form-group" data-ng-class="{ 'has-error': editNeedForm.title.$invalid && submitted }">
+         <label for="form-need-title">Titel</label>
+         <input required type="text" class="form-control" name="title" id="form-need-title" data-ng-model="editNeed.title" placeholder="Met spoed is een tweepersoonsbed nodig.">
+         <p class="help-block" data-ng-show="editNeedForm.title.$invalid && submitted">Vul een duidelijk hulpvraag in.</p>
+        </div>
+        <div class="form-group">
+         <label for="form-need-description">Beschrijving</label>
+         <textarea class="form-control" id="form-need-description" data-ng-model="editNeed.description" placeholder="Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
+        </div>
+        <div class="form-group" data-ng-class="{ 'has-error': editNeedForm.category.$invalid && submitted }">
+           <label for="form-need-category">Categorie</label>
+           <select required data-ng-model="editNeed.category" name="category" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-need-category">
+              <option value="">Kies een passende categorie</option>
+           </select>
+           <p class="help-block" data-ng-show="editNeedForm.category.$invalid && submitted">Selecteer een passende categorie.</p>
+        </div>
+        <div class="form-group">
+           <div class="btn-group">
+             <label class="btn btn-default" ng-model="editNeed.type" btn-radio="'Goederen'" uncheckable>Goederen</label>
+             <label class="btn btn-default" ng-model="editNeed.type" btn-radio="'Diensten'" uncheckable>Diensten</label>
+           </div>
+        </div>
+      </form>
+
+      </div>
+      <div class="modal-footer">
+         <button class="btn btn-primary" ng-click="saveChanges()">OK</button>
+      </div>
    </div>
 </script>

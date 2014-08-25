@@ -3,7 +3,7 @@
    - Matching needs and offers
    - filtering / sorting
 */
-sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', 'Facebook', function($scope, $location, $modal, RESTResourceProvider, Facebook) {
+sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', function($scope, $location, $modal, RESTResourceProvider) {
    // Query the resources
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
@@ -48,7 +48,7 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
    }
 
    // show detail info
-   $scope.showDetailOffer = function(offer) {
+   $scope.showDetailOfferModal = function(offer) {
       $scope.detailItem = offer;
 
       // Open Angular bootstrap modal
@@ -62,6 +62,30 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
             }
          }
       });
+   }
+
+   // show edit modal
+   $scope.showEditNeedModal = function(need) {
+      $scope.editItem = need;
+
+      // Open Angular bootstrap modal
+      var modalInstance = $modal.open({
+         templateUrl: 'editNeedModalContent.html',
+         controller: EditNeedModalInstanceCtrl,
+         size: '',
+         resolve: {
+            editItem: function () {
+               return $scope.editItem;
+            }
+         }
+      });
+
+      modalInstance.result.then(function (editedNeed) {
+         var needid = editedNeed._id;
+         delete editedNeed._id;
+
+         RESTResourceProvider.Need.update({ id: needid }, editedNeed);
+      }, function () {});
    }
 
    // Event listener for deleting a need
@@ -108,13 +132,26 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
   };
 }]);
 
-var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem, Facebook) {
+var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem) {
 
   $scope.detailItem = detailItem;
 
   $scope.ok = function () {
      $modalInstance.dismiss('cancel');
   };
+};
+
+var EditNeedModalInstanceCtrl = function($scope, $modalInstance, editItem) {
+   $scope.editNeed = editItem;
+   $scope.submitted = false;
+
+   $scope.saveChanges = function() {
+      if($scope.editNeedForm.$valid) {
+         $modalInstance.close($scope.editNeed);
+      } else {
+         $scope.submitted = true;
+      }
+   }
 };
 
 // Controller for viewing and creating needs.
@@ -213,7 +250,7 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
    $scope.detailOffer = RESTResourceProvider.Offer.get({id: $routeParams.id});
 }]);
 
-sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 'Facebook', function($scope, RESTResourceProvider, Facebook) {
+sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
    RESTResourceProvider.Match.query(function(matches) {
       $scope.matches = matches;
    });

@@ -91,6 +91,13 @@ app.get(apiPrefix+'/needs', function(req, res) {
    });
 });
 
+app.put(apiPrefix+'/needs/:id', function(req, res) {
+   db.needs.update({ _id: new ObjectID(req.params.id)}, { $set: req.body }, function(err, docs) {
+      if(err) throw err;
+      res.send(200);
+   });
+});
+
 // FIND ONE
 app.get(apiPrefix+'/needs/:id', function(req, res) {
   //req.params.id
@@ -129,6 +136,14 @@ app.get(apiPrefix+'/offers', function(req, res) {
    res.send(docs);
  });
 });
+
+// // FIND BY FB USER ID
+// app.get(apiPrefix+'/offers', function(req, res) {
+//    db.offers.find({ "" }).sort({_id:-1}).toArray(function(err, docs) {
+//    if(err) throw err;
+//    res.send(docs);
+//  });
+// });
 
 // FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {

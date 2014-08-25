@@ -1,7 +1,28 @@
-  <p class="lead">Gebruik de sApplies Facebook-app om hulpgoederen en vrijwillige diensten aan te bieden voor de hulpactie.</p>
-  <div class="col-xs-6">
-     <button type="button" class="btn btn-default btn-lg" data-ng-click="goto('/donate')">Ik wil spullen doneren</button>
-  </div>
-  <div class="col-xs-6">
-     <button type="button" class="btn btn-default btn-lg" data-ng-click="goto('/donate')">Ik wil vrijwillig helpen</button>
-  </div>
+<p class="lead">Gebruik de sApplies Facebook-app om hulpgoederen en vrijwillige diensten aan te bieden voor de hulpactie.</p>
+<div class="col-md-5 col-md-offset-1">
+  <button type="button" class="btn btn-default btn-lg" data-ng-click="goto('/donate')">Ik wil spullen doneren</button>
+</div>
+<div class="col-md-5 col-md-offset-1 space-buffer">
+  <button type="button" class="btn btn-default btn-lg" data-ng-click="goto('/donate')">Ik wil vrijwillig helpen</button>
+</div>
+
+<div class="row">
+   <div class="col-md-12">
+      <div class="panel panel-default">
+         <div class="panel-heading"><h4>Laatste hulpvragen</h4></div>
+           <div class="list-group">
+             <a class="list-group-item" data-ng-repeat="need in needs">
+               <h4 class="list-group-item-heading">
+                 <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
+                 <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
+                  {{need.title}}</h4>
+               <p class="list-group-item-text">{{need.description}}</p>
+               <p class="list-group-item-text">
+                <span class="label label-default">{{need.category}}</span>
+                </p>
+             </a>
+             <p class="help-block text-center" data-ng-hide="needs.length"><strong>Deze hulpactie heeft nog specifieke hulpvragen.</strong></p>
+           </div>
+        </div>
+   </div>
+</div>
