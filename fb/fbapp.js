@@ -76,7 +76,7 @@ fbApp.controller('DonationController', ['$scope', '$resource', 'Facebook', funct
          $scope.createDonation.created = new Date();
 
          $resource('api/v1/offers/:id').save($scope.createDonation);
-         $scope.alerts.push({ type: 'success', msg: '"'+$scope.createDonation.title +'" is toegegoegd!'});
+         //$scope.alerts.push({ type: 'success', msg: '"'+$scope.createDonation.title +'" is toegegoegd!'});
       } else {
          $scope.submitted = true;
       }

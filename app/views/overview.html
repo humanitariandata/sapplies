@@ -138,7 +138,6 @@
       </div>
       <div class="modal-body">
       <form role="form" name="$parent.editNeedForm" novalidate data-ng-submit="ok()">
-
         <div class="form-group" data-ng-class="{ 'has-error': editNeedForm.title.$invalid && submitted }">
          <label for="form-need-title">Titel</label>
          <input required type="text" class="form-control" name="title" id="form-need-title" data-ng-model="editNeed.title" placeholder="Met spoed is een tweepersoonsbed nodig.">
@@ -161,6 +160,7 @@
              <label class="btn btn-default" ng-model="editNeed.type" btn-radio="'Diensten'" uncheckable>Diensten</label>
            </div>
         </div>
+        <div class="form-group"><strong>Aangemaakt</strong> <p>{{editNeed.created | date:'dd-MM-yyyy HH:mm'}}</p></div>
       </form>
 
       </div>
