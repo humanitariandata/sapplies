@@ -1,20 +1,21 @@
 <h2>Doneer hulpgoederen</h2>
 
-<form role="form" name="createDonationForm" novalidate>
-  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.title.$invalid }">
-    <label for="form-donate-title">Titel</label>
-    <input required type="text" data-ng-show="createDonationForm.title.$invalid && createDonationForm.title.$dirty" class="form-control" id="form-donate-title" data-ng-model="createDonation.title" placeholder="Bijvoorbeeld: tweepersoonsbed">
+<form role="form" name="createDonationForm" data-ng-submit="saveDonation()" novalidate>
+  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.title.$invalid && submitted }">
+   <label for="form-donation-title">Titel</label>
+   <input required type="text" class="form-control" name="title" id="form-donation-title" data-ng-model="createDonation.title" placeholder="Met spoed is een tweepersoonsbed nodig.">
+   <p class="help-block" data-ng-show="createDonationForm.title.$invalid && submitted">Vul een duidelijk hulpvraag in.</p>
   </div>
-  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.description.$invalid }">
-    <label for="form-donate-description">Beschrijving</label>
-    <textarea class="form-control" data-ng-show="createDonationForm.description.$invalid && createDonationForm.description.$dirty" id="form-donate-description" data-ng-model="createDonation.description" placeholder="Een bed wat te demonteren is. Eventueel met matras."></textarea>
+  <div class="form-group">
+   <label for="form-donation-description">Beschrijving</label>
+   <textarea class="form-control" id="form-donation-description" data-ng-model="createDonation.description" placeholder="Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
   </div>
-  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.category.$invalid }">
+  <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.category.$invalid && submitted }">
      <label for="form-donation-category">Categorie</label>
-     <select required data-ng-model="createDonation.category" data-ng-options="category.name for category in categories" class="form-control input-smaller" id="form-donate-category">
-        <option value="">Kies een categorie</option>
+     <select required data-ng-model="createDonation.category" name="category" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-donation-category">
+        <option value="">Kies een passende categorie</option>
      </select>
-     <p class="help-block" data-ng-show="createDonationForm.category.$invalid && createDonationForm.category.$dirty">Selecteer een categorie waarin het hulpaanbod het beste past.</p>
+     <p class="help-block" data-ng-show="createDonationForm.category.$invalid && submitted">Selecteer een passende categorie.</p>
   </div>
   <strong>Bezorging</strong>
 
@@ -37,11 +38,11 @@
     </div>
     <div class="panel-body">
        <p>Alleen je naam en een link naar je Facebook-profiel wordt opgeslagen, zodat de hulpactie contact met je kan opnemen.</p>
-       <img data-ng-src="{{createDonation.fb.profilepic}}" alt="" />
-       <span>{{fb.name}}</span>
+       <img class="img-thumbnail fb-profilepic" data-ng-src="{{createDonation.fb.profilepic}}" alt="" />
+       <span>{{createDonation.fb.name}}</span>
        <p><a href="{{createDonation.fb.link}}">Link van je Facebook-profiel</a></p>
     </div>
   </div>
 
-  <button type="submit" class="btn btn-default" data-ng-click="saveDonation()">Verstuur</button>
+  <button type="submit" class="btn btn-primary" data-ng-click="saveDonation()">Verstuur naar de hulpactie</button>
 </form>

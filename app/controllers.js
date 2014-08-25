@@ -127,12 +127,10 @@ sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider
 
    $scope.saveNeed = function() {
       if ($scope.createNeedForm.$valid) {
-         $scope.createNeed.category = $scope.createNeed.category.name;
          $scope.createNeed.created = new Date();
 
          RESTResourceProvider.Need.save($scope.createNeed);
          $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
-         console.log($scope.createNeed);
       } else {
          $scope.submitted = true;
       }

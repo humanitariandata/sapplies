@@ -8,7 +8,7 @@ var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook']).confi
       templateUrl: 'views/volunteer.html'
    })
    .when('/donate', {
-      controller: 'DonateController',
+      controller: 'DonationController',
       templateUrl: 'views/donate.html'
    })
    .otherwise({
@@ -19,7 +19,9 @@ var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook']).confi
    FacebookProvider.init('339468399539706');
 });
 
-fbApp.controller('FBMainController', ['$scope', '$location', 'Facebook', function($scope, $location, Facebook) {
+fbApp.controller('FBMainController', ['$scope', '$location', '$resource', 'Facebook', function($scope, $location, $resource, Facebook) {
+
+   $scope.needs = $resource('/api/v1/needs/:id').query();
 
    Facebook.getLoginStatus(function(response) {
       if(response.status !== 'connected') {
@@ -36,7 +38,7 @@ fbApp.controller('FBMainController', ['$scope', '$location', 'Facebook', functio
    }
 }]);
 
-fbApp.controller('DonateController', ['$scope', '$resource', 'Facebook', function($scope, $resource, Facebook) {
+fbApp.controller('DonationController', ['$scope', '$resource', 'Facebook', function($scope, $resource, Facebook) {
 
    Facebook.getLoginStatus(function(response) {
       if(response.status !== 'connected') {
@@ -50,10 +52,12 @@ fbApp.controller('DonateController', ['$scope', '$resource', 'Facebook', functio
             if (response && !response.error) {
                console.log(response);
 
-               $scope.createDonation.fb = {
-                  name: response.name,
-                  link: response.link,
-                  profilepic: response.data.url
+               $scope.createDonation = {
+                  fb: {
+                     name: response.name,
+                     link: response.link,
+                     profilepic: response.picture.data.url
+                  }
                }
             } else {
                console.log(response);
@@ -66,11 +70,16 @@ fbApp.controller('DonateController', ['$scope', '$resource', 'Facebook', functio
    $scope.categories = $resource('/api/v1/categories/:id').query();
 
    $scope.saveDonation = function() {
-      $scope.createDonation.category = $scope.createDonation.category.name;
-      $scope.createDonation.type = 'Dienst';
-      console.log($scope.createDonation);
+      if ($scope.createDonationForm.$valid) {
 
-      $scope.createDonation = null;
+         $scope.createDonation.type = 'Goederen';
+         $scope.createDonation.created = new Date();
+
+         $resource('api/v1/offers/:id').save($scope.createDonation);
+         $scope.alerts.push({ type: 'success', msg: '"'+$scope.createDonation.title +'" is toegegoegd!'});
+      } else {
+         $scope.submitted = true;
+      }
    }
 }]);
 

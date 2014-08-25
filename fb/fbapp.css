@@ -4,3 +4,7 @@
 .input-smaller {
    width: 30%;
 }
+.fb-profilepic {
+   float:left;
+   margin-right:10px;
+}
