@@ -76,6 +76,9 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
          resolve: {
             editItem: function () {
                return $scope.editItem;
+            },
+            categories: function() {
+               return $scope.categories;
             }
          }
       });
@@ -141,8 +144,10 @@ var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem)
   };
 };
 
-var EditNeedModalInstanceCtrl = function($scope, $modalInstance, editItem) {
+var EditNeedModalInstanceCtrl = function($scope, $modalInstance, editItem, categories) {
    $scope.editNeed = editItem;
+   $scope.categories = categories;
+   console.log(categories);
    $scope.submitted = false;
 
    $scope.saveChanges = function() {
@@ -253,6 +258,7 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
    RESTResourceProvider.Match.query(function(matches) {
       $scope.matches = matches;
+      console.log($scope.matches);
    });
 }]);
 
