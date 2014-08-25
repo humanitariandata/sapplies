@@ -30,6 +30,11 @@ a {
    background-color:#3b5998;
 }
 
+.fb-profilepic {
+   float:left;
+   margin-right:10px;
+}
+
 .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
    background-color: lighten($base-color, 15%) !important;
 }

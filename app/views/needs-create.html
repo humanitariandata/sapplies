@@ -7,7 +7,7 @@
     <form role="form" name="createNeedForm" data-ng-submit="saveNeed()" novalidate>
       <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.title.$invalid && submitted }">
         <label for="form-need-title">Titel</label>
-        <input required type="text" class="form-control" name="title" id="form-need-title" data-ng-model="createNeed.title" placeholder="Bijvoorbeeld: Met spoed is een tweepersoonsbed nodig.">
+        <input required type="text" class="form-control" name="title" id="form-need-title" data-ng-model="createNeed.title" placeholder="Met spoed is een tweepersoonsbed nodig.">
         <p class="help-block" data-ng-show="createNeedForm.title.$invalid && submitted">Vul een duidelijk hulpvraag in.</p>
       </div>
       <div class="form-group">

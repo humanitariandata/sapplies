@@ -9,7 +9,7 @@
                <i class="fa fa-user-md" data-ng-show="match.need.type == 'Diensten'"></i>
                {{match.need.title}}</h3>
                <p>{{match.need.description}}</p>
-               <p>{{match.need.category}}</p>
+               <p><span class="label label-default">{{match.need.category}}</span></p>
          </div>
          <div class="panel-body" data-ng-repeat="offer in match.offers">
             <div class="col-md-6">
@@ -25,7 +25,7 @@
                <div class="panel panel-default">
                   <div class="panel-body">
                      <h4>Hulpaanbieder</h4>
-                     <img data-ng-src="{{offer.fb.picture}}" alt="" />
+                     <img class="img-thumbnail fb-profilepic" data-ng-src="{{offer.fb.picture}}" alt="" />
                      {{offer.fb.name}}
                      <p><a href="{{offer.fb.link}}">Contacteer hulpaanbieder</a></p>
                   </div>

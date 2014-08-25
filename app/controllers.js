@@ -94,8 +94,6 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
          offers: [$scope.match.offer] // has to be an array
       };
 
-      console.log(postPayload);
-
       RESTResourceProvider.Offer.update({ id: $scope.match.offer._id }, { matched: true });
       RESTResourceProvider.Match.save(postPayload);
 
@@ -113,18 +111,6 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
 var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem, Facebook) {
 
   $scope.detailItem = detailItem;
-  console.log(detailItem);
-
-  Facebook.api('/'+detailItem.userID+'?fields=name,picture,link', function(response) {
-     if (response && !response.error) {
-        console.log(response);
-        $scope.detailItem.fb = {
-           name: response.name,
-           picture: response.picture.data.url,
-           link: response.link
-        }
-     }
-  });
 
   $scope.ok = function () {
      $modalInstance.dismiss('cancel');
@@ -186,7 +172,7 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
    function fetchFBPages() {
       $scope.pages = [];
 
-      Facebook.api('/me/accounts', function(response) {
+      Facebook.api('me/accounts', function(response) {
          if (response && !response.error) {
             console.log(response);
             response.data.forEach(function(page) {
@@ -231,24 +217,7 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 'Facebook', function($scope, RESTResourceProvider, Facebook) {
    RESTResourceProvider.Match.query(function(matches) {
-
       $scope.matches = matches;
-
-      matches.forEach(function(match) {
-         console.log(match);
-         match.forEach(function(m) {
-            Facebook.api('/'+m.userID+'?fields=name,picture,link', function(response) {
-               if(response && !response.error) {
-                  console.log(response);
-                  match.offer.fb = {
-                     name: response.name,
-                     picture: response.picture.data.url,
-                     link: response.link
-                  }
-               }
-            });
-         });
-      });
    });
 }]);
 

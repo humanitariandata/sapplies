@@ -46,22 +46,13 @@ fbApp.controller('DonateController', ['$scope', '$resource', 'Facebook', functio
             scope: 'manage_pages,public_profile'
          });
       } else if(response.status === 'connected') {
-         Facebook.api('/me', { access_token: response.authResponse.accessToken }, function(response) {
+         Facebook.api('me?fields=name,link,picture', { access_token: response.authResponse.accessToken }, function(response) {
             if (response && !response.error) {
                console.log(response);
 
                $scope.createDonation.fb = {
                   name: response.name,
-                  link: response.link
-               }
-            } else {
-               console.log(response);
-            }
-         });
-
-         Facebook.api('/me/picture', { access_token: response.authResponse.accessToken }, function(response) {
-            if (response && !response.error) {
-               $scope.createDonation.fb = {
+                  link: response.link,
                   profilepic: response.data.url
                }
             } else {
