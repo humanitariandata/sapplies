@@ -11,13 +11,13 @@
                <p>{{match.need.description}}</p>
                <p>{{match.need.category}}</p>
          </div>
-         <div class="panel-body">
+         <div class="panel-body" data-ng-repeat="offer in match.offers">
             <div class="col-md-6">
                <div class="panel panel-default">
                   <div class="panel-body">
-                     <h4><i class="fa fa-archive" data-ng-show="match.offer.type == 'Goederen'"></i>
-                     <i class="fa fa-user-md" data-ng-show="match.offer.type == 'Diensten'"></i> {{match.offer.title}}</h4>
-                     <p>{{match.offer.description}}</p>
+                     <h4><i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
+                     <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i> {{offer.title}}</h4>
+                     <p>{{offer.description}}</p>
                   </div>
                </div>
             </div>
@@ -25,9 +25,9 @@
                <div class="panel panel-default">
                   <div class="panel-body">
                      <h4>Hulpaanbieder</h4>
-                     <img data-ng-src="{{match.offer.fb.picture}}" alt="" />
-                     {{match.offer.fb.name}}
-                     <p><a href="{{match.offer.fb.link}}">Contacteer hulpaanbieder</a></p>
+                     <img data-ng-src="{{offer.fb.picture}}" alt="" />
+                     {{offer.fb.name}}
+                     <p><a href="{{offer.fb.link}}">Contacteer hulpaanbieder</a></p>
                   </div>
                </div>
             </div>

@@ -177,7 +177,7 @@ app.post(apiPrefix+'/matches', function(req, res) {
             res.send(200);
          });
       } else {
-         db.matches.update({ "need.title": postData.need.title}, { $push: { offers: postData.offers }}, function(err, docs) {
+         db.matches.update({ "need.title": postData.need.title}, { $push: { offers: { $each: postData.offers }}}, function(err, docs) {
             if(err) throw err;
             res.send(200);
          });

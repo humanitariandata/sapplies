@@ -132,7 +132,7 @@ var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem,
 };
 
 // Controller for viewing and creating needs.
-sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
+sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
 
    $scope.categories = RESTResourceProvider.Category.query();
    $scope.alerts = [];
@@ -142,6 +142,8 @@ sappliesApp.controller('NeedsController', [ '$scope', 'RESTResourceProvider', fu
    $scope.saveNeed = function() {
       if ($scope.createNeedForm.$valid) {
          $scope.createNeed.category = $scope.createNeed.category.name;
+         $scope.createNeed.created = new Date();
+
          RESTResourceProvider.Need.save($scope.createNeed);
          $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
          console.log($scope.createNeed);
@@ -231,18 +233,20 @@ sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 
    RESTResourceProvider.Match.query(function(matches) {
 
       $scope.matches = matches;
-      console.log(matches);
 
       matches.forEach(function(match) {
-         Facebook.api('/'+match.offer.userID+'?fields=name,picture,link', function(response) {
-            if(response && !response.error) {
-               console.log(response);
-               match.offer.fb = {
-                  name: response.name,
-                  picture: response.picture.data.url,
-                  link: response.link
+         console.log(match);
+         match.forEach(function(m) {
+            Facebook.api('/'+m.userID+'?fields=name,picture,link', function(response) {
+               if(response && !response.error) {
+                  console.log(response);
+                  match.offer.fb = {
+                     name: response.name,
+                     picture: response.picture.data.url,
+                     link: response.link
+                  }
                }
-            }
+            });
          });
       });
    });

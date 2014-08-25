@@ -16,7 +16,7 @@ sappliesApp.config(function($routeProvider, FacebookProvider) {
 	})
 	.when('/needs/create', {
 		templateUrl: 'views/needs-create.html',
-		controller: 'NeedsController'
+		controller: 'CreateNeedController'
 	})
 	.when('/matches', {
 		templateUrl: 'views/matches.html',
