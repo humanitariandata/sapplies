@@ -14,12 +14,20 @@
     </div>
   </div>
   <div class="col-sm-3">
-     <p><strong>Toon</strong></p>
+     <p><strong>Toon goederen / diensten</strong></p>
      <div class="btn-group">
         <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Diensten</label>
         <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Goederen</label>
     </div>
    </div>
+   <div class="col-sm-3">
+      <p><strong>Gekoppeld / niet-gekoppeld aanbod</strong></p>
+      <div class="btn-group">
+         <button type="button" class="btn btn-default" ng-model="byMatched" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="null">
+        Toon {{byMatched && 'gekoppelde' || 'niet-gekoppelde' }}
+        </button>
+     </div>
+    </div>
 </div>
 <div class="row">
    <div class="col-md-12">
@@ -46,7 +54,7 @@
    <div class="row">
      <div class="col-xs-6">
         <div class="panel panel-default">
-           <div class="panel-heading"><h4>Hulpvragen</h4></div>
+           <div class="panel-heading"><h4>Hulpvragen <span class="label label-primary">{{filteredNeeds.length}}</span></h4></div>
 
              <div class="list-group overflow-column">
                <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in filteredNeeds = (needs | filter:byText | filter:byCategory | filter:bySuppliesServices)">
@@ -72,9 +80,9 @@
 
      <div class="col-xs-6">
         <div class="panel panel-default">
-           <div class="panel-heading"><h4>Hulpaanbod</h4></div>
+           <div class="panel-heading"><h4>Hulpaanbod <span class="label label-primary">{{filteredOffers.length}}</span></h4></div>
              <div class="list-group overflow-column">
-               <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices)">
+               <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices | filter:byMatched)">
                  <h4 class="list-group-item-heading">
                    <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
                    <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
@@ -118,7 +126,7 @@
         <dt>Categorie</dt>
         <dd><span class="label label-default">{{detailItem.category}}</label></dd>
         <dt>Aangemaakt</dt>
-        <dd><span class="label label-default">{{detailItem.created}}</label></dd>
+        <dd>{{detailItem.created}}</dd>
       </dl>
    </div>
    <div class="modal-body">

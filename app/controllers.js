@@ -147,7 +147,6 @@ var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem)
 var EditNeedModalInstanceCtrl = function($scope, $modalInstance, editItem, categories) {
    $scope.editNeed = editItem;
    $scope.categories = categories;
-   console.log(categories);
    $scope.submitted = false;
 
    $scope.saveChanges = function() {

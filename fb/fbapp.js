@@ -1,4 +1,4 @@
-var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook']).config(function($routeProvider, FacebookProvider) {
+var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook', 'ui.bootstrap', 'mgo-angular-wizard']).config(function($routeProvider, FacebookProvider) {
    $routeProvider.when('/main', {
       controller: 'FBMainController',
       templateUrl: 'views/fbmain.html'
@@ -6,10 +6,6 @@ var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook']).confi
    .when('/volunteer', {
       controller: 'VolunteerController',
       templateUrl: 'views/volunteer.html'
-   })
-   .when('/donate', {
-      controller: 'DonationController',
-      templateUrl: 'views/donate.html'
    })
    .otherwise({
      redirectTo: '/main'
@@ -19,35 +15,12 @@ var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook']).confi
    FacebookProvider.init('339468399539706');
 });
 
-fbApp.controller('FBMainController', ['$scope', '$location', '$resource', 'Facebook', function($scope, $location, $resource, Facebook) {
+fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$modal', 'Facebook', function($scope, $location, $resource, $modal, Facebook) {
 
    $scope.needs = $resource('/api/v1/needs/:id').query();
 
    Facebook.getLoginStatus(function(response) {
-      if(response.status !== 'connected') {
-         Facebook.login(function(response) {
-            console.log(response.authResponse.accessToken);
-         }, {
-            scope: 'manage_pages,public_profile'
-         });
-      }
-   });
-
-   $scope.goto = function(goto) {
-      $location.path(goto);
-   }
-}]);
-
-fbApp.controller('DonationController', ['$scope', '$resource', 'Facebook', function($scope, $resource, Facebook) {
-
-   Facebook.getLoginStatus(function(response) {
-      if(response.status !== 'connected') {
-         Facebook.login(function(response) {
-
-         }, {
-            scope: 'manage_pages,public_profile'
-         });
-      } else if(response.status === 'connected') {
+      if(response.status === 'connected') {
          Facebook.api('me?fields=name,link,picture', { access_token: response.authResponse.accessToken }, function(response) {
             if (response && !response.error) {
                console.log(response);
@@ -59,15 +32,53 @@ fbApp.controller('DonationController', ['$scope', '$resource', 'Facebook', funct
                      profilepic: response.picture.data.url
                   }
                }
-            } else {
-               console.log(response);
             }
          });
-
+      } else {
+         Facebook.login(function(response) {
+            console.log(response.authResponse.accessToken);
+         }, {
+            scope: 'manage_pages,public_profile'
+         });
       }
    });
 
-   $scope.categories = $resource('/api/v1/categories/:id').query();
+   $scope.pickedNeed = function(pickedNeed) {
+      // Open Angular bootstrap modal
+      var modalInstance = $modal.open({
+         templateUrl: 'donateModalContent.html',
+         controller: DonateModalInstanceCtrl,
+         size: '',
+         resolve: {
+            pickedNeed: function () {
+               return pickedNeed;
+            },
+            fbUser: function() {
+               return $scope.createDonation.fb;
+            }
+         }
+      });
+
+      modalInstance.result.then(function (donation) {
+         console.log(donation);
+      }, function () {});
+   }
+
+   $scope.goto = function(goto) {
+      $location.path(goto);
+   }
+}]);
+
+fbApp.controller('DonationController', ['$scope', '$resource', 'Facebook', function($scope, $resource, Facebook) {
+
+   Facebook.getLoginStatus(function(response) {
+      if(response.status === 'connected') {
+
+      } else {
+
+
+      }
+   });
 
    $scope.saveDonation = function() {
       if ($scope.createDonationForm.$valid) {
@@ -83,7 +94,31 @@ fbApp.controller('DonationController', ['$scope', '$resource', 'Facebook', funct
    }
 }]);
 
+var DonateModalInstanceCtrl = function($scope, $modalInstance, pickedNeed, fbUser) {
+   $scope.pickedNeed = pickedNeed;
+   $scope.createDonation = { fb: fbUser };
+   $scope.submitted = false;
 
-fbApp.controller('VolunteerController', ['$scope', function($scope) {
+   $scope.ok = function () {
+      if($scope.createDonationForm.$valid) {
+         $modalInstance.close($scope.createDonation);
+      } else {
+         $scope.submitted = true;
+      }
+   };
+}
 
+fbApp.controller('VolunteerController', ['$scope', 'WizardHandler', function($scope, WizardHandler) {
+
+   $scope.finishedWizard = function() {
+      alert("Wizard finished :)");
+   }
+
+   $scope.logStep = function() {
+      console.log("Step continued");
+   }
+
+   $scope.goBack = function() {
+      WizardHandler.wizard().goTo(0);
+   }
 }]);

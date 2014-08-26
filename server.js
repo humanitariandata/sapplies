@@ -268,7 +268,7 @@ app.get(apiPrefix+'/resetdb', function(req, res) {
       { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten", created: new Date() },
       { title : "Tweepersoonsbank", description : "Het liefst een bank die ook te demonteren is.", category : "Meubilair", type: "Goederen", created: new Date() },
       { title : "Keukengerei", description : "Diverse keukenhulpmiddelen zijn nodig. Bestek, pannen, borden, koppen en mokken.", category : "Keuken", type: "Goederen", created: new Date() },
-      { title : "Vervangde laptop", description : "Een tijdelijk laptop waarop internetverbinding werkt.", category : "Electronica", type: "Goederen", created: new Date() }
+      { title : "Vervangende laptop", description : "Een tijdelijk laptop waarop internetverbinding werkt.", category : "Electronica", type: "Goederen", created: new Date() }
    ], function(err, docs) {
       if(err) throw err;
    });

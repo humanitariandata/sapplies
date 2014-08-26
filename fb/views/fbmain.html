@@ -1,28 +1,78 @@
-<p class="lead">Gebruik de sApplies Facebook-app om hulpgoederen en vrijwillige diensten aan te bieden voor de hulpactie.</p>
-<div class="col-md-5 col-md-offset-1">
-  <button type="button" class="btn btn-default btn-lg" data-ng-click="goto('/donate')">Ik wil spullen doneren</button>
-</div>
-<div class="col-md-5 col-md-offset-1 space-buffer">
-  <button type="button" class="btn btn-default btn-lg" data-ng-click="goto('/donate')">Ik wil vrijwillig helpen</button>
-</div>
 
 <div class="row">
    <div class="col-md-12">
-      <div class="panel panel-default">
-         <div class="panel-heading"><h4>Laatste hulpvragen</h4></div>
-           <div class="list-group">
-             <a class="list-group-item" data-ng-repeat="need in needs">
-               <h4 class="list-group-item-heading">
-                 <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
-                 <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
-                  {{need.title}}</h4>
-               <p class="list-group-item-text">{{need.description}}</p>
-               <p class="list-group-item-text">
-                <span class="label label-default">{{need.category}}</span>
-                </p>
-             </a>
-             <p class="help-block text-center" data-ng-hide="needs.length"><strong>Deze hulpactie heeft nog specifieke hulpvragen.</strong></p>
-           </div>
-        </div>
+    <p class="lead">Gebruik de sApplies Facebook-app om hulpgoederen en vrijwillige diensten aan te bieden voor de hulpactie.</p>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-default btn-lg pull-right" data-ng-click="goto('/donate')">Ik wil spullen doneren</button>
+    </div>
+    <div class="col-md-6 space-buffer">
+      <button type="button" class="btn btn-default btn-lg" data-ng-click="goto('/volunteer')">Ik wil vrijwillig helpen</button>
+    </div>
+    <div class="panel panel-default overflow-column">
+       <div class="panel-heading"><h4>Laatste hulpvragen</h4></div>
+         <div class="list-group">
+           <a data-ng-click="pickedNeed(need)" class="list-group-item" data-ng-repeat="need in needs">
+             <h4 class="list-group-item-heading">
+               <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
+               <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
+               {{need.title}}</h4>
+             <p class="list-group-item-text">{{need.description}}</p>
+             <p class="list-group-item-text">
+              <span class="label label-default">{{need.category}}</span>
+              </p>
+           </a>
+           <p class="help-block text-center" data-ng-hide="needs.length"><strong>Deze hulpactie heeft nog specifieke hulpvragen.</strong></p>
+         </div>
+      </div>
    </div>
 </div>
+
+<script type="text/ng-template" id="donateModalContent.html">
+      <div class="modal-header">
+         <h3 class="modal-title">Hulpvraag: <em>{{pickedNeed.title}}</em></h3>
+      </div>
+      <div class="modal-body">
+      <form role="form" name="$parent.createDonationForm" data-ng-submit="saveDonation()" novalidate>
+        <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.title.$invalid && submitted }">
+         <label for="form-donation-title">Titel</label>
+         <input required type="text" class="form-control" name="title" id="form-donation-title" data-ng-model="createDonation.title" placeholder="Met spoed is een tweepersoonsbed nodig.">
+         <p class="help-block" data-ng-show="createDonationForm.title.$invalid && submitted">Vul een duidelijk hulpvraag in.</p>
+        </div>
+        <div class="form-group">
+         <label for="form-donation-description">Beschrijving</label>
+         <textarea class="form-control" id="form-donation-description" data-ng-model="createDonation.description" placeholder="Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
+        </div>
+        <strong>Bezorging</strong>
+
+        <div class="radio">
+           <label>
+             <input type="radio" name="deliverPick" data-ng-model="createDonation.deliverPick" data-ng-value="createDonation.deliverPick" checked />
+             Ik kan bezorgen.
+          </label>
+          </div>
+         <div class="radio">
+          <label>
+            <input type="radio" name="deliverPick" data-ng-model="createDonation.deliverPick" data-ng-value="createDonation.deliverPick" />
+            Ik heb hulp nodig met het vervoer.
+        </label>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Facebook</h3>
+          </div>
+          <div class="panel-body">
+             <p>Alleen je naam en een link naar je Facebook-profiel wordt opgeslagen, zodat de hulpactie contact met je kan opnemen.</p>
+             <img class="img-thumbnail fb-profilepic" data-ng-src="{{createDonation.fb.profilepic}}" alt="" />
+             <span>{{createDonation.fb.name}}</span>
+             <p><a href="{{createDonation.fb.link}}">Link van je Facebook-profiel</a></p>
+          </div>
+        </div>
+      </form>
+
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-primary" data-ng-click="saveDonation()">Verstuur naar de hulpactie</button>
+      </div>
+   </div>
+</script>
