@@ -34,7 +34,7 @@ fbApp.factory('StepService', function() {
    }
 });
 
-fbApp.controller('FBMainController', ['$scope', '$location', '$resource', 'StepService', 'Facebook', function($scope, $location, $resource, StepService, Facebook) {
+fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', 'StepService', 'Facebook', function($scope, $location, $resource, $timeout, StepService, Facebook) {
 
    $scope.needs = $resource('/api/v1/needs/:id').query();
 
@@ -62,10 +62,16 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', 'StepS
       }
    });
 
-   $scope.pickedNeed = function(pickedNeed) {
+   $scope.pickedNeed = function(pickedNeed, index) {
       StepService.setNeed(pickedNeed);
       StepService.setFBUser($scope.createDonation.fb);
-      $location.path('/donate');
+
+      $scope.selectedNeed = index;
+
+      // Little delay for better user experience
+      $timeout(function() {
+         $location.path('/donate');
+      }, 300);
    }
 }]);
 
@@ -89,18 +95,3 @@ fbApp.controller('DonationController', ['$scope', '$resource', 'StepService', fu
       }
    }
 }]);
-
-// fbApp.controller('VolunteerController', ['$scope', 'WizardHandler', function($scope, WizardHandler) {
-//
-//    $scope.finishedWizard = function() {
-//       alert("Wizard finished :)");
-//    }
-//
-//    $scope.logStep = function() {
-//       console.log("Step continued");
-//    }
-//
-//    $scope.goBack = function() {
-//       WizardHandler.wizard().goTo(0);
-//    }
-// }]);

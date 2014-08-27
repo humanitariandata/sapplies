@@ -1,19 +1,29 @@
-<h1>Doneren</h1>
+<ul class="pager">
+   <li class="previous"><a href="fb#/main">&larr; Andere hulpvraag</a></li>
+</ul>
+
+<h2>Step 2: Noteer hulpaanbod en bevestig</h2>
 
 <div class="panel panel-default">
+   <div class="panel-heading">
+      <h3 class="panel-title">Hulpvraag</h3>
+   </div>
    <div class="panel-body">
-   <h4>
-      <i class="fa fa-archive" data-ng-show="pickedNeed.type == 'Goederen'"></i>
-      <i class="fa fa-user-md" data-ng-show="pickedNeed.type == 'Diensten'"></i>
-      {{pickedNeed.title}}</h4>
+      <h4>
+         <i class="fa fa-archive" data-ng-show="pickedNeed.type == 'Goederen'"></i>
+         <i class="fa fa-user-md" data-ng-show="pickedNeed.type == 'Diensten'"></i>
+         {{pickedNeed.title}}
+      </h4>
+
       <p>{{pickedNeed.description}}</p>
+
       <p class="list-group-item-text">
          <span class="label label-default">{{pickedNeed.category}}</span>
       </p>
-
+      <hr />
       <div class="media" data-ng-show="createDonation.title">
          <a class="pull-left" href="#">
-            <img class="media-object" data-ng-src="{{createDonation.fb.profilepic}}" alt="">
+            <img class="media-object img-thumbnail" data-ng-src="{{createDonation.fb.profilepic}}" alt="">
          </a>
          <div class="media-body">
             <h4 class="media-heading">{{createDonation.title}}</h4>
