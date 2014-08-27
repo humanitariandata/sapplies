@@ -62,10 +62,10 @@ a {
   class
 */
 .list-group-item.ng-enter, .list-group-item.ng-move {
-  -webkit-transition:0.5s linear all;
-  -moz-transition:0.5s linear all;
-  -o-transition:0.5s linear all;
-  transition:0.5s linear all;
+  -webkit-transition:0.3s linear all;
+  -moz-transition:0.3s linear all;
+  -o-transition:0.3s linear all;
+  transition:0.3s linear all;
   opacity:0;
 }
 
@@ -86,10 +86,10 @@ a {
   that has the .list-group-item class
 */
 .list-group-item.ng-leave {
-  -webkit-animation:0.5s fadeout;
-  -moz-animation:0.5s fadeout;
-  -o-animation:0.5s fadeout;
-  animation:0.5s fadeout;
+  -webkit-animation:0.3s fadeout;
+  -moz-animation:0.3s fadeout;
+  -o-animation:0.3s fadeout;
+  animation:0.3s fadeout;
 }
 
 @keyframes fadeout {
