@@ -3,19 +3,19 @@
       <h2>Facebook-pagina hulpacties</h2>
       <table class="table" data-ng-show="loggedIn">
          <thead>
-           <tr>
-             <th colspan="2">Facebook-pagina</th>
-             <th>Status</th>
-           </tr>
+            <tr>
+               <th colspan="2">Facebook-pagina</th>
+               <th>Status</th>
+            </tr>
          </thead>
          <tbody>
-           <tr data-ng-repeat="page in pages">
-             <td><img data-ng-src="{{page.picture}}" alt="" /></td>
-             <td>{{page.name}}</td>
-             <td>
-                <button type="button" class="btn btn-default" data-ng-disabled="connected" data-ng-click="connectAppToPage()">{{connected && 'sApplies is reeds gekoppeld.' ||'Koppel'}}</button>
-            </td>
-           </tr>
+            <tr data-ng-repeat="page in pages">
+               <td><img data-ng-src="{{page.picture}}" alt="" /></td>
+               <td>{{page.name}}</td>
+               <td>
+                  <button type="button" class="btn btn-default" data-ng-disabled="connected" data-ng-click="connectAppToPage()">{{connected && 'sApplies is reeds gekoppeld.' ||'Koppel'}}</button>
+               </td>
+            </tr>
          </tbody>
       </table>
    </div>

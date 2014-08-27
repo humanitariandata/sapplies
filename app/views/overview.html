@@ -1,49 +1,49 @@
 <div class="row">
-  <div class="col-sm-3">
-    <div class="form-group">
-      <label for="form-filter">Filter</label>
-      <input type="text" class="form-control" id="form-filter" data-ng-model="byText" placeholder="Filter..." />
-    </div>
-  </div>
-  <div class="col-sm-3">
-    <div class="form-group">
-      <label for="form-category">Categorie</label>
-      <select data-ng-model="byCategory" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-category">
-         <option value="">Filter op categorie</option>
-      </select>
-    </div>
-  </div>
-  <div class="col-sm-3">
-     <p><strong>Toon goederen / diensten</strong></p>
-     <div class="btn-group">
-        <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Diensten</label>
-        <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Goederen</label>
-    </div>
+   <div class="col-sm-3">
+      <div class="form-group">
+         <label for="form-filter">Filter</label>
+         <input type="text" class="form-control" id="form-filter" data-ng-model="byText" placeholder="Filter..." />
+      </div>
+   </div>
+   <div class="col-sm-3">
+      <div class="form-group">
+         <label for="form-category">Categorie</label>
+         <select data-ng-model="byCategory" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-category">
+            <option value="">Filter op categorie</option>
+         </select>
+      </div>
+   </div>
+   <div class="col-sm-3">
+      <p><strong>Toon goederen / diensten</strong></p>
+      <div class="btn-group">
+         <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Diensten</label>
+         <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Goederen</label>
+      </div>
    </div>
    <div class="col-sm-3">
       <p><strong>Gekoppeld / niet-gekoppeld aanbod</strong></p>
       <div class="btn-group">
          <button type="button" class="btn btn-default" ng-model="byMatched" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="null">
-        Toon {{byMatched && 'gekoppelde' || 'niet-gekoppelde' }}
-        </button>
-     </div>
-    </div>
-</div>
-<div class="row">
-   <div class="col-md-12">
-      <h3>Hulpvraag &amp; aanbod koppelen</h3>
-   </div>
-   <div class="col-xs-12 col-md-6">
-      <div class="well well-sm" data-animate-on-change="match.need.title">
-         <p>{{match.need.title || '[Selecteer een hulpvraag]'}}</p>
-      </div>
-   </div>
-   <div class="col-xs-12 col-md-6">
-      <div class="well well-sm" data-animate-on-change="match.offer.title">
-         <p>{{match.offer.title || '[Selecteer een hulpaanbod]'}}</p>
+            Toon {{byMatched && 'gekoppelden' || 'alles' }}
+         </button>
       </div>
    </div>
 </div>
+<!-- <div class="row">
+<div class="col-md-12">
+<h3>Hulpvraag &amp; aanbod koppelen</h3>
+</div>
+<div class="col-xs-12 col-md-6">
+<div class="well well-sm" data-animate-on-change="match.need.title">
+<p>{{match.need.title || '[Selecteer een hulpvraag]'}}</p>
+</div>
+</div>
+<div class="col-xs-12 col-md-6">
+<div class="well well-sm" data-animate-on-change="match.offer.title">
+<p>{{match.offer.title || '[Selecteer een hulpaanbod]'}}</p>
+</div>
+</div>
+</div> -->
 
 <section>
    <div class="row">
@@ -52,64 +52,64 @@
       </div>
    </div>
    <div class="row">
-     <div class="col-xs-6">
-        <div class="panel panel-default">
-           <div class="panel-heading"><h4>Hulpvragen <span class="label label-primary">{{filteredNeeds.length}}</span></h4></div>
+      <div class="col-md-6">
+         <div class="panel panel-default">
+            <div class="panel-heading"><h4>Hulpvragen <span class="label label-primary">{{filteredNeeds.length}}</span></h4></div>
 
-             <div class="list-group overflow-column">
+            <div class="list-group overflow-column">
                <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in filteredNeeds = (needs | filter:byText | filter:byCategory | filter:bySuppliesServices)">
-                 <h4 class="list-group-item-heading">
-                   <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
-                   <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
-                    {{need.title}}</h4>
-                 <p class="list-group-item-text">{{need.description}}</p>
-                 <p class="list-group-item-text">
-                   <span class="label label-default">{{need.category}}</span>
-                   <button type="button" class="btn btn-link btn-sm" data-ng-click="showEditNeedModal(need);$event.stopPropagation()">
-                      <span class="glyphicon glyphicon-edit"></span> Pas aan
-                  </button>
-                   <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteNeed($index, need);$event.stopPropagation()">
-                      <span class="glyphicon glyphicon-remove"></span> Verwijder
-                  </button>
-                  </p>
-               </a>
-               <p class="help-block text-center" data-ng-hide="filteredNeeds.length"><strong>Geen hulpvragen gevonden.</strong></p>
-             </div>
-          </div>
-     </div>
-
-     <div class="col-xs-6">
-        <div class="panel panel-default">
-           <div class="panel-heading"><h4>Hulpaanbod <span class="label label-primary">{{filteredOffers.length}}</span></h4></div>
-             <div class="list-group overflow-column">
-               <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices | filter:byMatched)">
-                 <h4 class="list-group-item-heading">
-                   <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
-                   <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
-                    {{offer.title}}</h4>
-                 <p class="list-group-item-text">{{offer.description}}</p>
-                 <p class="list-group-item-text">
-                   <span class="label label-default">{{offer.category}}</span>
-                   <button type="button" class="btn btn-link btn-sm" data-ng-click="showDetailOfferModal(offer);$event.stopPropagation()">
-                    <span class="glyphicon glyphicon-cog"></span> Bekijk details
-                 </button>
-                 <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
-                   <span class="glyphicon glyphicon-remove"></span> Verwijder
-                </button>
-                </p>
-                <p class="list-group-item-text">
-                   <button type="submit" class="btn btn-primary btn-sm"
-                   data-ng-show="$index == pickedOffer && !offer.matched && match.need.title && match.offer.title" data-ng-click="confirmMatch(offer)">
-                      <span class="glyphicon glyphicon-link"></span>
-                      Koppel hulpvraag en aanbod
-                   </button>
-                 </p>
-               </a>
-               <p class="help-block text-center" data-ng-hide="filteredOffers.length"><strong>Geen hulpaanbod gevonden.</strong></p>
+                  <h4 class="list-group-item-heading">
+                     <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
+                     <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
+                     {{need.title}}</h4>
+                     <p class="list-group-item-text">{{need.description}}</p>
+                     <p class="list-group-item-text">
+                        <span class="label label-default">{{need.category}}</span>
+                        <button type="button" class="btn btn-link btn-sm" data-ng-click="showEditNeedModal(need);$event.stopPropagation()">
+                           <span class="glyphicon glyphicon-edit"></span> Pas aan
+                        </button>
+                        <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteNeed($index, need);$event.stopPropagation()">
+                           <span class="glyphicon glyphicon-remove"></span> Verwijder
+                        </button>
+                     </p>
+                  </a>
+                  <p class="help-block text-center" data-ng-hide="filteredNeeds.length"><strong>Geen hulpvragen gevonden.</strong></p>
+               </div>
             </div>
-        </div>
-     </div>
-   </div>
+         </div>
+
+         <div class="col-md-6">
+            <div class="panel panel-default">
+               <div class="panel-heading"><h4>Hulpaanbod <span class="label label-primary">{{filteredOffers.length}}</span></h4></div>
+               <div class="list-group overflow-column">
+                  <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices | filter:byMatched)">
+                     <h4 class="list-group-item-heading">
+                     <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
+                     <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
+                     {{offer.title}}</h4>
+                     <p class="list-group-item-text">{{offer.description}}</p>
+                     <p class="list-group-item-text">
+                        <span class="label label-default">{{offer.category}}</span>
+                        <button type="button" class="btn btn-link btn-sm" data-ng-click="showDetailOfferModal(offer);$event.stopPropagation()">
+                           <span class="glyphicon glyphicon-cog"></span> Bekijk details
+                        </button>
+                        <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
+                           <span class="glyphicon glyphicon-remove"></span> Verwijder
+                        </button>
+                     </p>
+                     <p class="list-group-item-text">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                        data-ng-show="$index == pickedOffer && !offer.matched && match.need.title && match.offer.title" data-ng-click="confirmMatch(offer)">
+                        <span class="glyphicon glyphicon-link"></span>
+                        Koppel hulpvraag en aanbod
+                        </button>
+                     </p>
+                  </a>
+                  <p class="help-block text-center" data-ng-hide="filteredOffers.length"><strong>Geen hulpaanbod gevonden.</strong></p>
+               </div>
+            </div>
+         </div>
+      </div>
 </section>
 
 <!-- // Todo: put this in a file. For now.. inline -->

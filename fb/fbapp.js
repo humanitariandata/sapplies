@@ -1,11 +1,11 @@
-var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook', 'ui.bootstrap', 'mgo-angular-wizard']).config(function($routeProvider, FacebookProvider) {
+var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook', 'ui.bootstrap']).config(function($routeProvider, FacebookProvider) {
    $routeProvider.when('/main', {
       controller: 'FBMainController',
       templateUrl: 'views/fbmain.html'
    })
-   .when('/volunteer', {
-      controller: 'VolunteerController',
-      templateUrl: 'views/volunteer.html'
+   .when('/donate', {
+      controller: 'DonationController',
+      templateUrl: 'views/donate.html'
    })
    .otherwise({
      redirectTo: '/main'
@@ -15,7 +15,26 @@ var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'facebook', 'ui.bo
    FacebookProvider.init('339468399539706');
 });
 
-fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$modal', 'Facebook', function($scope, $location, $resource, $modal, Facebook) {
+fbApp.factory('StepService', function() {
+   var need = {};
+   var fbuser = {};
+   return {
+      setNeed: function(setNeed) {
+         need = setNeed;
+      },
+      getNeed: function() {
+         return need;
+      },
+      setFBUser: function(fbu) {
+         fbuser = fbu;
+      },
+      getFBUser: function() {
+         return fbuser;
+      }
+   }
+});
+
+fbApp.controller('FBMainController', ['$scope', '$location', '$resource', 'StepService', 'Facebook', function($scope, $location, $resource, StepService, Facebook) {
 
    $scope.needs = $resource('/api/v1/needs/:id').query();
 
@@ -44,81 +63,44 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$moda
    });
 
    $scope.pickedNeed = function(pickedNeed) {
-      // Open Angular bootstrap modal
-      var modalInstance = $modal.open({
-         templateUrl: 'donateModalContent.html',
-         controller: DonateModalInstanceCtrl,
-         size: '',
-         resolve: {
-            pickedNeed: function () {
-               return pickedNeed;
-            },
-            fbUser: function() {
-               return $scope.createDonation.fb;
-            }
-         }
-      });
-
-      modalInstance.result.then(function (donation) {
-         console.log(donation);
-      }, function () {});
-   }
-
-   $scope.goto = function(goto) {
-      $location.path(goto);
+      StepService.setNeed(pickedNeed);
+      StepService.setFBUser($scope.createDonation.fb);
+      $location.path('/donate');
    }
 }]);
 
-fbApp.controller('DonationController', ['$scope', '$resource', 'Facebook', function($scope, $resource, Facebook) {
+fbApp.controller('DonationController', ['$scope', '$resource', 'StepService', function($scope, $resource, StepService) {
 
-   Facebook.getLoginStatus(function(response) {
-      if(response.status === 'connected') {
-
-      } else {
-
-
-      }
-   });
+   $scope.pickedNeed = StepService.getNeed();
+   $scope.createDonation = { fb: StepService.getFBUser() };
+   $scope.createDonation.deliver = true;
+   $scope.createDonation.category = $scope.pickedNeed.category;
+   $scope.submitted = false;
 
    $scope.saveDonation = function() {
       if ($scope.createDonationForm.$valid) {
-
          $scope.createDonation.type = 'Goederen';
          $scope.createDonation.created = new Date();
-
+         console.log($scope.createDonation);
          $resource('api/v1/offers/:id').save($scope.createDonation);
-         //$scope.alerts.push({ type: 'success', msg: '"'+$scope.createDonation.title +'" is toegegoegd!'});
+         $scope.send = true;
       } else {
          $scope.submitted = true;
       }
    }
 }]);
 
-var DonateModalInstanceCtrl = function($scope, $modalInstance, pickedNeed, fbUser) {
-   $scope.pickedNeed = pickedNeed;
-   $scope.createDonation = { fb: fbUser };
-   $scope.submitted = false;
-
-   $scope.ok = function () {
-      if($scope.createDonationForm.$valid) {
-         $modalInstance.close($scope.createDonation);
-      } else {
-         $scope.submitted = true;
-      }
-   };
-}
-
-fbApp.controller('VolunteerController', ['$scope', 'WizardHandler', function($scope, WizardHandler) {
-
-   $scope.finishedWizard = function() {
-      alert("Wizard finished :)");
-   }
-
-   $scope.logStep = function() {
-      console.log("Step continued");
-   }
-
-   $scope.goBack = function() {
-      WizardHandler.wizard().goTo(0);
-   }
-}]);
+// fbApp.controller('VolunteerController', ['$scope', 'WizardHandler', function($scope, WizardHandler) {
+//
+//    $scope.finishedWizard = function() {
+//       alert("Wizard finished :)");
+//    }
+//
+//    $scope.logStep = function() {
+//       console.log("Step continued");
+//    }
+//
+//    $scope.goBack = function() {
+//       WizardHandler.wizard().goTo(0);
+//    }
+// }]);

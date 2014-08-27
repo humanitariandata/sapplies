@@ -18,6 +18,10 @@ a {
    height: 400px;
 }
 
+.space-buffer {
+   margin-bottom:20px;
+}
+
 .list-group-item {
    &.active {
       .btn-link {

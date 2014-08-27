@@ -104,7 +104,7 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
 
    // Event listener for deleting an offer
    $scope.deleteOffer = function(index, offer) {
-      if(confirm('Weet je zeker dat je '+offer.title+' wilt verwijderen? De hulpaanbieder wordt via een Facebook-notificatie op de hoogte gesteld.')) {
+      if(confirm('Weet je zeker dat je '+offer.title+' wilt verwijderen?')) {
          // Delete in the db
          RESTResourceProvider.Offer.delete({ id: offer._id });
 
@@ -137,11 +137,11 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
 
 var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem) {
 
-  $scope.detailItem = detailItem;
+   $scope.detailItem = detailItem;
 
-  $scope.ok = function () {
+   $scope.ok = function () {
      $modalInstance.dismiss('cancel');
-  };
+   };
 };
 
 var EditNeedModalInstanceCtrl = function($scope, $modalInstance, editItem, categories) {
