@@ -204,21 +204,6 @@ app.post(apiPrefix+'/matches', function(req, res) {
 app.get(apiPrefix+'/matches', function(req, res) {
    db.matches.find().sort({ id: -1 }).toArray(function(err, docs) {
       if(err) throw err;
-
-      // var representation = docs;
-      // docs.forEach(function(match, i) {
-      //    db.needs.findOne({ _id: match.need }, function(err, n) {
-      //       representation[i].need = n;
-      //       db.offers.findOne({ _id: match.offer }, function(err, o) {
-      //          representation[i].offer = o;
-      //
-      //          // Dirty: bit of a hack
-      //          if(i == representation.length-1) {
-      //             res.send(representation);
-      //          }
-      //       });
-      //    });
-      // });
       res.send(docs);
    });
 });

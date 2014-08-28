@@ -2,7 +2,7 @@
    <li class="previous"><a href="fb#/main">&larr; Andere hulpvraag</a></li>
 </ul>
 
-<h2>Stap 2: Noteer hulpaanbod en bevestig</h2>
+<h2>Stap 2: Noteer je hulpaanbod</h2>
 
 <div class="panel panel-default">
    <div class="panel-heading">
@@ -20,7 +20,7 @@
       <p class="list-group-item-text">
          <span class="label label-default">{{pickedNeed.category}}</span>
       </p>
-      <hr />
+      <hr data-ng-show="createDonation.title" />
       <div class="media" data-ng-show="createDonation.title">
          <a class="pull-left" href="#">
             <img class="media-object img-thumbnail" data-ng-src="{{createDonation.fb.profilepic}}" alt="">
@@ -48,7 +48,7 @@
       <p class="help-block" data-ng-show="createDonationForm.description.$invalid && submitted">Geef detailinformatie over wat je aanbiedt.</p>
    </div>
 
-   <div class="form-group">
+   <div class="form-group" data-ng-show="createDonation.type == 'Goederen'">
       <p><strong>Bezorging</strong></p>
 
       <div class="btn-group">
