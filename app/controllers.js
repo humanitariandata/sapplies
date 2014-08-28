@@ -204,7 +204,6 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
          redirect_uri: 'https://sapplies.rodekruis.nl/fb'
       }, function(response) {
          console.log(response);
-         isAppConnectedToPage();
       });
    }
 
@@ -213,7 +212,6 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
 
       Facebook.api('me/accounts', function(response) {
          if (response && !response.error) {
-            console.log(response);
             response.data.forEach(function(page) {
                if(page.hasOwnProperty('category') && page.category === 'Community') {
                   Facebook.api('/'+page.id+'/picture', { "type": "small" }, function(pic) {
@@ -223,8 +221,6 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
                   isAppConnectedToPage(page.id);
                }
             });
-         } else {
-            console.log(response);
          }
       });
    };
@@ -232,7 +228,6 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
    function isAppConnectedToPage(pageid) {
       Facebook.api('/'+pageid+'/tabs', function(response) {
          if (response && !response.error) {
-            console.log(response);
             response.data.some(function(tab) {
                if(tab.hasOwnProperty('application')) {
                   // if facebook page has sapplies added
@@ -257,7 +252,6 @@ sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RES
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
    RESTResourceProvider.Match.query(function(matches) {
       $scope.matches = matches;
-      console.log($scope.matches);
    });
 }]);
 
@@ -269,16 +263,62 @@ sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', '
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
             $scope.loggedIn = true;
+            fetchFBPages();
          } else {
             $scope.loggedIn = false;
          }
       });
    }());
 
+   $scope.connectAppToPage = function() {
+      Facebook.ui({
+         method: 'pagetab',
+         redirect_uri: 'https://sapplies.rodekruis.nl/fb'
+      }, function(response) {
+
+      });
+   }
+
+   function fetchFBPages() {
+      $scope.pages = [];
+
+      Facebook.api('me/accounts', function(response) {
+         if (response && !response.error) {
+            response.data.forEach(function(page) {
+               if(page.hasOwnProperty('category') && page.category === 'Community') {
+                  Facebook.api('/'+page.id+'/picture', { "type": "small" }, function(pic) {
+                     page.picture = pic.data.url;
+                  });
+                  $scope.pages.push(page);
+                  isAppConnectedToPage(page.id);
+               }
+            });
+         }
+      });
+   };
+
+   function isAppConnectedToPage(pageid) {
+      Facebook.api('/'+pageid+'/tabs', function(response) {
+         if (response && !response.error) {
+            response.data.some(function(tab) {
+               if(tab.hasOwnProperty('application')) {
+                  // if facebook page has sapplies added
+                  if(tab.application.id === '339468399539706') {
+                     $scope.connected = true;
+                     return true;
+                  } else {
+                     $scope.connected = false;
+                     return false;
+                  }
+               }
+            })
+         }
+      });
+   }
+
    $scope.loginWithFacebook = function() {
 
       Facebook.getLoginStatus(function(response) {
-         console.log(response);
          if(response.status === 'connected') {
             $scope.loggedIn = true;
 

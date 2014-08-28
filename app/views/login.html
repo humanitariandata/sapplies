@@ -1,5 +1,5 @@
 <div class="row">
-   <div class="col-md-6 col-md-offset-3">
+   <div class="col-md-8 col-md-offset-2">
       <div class="panel panel-default">
          <div class="panel-heading"><h3 class="text-center">Login met Facebook</h3></div>
          <div class="panel-body">
@@ -10,8 +10,28 @@
                <li>Hulpvraag en aanbod te organiseren</li>
             </ul>
             <hr />
-            <p data-ng-show="loggedIn">Je bent al reeds ingelogd met Facebook. <a href="#/overview">Beheer de Facebook-hulpactie</a></p>
+            <p data-ng-show="loggedIn">Je bent al reeds ingelogd met Facebook en de hulpactie is gekoppeld met sApplies.</p><p><a href="#/overview">Ga verder</a></p>
             <button data-ng-hide="loggedIn" data-ng-click="loginWithFacebook()" type="button" class="btn btn-default fb-btn"><i class="fa fa-facebook fa-lg"></i> Login met Facebook</button>
+            <section data-ng-hide="connected">
+               <h2>Koppel sApplies aan de hulpactie</h2>
+               <table class="table" data-ng-show="loggedIn">
+                  <thead>
+                     <tr>
+                        <th colspan="2">Facebook-pagina</th>
+                        <th>Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr data-ng-repeat="page in pages">
+                        <td><img data-ng-src="{{page.picture}}" alt="" /></td>
+                        <td>{{page.name}}</td>
+                        <td>
+                           <button type="button" class="btn btn-default" data-ng-disabled="connected" data-ng-click="connectAppToPage()">{{connected && 'Reeds gekoppeld.' ||'Koppel'}}</button>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </section>
          </div>
       </div>
    </div>
