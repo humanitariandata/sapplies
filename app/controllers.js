@@ -257,6 +257,10 @@ sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 
 
 sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', 'RESTResourceProvider', function($scope, $location, Facebook, RESTResourceProvider) {
 
+   // Set default te prevent UI distortion by async calls
+   $scope.loggedIn = true;
+   $scope.connected = true;
+
    // Simple solution for authentication with Facebook.
    // This kind of checks should be handled by the $routeProvider in app.js or as a factory/service
    (function() {
