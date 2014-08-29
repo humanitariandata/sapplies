@@ -255,7 +255,7 @@ sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 
    });
 }]);
 
-sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', 'RESTResourceProvider', function($scope, $location, Facebook, RESTResourceProvider) {
+sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceProvider', function($scope, Facebook, RESTResourceProvider) {
 
    // Set default te prevent UI distortion by async calls
    $scope.loggedIn = true;
@@ -337,8 +337,6 @@ sappliesApp.controller('LoginController', [ '$scope', '$location', 'Facebook', '
 
                   // Save to the database if not already exists (upsert true)
                   RESTResourceProvider.FBUser.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID, blaat: 'blaat' });
-
-                  $location.path('/overview');
                } else {
                   $scope.loggedIn = false;
                }
