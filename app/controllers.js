@@ -245,10 +245,6 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
    }
 }]);
 
-sappliesApp.controller('OffersDetailController', [ '$scope', '$routeParams','RESTResourceProvider', function($scope, $routeParams, RESTResourceProvider) {
-   $scope.detailOffer = RESTResourceProvider.Offer.get({id: $routeParams.id});
-}]);
-
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
    RESTResourceProvider.Match.query(function(matches) {
       $scope.matches = matches;
