@@ -5,19 +5,27 @@
          <div class="panel-body">
             <p>Login met Facebook om:</p>
             <ul>
-               <li>De sApplies Facebook te koppelen aan Facebook-hulpactiepagina</li>
-               <li>Hulpvragen aan te maken</li>
-               <li>Hulpvraag en aanbod te organiseren</li>
+               <li>sApplies te gebruiken om jouw hulpactie op Facebook te ondersteunen</li>
+               <li>sApplies is jouw eigen marktplaats om eenvoudig en onbeperkt je vraag voor hulp te plaatsen</li>
+               <li>sApplies zorgt voor overzicht tussen jouw hulpvraag en het hulpaanbod van aanbieders op Facebook</li>
             </ul>
             <hr />
-            <section data-ng-show="loggedIn"><p>Je bent al reeds ingelogd met Facebook en de hulpactie is gekoppeld met sApplies.</p><p><a href="#/overview">Ga verder</a></p></section>
+            <section data-ng-show="loggedIn && !connected">
+               <p>Je bent al reeds ingelogd met Facebook en de hulpactie is gekoppeld met sApplies.</p><p><a href="#/overview">Ga verder</a>
+               </p>
+            </section>
             <button data-ng-hide="loggedIn" data-ng-click="loginWithFacebook()" type="button" class="btn btn-default fb-btn"><i class="fa fa-facebook fa-lg"></i> Login met Facebook</button>
             <section data-ng-hide="connected">
-               <h2>Koppel sApplies aan de hulpactie</h2>
+               <h2>Koppel sApplies aan de Facebook-pagina</h2>
+               <p>De koppeling zorgt ervoor dat de sApplies Facebook-app in de navigatiebalk verschijnt van de Facebook-pagina, zodat hulpaanbieders hulpaanbieding kunnen insturen.
+               </p>
+               <p class="text-center">
+                  <img class="img-thumbnail" src="./images/fb-nav-app.png" alt="" />
+               </p>
                <table class="table" data-ng-show="loggedIn">
                   <thead>
                      <tr>
-                        <th colspan="2">Facebook-pagina</th>
+                        <th colspan="2">Jouw-pagina's</th>
                         <th>Status</th>
                      </tr>
                   </thead>

@@ -182,7 +182,6 @@ sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider
   };
 }]);
 
-// Controller to login in with Facebook to connect facebook-app from the page to this app.
 sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebook', function($scope, $location, Facebook) {
 
    // Simple solution for authentication with Facebook.
@@ -275,7 +274,7 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
          method: 'pagetab',
          redirect_uri: 'https://sapplies.rodekruis.nl/fb'
       }, function(response) {
-
+         // UPDATE UI
       });
    }
 
