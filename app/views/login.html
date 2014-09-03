@@ -10,8 +10,8 @@
                <li>sApplies zorgt voor overzicht tussen jouw hulpvraag en het hulpaanbod van aanbieders op Facebook</li>
             </ul>
             <hr />
-            <section data-ng-show="loggedIn && !connected">
-               <p>Je bent al reeds ingelogd met Facebook en de hulpactie is gekoppeld met sApplies.</p><p><a href="#/overview">Ga verder</a>
+            <section data-ng-show="loggedIn">
+               <p>Je bent al reeds ingelogd met Facebook.</p><p><a href="#/overview">Ga verder</a>
                </p>
             </section>
             <button data-ng-hide="loggedIn" data-ng-click="loginWithFacebook()" type="button" class="btn btn-default fb-btn"><i class="fa fa-facebook fa-lg"></i> Login met Facebook</button>
