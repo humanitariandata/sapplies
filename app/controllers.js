@@ -335,7 +335,7 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
                } else {
                   $scope.loggedIn = false;
                }
-            });
+            },{ scope: 'public_profile,manage_pages' });
          }
       });
    }
