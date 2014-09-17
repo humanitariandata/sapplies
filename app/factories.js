@@ -11,3 +11,10 @@ sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 		FBUser: $resource('api/v1/fbusers/:userID', { userID: '@userID'}, { update: {	method: 'PUT' } })
 	};
 }]);
+
+sappliesApp.factory('AppSettings', function() {
+	return {
+		appId: '339468399539706',
+		appSecret: '24f0ea5457d2e41bb5ca6aa84adf5eb4'
+	}
+});

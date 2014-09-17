@@ -79,6 +79,10 @@ app.post('/fb/', function(req, res) {
    res.sendfile(__dirname + '/fb/index.html');
 });
 
+app.get('/fb/notification', function(req, res) {
+   res.sendfile(__dirname + '/fb/notification.html');
+});
+
 /*
  * CRUD: Needs
  */
