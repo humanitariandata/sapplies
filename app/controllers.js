@@ -3,7 +3,7 @@
    - Matching needs and offers
    - filtering / sorting
 */
-sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', function($scope, $location, $modal, RESTResourceProvider) {
+sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', 'Facebook', function($scope, $location, $modal, RESTResourceProvider, Facebook) {
    // Query the resources
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
@@ -111,6 +111,9 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
          $scope.offers.splice(index, 1);
 
          // NOTIFICATION: BEDANKT VOOR JE HULPAANBOD, MAAR WE HEBBEN ER NU GEEN GEBRUIK VAN GEMAAKT O.I.D.
+         Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: '339468399539706|24f0ea5457d2e41bb5ca6aa84adf5eb4', href: '#', template: 'Bedankt voor je hulpaanbod, maar we hebben er nu geen gebruik van gemaakt!'},function(response) {
+            console.log(response);
+         });
       }
    }
 
@@ -126,7 +129,10 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       offer.matched = true;
       $scope.match.offer = null;
 
-      // Facebook Notification?
+      // Facebook Notification
+      Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: '339468399539706|24f0ea5457d2e41bb5ca6aa84adf5eb4', href: '#', template: 'Jouw hulpaanbod is gekoppeld aan de hulpvraag. De initiatiefnemer neemt binnenkort contact met je op!'},function(response) {
+         console.log(response);
+      });
    }
 }]);
 
