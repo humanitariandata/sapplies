@@ -11,7 +11,6 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
 
    // Set de default to empty object
    $scope.match = {};
-   $scope.alerts = [];
 
    // Event listener for selecting a need fromt the list-group
    $scope.selectNeed = function(selectedNeed, index) {
@@ -125,14 +124,10 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       RESTResourceProvider.Match.save(postPayload);
 
       offer.matched = true;
-      $scope.alerts.push({ type: 'success', msg: '"'+$scope.match.need.title +'" en "'+$scope.match.offer.title+'" zijn gekoppeld!'});
       $scope.match.offer = null;
 
       // Facebook Notification?
    }
-   $scope.closeAlert = function(index) {
-      $scope.alerts.splice(index, 1);
-  };
 }]);
 
 var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem) {

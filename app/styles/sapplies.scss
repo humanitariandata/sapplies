@@ -22,6 +22,10 @@ a {
    margin-bottom:20px;
 }
 
+.panel-title>a {
+   display: block;
+}
+
 .list-group-item {
    &.active {
       .btn-link {

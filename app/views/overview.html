@@ -20,14 +20,6 @@
          <label class="btn btn-default" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Goederen</label>
       </div>
    </div>
-   <div class="col-sm-3 space-buffer">
-      <p><strong>Gekoppeld / niet-gekoppeld aanbod</strong></p>
-      <div class="btn-group">
-         <button type="button" class="btn btn-default" ng-model="byMatched" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="null">
-            Toon {{byMatched && 'gekoppelden' || 'alles' }}
-         </button>
-      </div>
-   </div>
 </div>
 <!-- <div class="row">
 <div class="col-md-12">
@@ -46,11 +38,6 @@
 </div> -->
 
 <section>
-   <div class="row">
-      <div class="col-xs-12 col-md-8 col-md-offset-2">
-         <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-      </div>
-   </div>
    <div class="row">
       <div class="col-md-6">
          <div class="panel panel-default">
@@ -82,11 +69,12 @@
             <div class="panel panel-default">
                <div class="panel-heading"><h4>Hulpaanbod <span class="label label-primary">{{filteredOffers.length}}</span></h4></div>
                <div class="list-group overflow-column">
-                  <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices | filter:byMatched)">
+                  <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices)">
                      <h4 class="list-group-item-heading">
-                     <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
-                     <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
-                     {{offer.title}}</h4>
+                        <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
+                        <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
+                        {{offer.title}}
+                     </h4>
                      <p class="list-group-item-text">{{offer.description}}</p>
                      <p class="list-group-item-text">
                         <span class="label label-default">{{offer.category}}</span>
@@ -96,6 +84,7 @@
                         <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
                            <span class="glyphicon glyphicon-remove"></span> Verwijder
                         </button>
+                        <span class="glyphicon glyphicon-ok pull-right" data-ng-show="offer.matched"></span>
                      </p>
                      <p class="list-group-item-text">
                         <button type="submit" class="btn btn-primary btn-sm"
@@ -120,11 +109,10 @@
        <i class="fa fa-user-md" data-ng-show="detailItem.type == 'Diensten'"></i>
        {{detailItem.title}}</h3>
        <p>{{detailItem.description}}</p>
-       <dl class="dl">
+       <span class="label label-default">{{detailItem.category}}</span>
+       <dl class="dl dl-horizontal">
         <dt>Gekoppeld</dt>
         <dd>{{detailItem.matched && 'Ja' || 'Nee' }}</dd>
-        <dt>Categorie</dt>
-        <dd><span class="label label-default">{{detailItem.category}}</label></dd>
         <dt>Aangemaakt</dt>
         <dd>{{detailItem.created | date: "dd-MM-yyyy 'om' hh:mm"}}</dd>
       </dl>
@@ -168,7 +156,7 @@
              <label class="btn btn-default" ng-model="editNeed.type" btn-radio="'Diensten'" uncheckable>Diensten</label>
            </div>
         </div>
-        <div class="form-group"><strong>Aangemaakt</strong> <p>{{editNeed.created | date:'MM/dd/yy HH:mm'}}</p></div>
+        <div class="form-group"><strong>Aangeboden op</strong> <p>{{editNeed.created | date:'MM/dd/yy HH:mm'}}</p></div>
       </form>
 
       </div>

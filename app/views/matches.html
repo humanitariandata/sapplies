@@ -1,6 +1,6 @@
 <div class="row">
    <div class="col-md-12">
-      <h1>Gekoppelde hulpvraag en aanbod</h1>
+      <h2>Gekoppelde hulpvraag en aanbod</h2>
 
       <div class="panel panel-default" data-ng-repeat="match in matches">
          <div class="panel-heading">
@@ -11,26 +11,34 @@
                <p>{{match.need.description}}</p>
                <p><span class="label label-default">{{match.need.category}}</span></p>
          </div>
-         <div class="panel-body" data-ng-repeat="offer in match.offers">
-            <div class="col-md-6">
-               <div class="panel panel-default">
-                  <div class="panel-body">
-                     <h4><i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
-                     <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i> {{offer.title}}</h4>
-                     <p>{{offer.description}}</p>
+         <div class="panel-body">
+            <accordion close-others="oneAtATime">
+               <accordion-group is-open="status.open" ng-repeat="offer in match.offers">
+                  <accordion-heading>
+                     {{offer.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                  </accordion-heading>
+                     <div class="col-md-6">
+                        <div class="panel panel-default">
+                           <div class="panel-body">
+                              <h4><i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
+                              <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i> {{offer.title}}</h4>
+                              <p>{{offer.description}}</p>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="panel panel-default">
+                           <div class="panel-body">
+                              <h4>Hulpaanbieder</h4>
+                              <img class="img-thumbnail fb-profilepic" data-ng-src="{{offer.fb.picture}}" alt="" />
+                              {{offer.fb.name}}
+                              <p><a href="{{offer.fb.link}}" target="_blank">Contacteer hulpaanbieder</a></p>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-               </div>
-            </div>
-            <div class="col-md-6">
-               <div class="panel panel-default">
-                  <div class="panel-body">
-                     <h4>Hulpaanbieder</h4>
-                     <img class="img-thumbnail fb-profilepic" data-ng-src="{{offer.fb.profilepic}}" alt="" />
-                     {{offer.fb.name}}
-                     <p><a href="{{offer.fb.link}}" target="_blank">Contacteer hulpaanbieder</a></p>
-                  </div>
-               </div>
-            </div>
+               </accordion-group>
+            </accordion>
          </div>
       </div>
       <p class="help-block" data-ng-hide="matches.length">Geen gekoppelde hulpvraag en aanbod gevonden.</p>
