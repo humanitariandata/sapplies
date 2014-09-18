@@ -49,7 +49,7 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
                   fb: {
                      name: response.name,
                      link: response.link,
-                     profilepic: response.picture.data.url
+                     picture: response.picture.data.url
                   }
                }
             }

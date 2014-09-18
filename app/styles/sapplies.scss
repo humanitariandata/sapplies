@@ -1,3 +1,4 @@
+/* Style and bootstrap adjustments */
 $base-color: #DC281E;
 
 body {
@@ -45,6 +46,11 @@ a {
 
 .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
    background-color: lighten($base-color, 15%) !important;
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
 }
 
 /* Animation for directive model change */
