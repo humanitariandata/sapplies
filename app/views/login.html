@@ -10,19 +10,19 @@
                <li>sApplies zorgt voor overzicht tussen jouw hulpvraag en het hulpaanbod van aanbieders op Facebook</li>
             </ul>
             <hr />
-            <section data-ng-show="loggedIn">
+            <section data-ng-show="FacebookStatus.loggedIn">
                <p>Je bent al reeds ingelogd met Facebook.</p><p><a href="#/overview">Ga verder</a>
                </p>
             </section>
-            <button data-ng-hide="loggedIn" data-ng-click="loginWithFacebook()" type="button" class="btn btn-default fb-btn"><i class="fa fa-facebook fa-lg"></i> Login met Facebook</button>
-            <section data-ng-hide="connected">
+            <button data-ng-hide="FacebookStatus.loggedIn" data-ng-click="loginWithFacebook()" type="button" class="btn btn-default fb-btn"><i class="fa fa-facebook fa-lg"></i> Login met Facebook</button>
+            <section data-ng-hide="FacebookStatus.connected">
                <h2>Koppel sApplies aan de Facebook-pagina</h2>
                <p>De koppeling zorgt ervoor dat de sApplies Facebook-app in de navigatiebalk verschijnt van de Facebook-pagina, zodat hulpaanbieders hulpaanbieding kunnen insturen.
                </p>
                <p class="text-center">
                   <img class="img-thumbnail" src="./images/fb-nav-app.png" alt="" />
                </p>
-               <table class="table" data-ng-show="loggedIn">
+               <table class="table" data-ng-show="FacebookStatus.loggedIn">
                   <thead>
                      <tr>
                         <th colspan="2">Jouw-pagina's</th>
@@ -34,7 +34,7 @@
                         <td><img data-ng-src="{{page.picture}}" alt="" /></td>
                         <td>{{page.name}}</td>
                         <td>
-                           <button type="button" class="btn btn-default" data-ng-disabled="connected" data-ng-click="connectAppToPage()">{{connected && 'Reeds gekoppeld.' ||'Koppel'}}</button>
+                           <button type="button" class="btn btn-default" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage()">{{FacebookStatus.connected && 'Reeds gekoppeld.' ||'Koppel'}}</button>
                         </td>
                      </tr>
                   </tbody>

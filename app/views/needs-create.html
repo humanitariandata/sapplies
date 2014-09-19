@@ -14,18 +14,22 @@
             <label for="form-need-description">Beschrijving</label>
             <textarea class="form-control" id="form-need-description" data-ng-model="createNeed.description" placeholder="Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
          </div>
-         <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.category.$invalid && submitted }">
-            <label for="form-need-category">Categorie</label>
-            <select required data-ng-model="createNeed.category" name="category" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-need-category">
-               <option value="">Kies een passende categorie</option>
-            </select>
-            <p class="help-block" data-ng-show="createNeedForm.category.$invalid && submitted">Selecteer een passende categorie.</p>
-         </div>
          <div class="form-group">
             <div class="btn-group">
                <label class="btn btn-default" ng-model="createNeed.type" btn-radio="'Goederen'" uncheckable>Goederen</label>
                <label class="btn btn-default" ng-model="createNeed.type" btn-radio="'Diensten'" uncheckable>Diensten</label>
             </div>
+         </div>
+         <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.category.$invalid && submitted }">
+            <label for="form-need-category">Categorie</label>
+            <select required data-ng-model="createNeed.category" name="category" data-ng-options="category.name as category.name group by category.type for category in categories | filter: createNeed.type" class="form-control" id="form-need-category">
+               <option value="">Kies een passende categorie</option>
+            </select>
+            <p class="help-block" data-ng-show="createNeedForm.category.$invalid && submitted">Selecteer een passende categorie.</p>
+         </div>
+         <div class="form-group">
+            <label for="form-need-category">Locatie</label>
+            <input id="form-need-location" class="form-control" name="location" type="text" placeholder="Locatie van de hulpvraag" data-ng-model="createNeed.location.formatted_address" />
          </div>
          <div class="form-group">
             <button type="button" data-ng-click="saveNeed()" class="btn btn-primary">Bewaar hulpvraag</button>

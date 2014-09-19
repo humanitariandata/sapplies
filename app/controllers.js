@@ -1,7 +1,7 @@
 /* Controller for the main page
-   - Loading resources
-   - Matching needs and offers
-   - filtering / sorting
+- Loading resources
+- Matching needs and offers
+- filtering / sorting
 */
 sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', 'Facebook', 'AppSettings', function($scope, $location, $modal, RESTResourceProvider, Facebook, AppSettings) {
    // Query the resources
@@ -141,7 +141,7 @@ var DetailOfferModalInstanceCtrl = function ($scope, $modalInstance, detailItem)
    $scope.detailItem = detailItem;
 
    $scope.ok = function () {
-     $modalInstance.dismiss('cancel');
+      $modalInstance.dismiss('cancel');
    };
 };
 
@@ -167,6 +167,13 @@ sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider
    $scope.createNeed = { type: 'Goederen' };
    $scope.submitted = false;
 
+   var input = document.getElementById('form-need-location');
+   var autocomplete = new google.maps.places.Autocomplete(input, { types: ['geocode']});
+   google.maps.event.addListener(autocomplete, 'place_changed', function() {
+      $scope.createNeed.location = { formatted_address: autocomplete.getPlace().formatted_address };
+      $scope.$apply();
+   });
+
    $scope.saveNeed = function() {
       if ($scope.createNeedForm.$valid) {
          $scope.createNeed.created = new Date();
@@ -180,7 +187,7 @@ sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider
 
    $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
-  };
+   };
 }]);
 
 sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebook', function($scope, $location, Facebook) {
@@ -254,18 +261,18 @@ sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 
 sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceProvider', function($scope, Facebook, RESTResourceProvider) {
 
    // Set default te prevent UI distortion by async calls
-   $scope.loggedIn = true;
-   $scope.connected = true;
+   $scope.FacebookStatus = { loggedIn: true };
+   $scope.FacebookStatus = { connected: true };
 
    // Simple solution for authentication with Facebook.
    // This kind of checks should be handled by the $routeProvider in app.js or as a factory/service
    (function() {
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
-            $scope.loggedIn = true;
+            $scope.FacebookStatus.loggedIn = true;
             fetchFBPages();
          } else {
-            $scope.loggedIn = false;
+            $scope.FacebookStatus.loggedIn = false;
          }
       });
    }());
@@ -298,16 +305,21 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
    };
 
    function isAppConnectedToPage(pageid) {
+
       Facebook.api('/'+pageid+'/tabs', function(response) {
          if (response && !response.error) {
+
             response.data.some(function(tab) {
                if(tab.hasOwnProperty('application')) {
-                  // if facebook page has sapplies added
+
+                  // if facebook page has app added
                   if(tab.application.id === '339468399539706') {
-                     $scope.connected = true;
+                     $scope.FacebookStatus.connected = true;
+                     $scope.$apply();
                      return true;
                   } else {
-                     $scope.connected = false;
+                     $scope.FacebookStatus.connected = false;
+                     $scope.$apply();
                      return false;
                   }
                }
@@ -320,7 +332,7 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
 
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
-            $scope.loggedIn = true;
+            $scope.FacebookStatus.loggedIn = true;
 
             // Save to the database if not already exists (upsert true)
             RESTResourceProvider.FBUser.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID, blaat: 'blaat' }, function() {
@@ -329,12 +341,12 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
          } else {
             FB.login(function(response) {
                if (response.status === 'connected') {
-                  $scope.loggedIn = true;
+                  $scope.FacebookStatus.loggedIn = true;
 
                   // Save to the database if not already exists (upsert true)
                   RESTResourceProvider.FBUser.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID, blaat: 'blaat' });
                } else {
-                  $scope.loggedIn = false;
+                  $scope.FacebookStatus.loggedIn = false;
                }
             },{ scope: 'public_profile,manage_pages' });
          }
@@ -344,6 +356,6 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
 
 sappliesApp.controller('NavController', [ '$scope', '$location', function($scope, $location) {
    $scope.isActive = function (viewLocation) {
-        return viewLocation === $location.path();
-    };
+      return viewLocation === $location.path();
+   };
 }]);
