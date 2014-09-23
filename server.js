@@ -2,14 +2,15 @@
 
 // Setup the required node modules and config files
 var express = require('express'),
-    app = express(),
-    mongo = require('mongoskin'),
-    https = require('https'),
-    fs = require('fs'),
-    path = require('path'),
-    bodyParser = require('body-parser'),
-    config = require('./config/config.js'),
-    secrets = require('./config/secrets.json');
+app = express(),
+mongo = require('mongoskin'),
+https = require('https'),
+fs = require('fs'),
+path = require('path'),
+bodyParser = require('body-parser'),
+config = require('./config/config.js'),
+secrets = require('./config/secrets.json'),
+multer = require('multer');
 
 // ObjectID for casting a number in an ObjectID
 var ObjectID = mongo.ObjectID;
@@ -17,6 +18,11 @@ var ObjectID = mongo.ObjectID;
 // BodyParser for getting the POST-values in JSON
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+// Multer for getting multipart/form-data
+app.use(multer({
+   dest: __dirname+'./uploads/'
+}));
 
 // Use directories for the client
 app.use(express.static(__dirname + '/app'));
@@ -34,20 +40,20 @@ if(process.env.NODE_ENV === 'production') {
    // Redirect all http requests to https
    // If environment is development, remove the port
    app.use(function(req, res, next) {
-   	var protocol = req.protocol;
-   	if (config.usessl) {
-   		if (!req.secure) {
-   		    if(process.env.NODE_ENV === 'development') {
-   		      return res.redirect('https://localhost' + req.url);
-   		    } else {
-   		      return res.redirect('https://' + req.headers.host + req.url);
-   		    }
-   		} else {
-   		    return next();
-   		}
-   	} else {
-   		return next();
-   	}
+      var protocol = req.protocol;
+      if (config.usessl) {
+         if (!req.secure) {
+            if(process.env.NODE_ENV === 'development') {
+               return res.redirect('https://localhost' + req.url);
+            } else {
+               return res.redirect('https://' + req.headers.host + req.url);
+            }
+         } else {
+            return next();
+         }
+      } else {
+         return next();
+      }
    });
 }
 
@@ -62,16 +68,16 @@ db.bind('offers');
 db.bind('needs');
 db.bind('categories');
 db.bind('matches');
-db.bind('fbusers');
+db.bind('users');
 
 // Root uri for the Angular webapp
 app.get('/', function(req, res) {
-  res.sendfile(__dirname + '/app/index.html');
+   res.sendfile(__dirname + '/app/index.html');
 });
 
 // Root uri for the FB-app
 app.get('/fb/', function(req, res) {
-  res.sendfile(__dirname + '/fb/index.html');
+   res.sendfile(__dirname + '/fb/index.html');
 });
 
 // Post route required for embedding in Facebook
@@ -84,8 +90,8 @@ app.get('/fb/notification', function(req, res) {
 });
 
 /*
- * CRUD: Needs
- */
+* CRUD: Needs
+*/
 
 // FIND
 app.get(apiPrefix+'/needs', function(req, res) {
@@ -95,6 +101,7 @@ app.get(apiPrefix+'/needs', function(req, res) {
    });
 });
 
+// UPDATE
 app.put(apiPrefix+'/needs/:id', function(req, res) {
    db.needs.update({ _id: new ObjectID(req.params.id)}, { $set: req.body }, function(err, docs) {
       if(err) throw err;
@@ -104,41 +111,47 @@ app.put(apiPrefix+'/needs/:id', function(req, res) {
 
 // FIND ONE
 app.get(apiPrefix+'/needs/:id', function(req, res) {
-  //req.params.id
-  db.needs.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
-    if(err) throw err;
-    res.send(docs);
-  });
+   //req.params.id
+   db.needs.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
 });
 
 // CREATE
 app.post(apiPrefix+'/needs', function(req, res) {
-  db.needs.insert(req.body, function(err, docs) {
-    if(err) throw err;
-    console.log(docs);
-    res.send(200);
-  });
+   db.needs.insert(req.body, function(err, docs) {
+      if(err) throw err;
+      console.log(docs);
+      res.send(200);
+   });
 });
 
 // DELETE
 app.delete(apiPrefix+'/needs/:id', function(req, res) {
-  //req.params.id
-  db.needs.remove({ _id: new ObjectID(req.params.id) }, function(err, docs) {
-    if(err) throw err;
-    res.send(docs);
-  });
+   //req.params.id
+   db.needs.remove({ _id: new ObjectID(req.params.id) }, function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
+});
+
+// UPLOAD NEED IMAGE
+app.post(apiPrefix+'/needs/upload', function(req, res) {
+   console.log(req.body)
+   console.log(req.files)
 });
 
 /*
- * CRUD: Offers
- */
+* CRUD: Offers
+*/
 
- // FIND
+// FIND
 app.get(apiPrefix+'/offers', function(req, res) {
-	db.offers.find().sort({_id:-1}).toArray(function(err, docs) {
-   if(err) throw err;
-   res.send(docs);
- });
+   db.offers.find().sort({_id:-1}).toArray(function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
 });
 
 // // FIND BY FB USER ID
@@ -151,18 +164,18 @@ app.get(apiPrefix+'/offers', function(req, res) {
 
 // FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {
-  db.offers.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
-    if(err) throw err;
-    res.send(docs);
-  });
+   db.offers.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
 });
 
 // CREATE
 app.post(apiPrefix+'/offers', function(req, res) {
-  db.offers.insert(req.body, function(err, docs) {
-    if(err) throw err;
-    res.send(200);
-  });
+   db.offers.insert(req.body, function(err, docs) {
+      if(err) throw err;
+      res.send(200);
+   });
 });
 
 // UPDATE
@@ -175,16 +188,16 @@ app.put(apiPrefix+'/offers/:id', function(req, res) {
 
 // DELETE
 app.delete(apiPrefix+'/offers/:id', function(req, res) {
-  //req.params.id
-  db.offers.remove({ _id: new ObjectID(req.params.id) }, function(err, docs) {
-    if(err) throw err;
-    res.send(docs);
-  });
+   //req.params.id
+   db.offers.remove({ _id: new ObjectID(req.params.id) }, function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
 });
 
 /*
- * CRUD: Matches
- */
+* CRUD: Matches
+*/
 
 app.post(apiPrefix+'/matches', function(req, res) {
    var postData = req.body;
@@ -213,8 +226,8 @@ app.get(apiPrefix+'/matches', function(req, res) {
 });
 
 /*
- * Categories
- */
+* Categories
+*/
 
 // FIND
 app.get(apiPrefix+'/categories', function(req, res) {
@@ -225,20 +238,20 @@ app.get(apiPrefix+'/categories', function(req, res) {
 });
 
 /*
- * Facebook users
- */
+* Facebook users
+*/
 // FINE ONE
-app.get(apiPrefix+'/fbusers/:id', function(req, res) {
-   db.fbusers.findOne({ userID: req.params.userID }, function(err, docs) {
+app.get(apiPrefix+'/users/:id', function(req, res) {
+   db.users.findOne({ userID: req.params.userID }, function(err, docs) {
       if(err) throw err;
       res.send(docs);
    });
 });
 
 // Save to the database if not already exists (upsert true)
-app.put(apiPrefix+'/fbusers/:userID', function(req, res) {
+app.put(apiPrefix+'/users/:userID', function(req, res) {
    console.log(req.params);
-   db.fbusers.update({ userID: req.params.userID }, { userID: req.params.userID }, { upsert: true }, function(err, docs) {
+   db.users.update({ userID: req.params.userID }, { userID: req.params.userID }, { upsert: true }, function(err, docs) {
       if(err) throw err;
       res.send(200);
    });
@@ -251,54 +264,54 @@ app.get(apiPrefix+'/resetdb', function(req, res) {
    db.offers.remove({}, function() {});
    db.matches.remove({}, function() {});
    db.categories.remove({}, function() {});
-   db.fbusers.remove({}, function() {});
+   db.users.remove({}, function() {});
 
    db.needs.insert([
       { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten", created: new Date() },
       { title : "Tweepersoonsbank", description : "Het liefst een bank die ook te demonteren is.", category : "Meubilair", type: "Goederen", created: new Date() },
       { title : "Keukengerei", description : "Diverse keukenhulpmiddelen zijn nodig. Bestek, pannen, borden, koppen en mokken.", category : "Keuken", type: "Goederen", created: new Date() },
       { title : "Vervangende laptop", description : "Een tijdelijk laptop waarop internetverbinding werkt.", category : "Elektronica", type: "Goederen", created: new Date() }
-   ], function(err, docs) {
-      if(err) throw err;
-   });
+      ], function(err, docs) {
+         if(err) throw err;
+      });
 
-   db.offers.insert([
-      { title: "Ik kan helpen met het leggen van laminaat", description: "Op woensdagen zou ik kunnen komen helpen", category: "Bouw", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
-},
+      db.offers.insert([
+         { title: "Ik kan helpen met het leggen van laminaat", description: "Op woensdagen zou ik kunnen komen helpen", category: "Bouw", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+      },
       { title: "Leren fauteuil met uiklapbaar voetenbankje", description: "Weegt ongeveer 15kg in de kleur bruin", category: "Meubilair", deliver: true, type: "Goederen", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+   },
+   { title: "Pannenset van Ikea", description: "De pannen passen in elkaar.", category: "Keuken", deliver: true, type: "Goederen", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-      { title: "Pannenset van Ikea", description: "De pannen passen in elkaar.", category: "Keuken", deliver: true, type: "Goederen", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+{ title: "Kluservaring", description: "Ik heb ervaring met het monteren en verbouwen van keukens.", category: "Keuken", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-      { title: "Kluservaring", description: "Ik heb ervaring met het monteren en verbouwen van keukens.", category: "Keuken", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+{ title: "Bordenset", description: "Het zijn witte diepe borden", category: "Keuken", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-      { title: "Bordenset", description: "Het zijn witte diepe borden", category: "Keuken", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+{ title: "Koken", description: "Iedere dinsdag en donderdag biedt ik mij aan om een maaltijd voor te bereiden", created: new Date(), category: "Maaltijden", type: "Diensten", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-      { title: "Koken", description: "Iedere dinsdag en donderdag biedt ik mij aan om een maaltijd voor te bereiden", created: new Date(), category: "Maaltijden", type: "Diensten", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
-},
-   ], function(err, docs) {
-      if(err) throw err;
-   });
+], function(err, docs) {
+   if(err) throw err;
+});
 
-   db.categories.insert([
-      { type: 'Goederen', name: "Algemeen"},
-      { type: 'Goederen', name: "Kleding"},
-      { type: 'Goederen', name: "Hygiëne"},
-      { type: 'Goederen', name: "Voedsel"},
-      { type: 'Goederen', name: "Elektronica"},
-      { type: 'Goederen', name: "Maaltijden"},
-      { type: 'Goederen', name: "Meubilair"},
-      { type: 'Goederen', name: "Gereedschap"},
-      { type: 'Goederen', name: "Speelgoed"},
-      { type: 'Goederen', name: "Keuken"},
-      { type: 'Diensten', name: "Onderdak"},
-      { type: 'Diensten', name: "Elektricien"},
-      { type: 'Diensten', name: "Loodgieter"},
-      { type: 'Diensten', name: "Bouw" },
-      { type: 'Diensten', name: "Financieel"},
-      { type: 'Diensten', name: "Juridisch"},
-      { type: 'Diensten', name: "Medische begeleiding"},
-      { type: 'Diensten', name: "Vertaling"},
-      { type: 'Diensten', name: "Vervoer"},
+db.categories.insert([
+   { type: 'Goederen', name: "Algemeen"},
+   { type: 'Goederen', name: "Kleding"},
+   { type: 'Goederen', name: "Hygiëne"},
+   { type: 'Goederen', name: "Voedsel"},
+   { type: 'Goederen', name: "Elektronica"},
+   { type: 'Goederen', name: "Maaltijden"},
+   { type: 'Goederen', name: "Meubilair"},
+   { type: 'Goederen', name: "Gereedschap"},
+   { type: 'Goederen', name: "Speelgoed"},
+   { type: 'Goederen', name: "Keuken"},
+   { type: 'Diensten', name: "Onderdak"},
+   { type: 'Diensten', name: "Elektricien"},
+   { type: 'Diensten', name: "Loodgieter"},
+   { type: 'Diensten', name: "Bouw" },
+   { type: 'Diensten', name: "Financieel"},
+   { type: 'Diensten', name: "Juridisch"},
+   { type: 'Diensten', name: "Medische begeleiding"},
+   { type: 'Diensten', name: "Vertaling"},
+   { type: 'Diensten', name: "Vervoer"},
    ], function(err, docs) {
       if(err) throw err;
    });
@@ -311,28 +324,28 @@ db.close();
 /* Get Facebook app acces token server side. Because it is
 
 /*
- * HTTPS and SSL configuration
- * Set certicicates and start SSL server
- */
+* HTTPS and SSL configuration
+* Set certicicates and start SSL server
+*/
 if (config.usessl) {
 
-  var sslconfig = {};
-  if(config.hasOwnProperty('pfx_file')){
-    sslconfig.pfx = fs.readFileSync(path.resolve(__dirname, config.pfx_file), 'UTF-8');
-  }
-  else if (config.hasOwnProperty('key_file') && config.hasOwnProperty('cert_file')){
-    sslconfig.key = fs.readFileSync(path.resolve(__dirname, config.key_file), 'UTF-8');
-    sslconfig.cert = fs.readFileSync(path.resolve(__dirname, config.cert_file), 'UTF-8');
-  }
+   var sslconfig = {};
+   if(config.hasOwnProperty('pfx_file')){
+      sslconfig.pfx = fs.readFileSync(path.resolve(__dirname, config.pfx_file), 'UTF-8');
+   }
+   else if (config.hasOwnProperty('key_file') && config.hasOwnProperty('cert_file')){
+      sslconfig.key = fs.readFileSync(path.resolve(__dirname, config.key_file), 'UTF-8');
+      sslconfig.cert = fs.readFileSync(path.resolve(__dirname, config.cert_file), 'UTF-8');
+   }
 
-  if(secrets.certificate.passphrase) {
-    sslconfig.passphrase = secrets.certificate.passphrase;
-  }
+   if(secrets.certificate.passphrase) {
+      sslconfig.passphrase = secrets.certificate.passphrase;
+   }
 
-  https.createServer(sslconfig, app).listen(config.sslport);
+   https.createServer(sslconfig, app).listen(config.sslport);
 
-  // https start
-  console.log('Application started on port ' + config.sslport);
+   // https start
+   console.log('Application started on port ' + config.sslport);
 }
 
 // http start as well
