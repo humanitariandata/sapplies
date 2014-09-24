@@ -21,21 +21,6 @@
       </div>
    </div>
 </div>
-<!-- <div class="row">
-<div class="col-md-12">
-<h3>Hulpvraag &amp; aanbod koppelen</h3>
-</div>
-<div class="col-xs-12 col-md-6">
-<div class="well well-sm" data-animate-on-change="match.need.title">
-<p>{{match.need.title || '[Selecteer een hulpvraag]'}}</p>
-</div>
-</div>
-<div class="col-xs-12 col-md-6">
-<div class="well well-sm" data-animate-on-change="match.offer.title">
-<p>{{match.offer.title || '[Selecteer een hulpaanbod]'}}</p>
-</div>
-</div>
-</div> -->
 
 <section>
    <div class="row">
@@ -116,9 +101,10 @@
         <dt>Aangemaakt</dt>
         <dd>{{detailItem.created | date: "dd-MM-yyyy 'om' hh:mm"}}</dd>
       </dl>
+      <img class="img-responsive img-rounded" data-ng-show="detailItem.image" width="100%" data-ng-src="./uploads/{{detailItem.image.name}}" alt="" />
    </div>
    <div class="modal-body">
-      <h3>Hulpaanbieder</h3>
+      <h4 class="modal-title">Hulpaanbieder</h4>
       <img class="img-thumbnail fb-profilepic" data-ng-src="{{detailItem.fb.picture}}" alt="" />
       {{detailItem.fb.name}}
       <p><a href="{{detailItem.fb.link}}">Contacteer hulpaanbieder</a></p>

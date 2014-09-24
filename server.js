@@ -21,12 +21,13 @@ app.use(bodyParser.json());
 
 // Multer for getting multipart/form-data
 app.use(multer({
-   dest: __dirname+'./uploads/'
+   dest: __dirname+'/uploads/'
 }));
 
 // Use directories for the client
 app.use(express.static(__dirname + '/app'));
 app.use(express.static(__dirname + '/fb'));
+app.use(express.static(__dirname + '/')); // to reach the /uploads folder
 
 /*
 To run local use http://localhost instead of https. Otherwise ssl error.
@@ -137,9 +138,9 @@ app.delete(apiPrefix+'/needs/:id', function(req, res) {
 });
 
 // UPLOAD NEED IMAGE
-app.post(apiPrefix+'/needs/upload', function(req, res) {
-   console.log(req.body)
-   console.log(req.files)
+app.post(apiPrefix+'/offers/upload', function(req, res) {
+   console.log(req.files);
+   res.send(req.files);
 });
 
 /*
@@ -153,14 +154,6 @@ app.get(apiPrefix+'/offers', function(req, res) {
       res.send(docs);
    });
 });
-
-// // FIND BY FB USER ID
-// app.get(apiPrefix+'/offers', function(req, res) {
-//    db.offers.find({ "" }).sort({_id:-1}).toArray(function(err, docs) {
-//    if(err) throw err;
-//    res.send(docs);
-//  });
-// });
 
 // FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {

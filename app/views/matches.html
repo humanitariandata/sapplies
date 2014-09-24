@@ -17,19 +17,18 @@
                   <accordion-heading>
                      {{offer.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
                   </accordion-heading>
-                     <div class="col-md-6">
-                        <h4><i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
-                        <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i> {{offer.title}}</h4>
-                        <p>{{offer.description}}</p>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="panel panel-default">
-                           <div class="panel-body">
-                              <h4><i class="fa fa-facebook-square"></i> Hulpaanbieder</h4>
-                              <img class="img-thumbnail fb-profilepic" data-ng-src="{{offer.fb.picture}}" alt="" />
-                              {{offer.fb.name}}
-                              <p><a href="{{offer.fb.link}}" target="_blank">Contacteer hulpaanbieder</a></p>
-                           </div>
+                  <div class="col-md-6">
+                     <h4><i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
+                     <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i> {{offer.title}}</h4>
+                     <p>{{offer.description}}</p>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="panel panel-default">
+                        <div class="panel-body">
+                           <h4><i class="fa fa-facebook-square"></i> Hulpaanbieder</h4>
+                           <img class="img-thumbnail fb-profilepic" data-ng-src="{{offer.fb.picture}}" alt="" />
+                           {{offer.fb.name}}
+                           <p><a href="{{offer.fb.link}}" target="_blank">Contacteer hulpaanbieder</a></p>
                         </div>
                      </div>
                   </div>

@@ -37,8 +37,6 @@ a {
    }
 }
 
-.angular-google-map-container { height: 400px; }
-
 .fb-btn, .fb-btn:focus, .fb-btn:hover {
    background-color:#3b5998;
 }
@@ -55,16 +53,6 @@ a {
 .collapsing {
     -webkit-transition: none;
     transition: none;
-}
-
-/* Animation for directive model change */
-
-.change {
-   background-color: lighten($base-color, 15%);
-}
-.change-add, .change-remove {
-   transition: all .3s;
-   -webkit-transition: all .3s ease-in-out;
 }
 
 /* Animations - default from: https://docs.angularjs.org/guide/animations */
