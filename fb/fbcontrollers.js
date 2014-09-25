@@ -66,11 +66,15 @@ fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'Step
 }]);
 
 // Step 3
-fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', 'StepResourceService', function($scope, $resource, $modal, StepResourceService) {
+fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$location', 'StepResourceService', function($scope, $resource, $modal, $location, StepResourceService) {
 
    $scope.pickedNeed = StepResourceService.getNeed();
    $scope.createDonation = StepResourceService.getDonation();
-   console.log($scope.createDonation);
+
+   $scope.goBack = function() {
+      StepResourceService.setDonation($scope.createDonation);
+      $location.path('/donate');
+   }
 
    $scope.confirm = function() {
       $resource('api/v1/offers/:id').save($scope.createDonation);
