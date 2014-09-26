@@ -15,12 +15,17 @@
             <accordion close-others="true">
                <accordion-group ng-repeat="offer in match.offers">
                   <accordion-heading>
+                     <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i><i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
                      {{offer.title}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
                   </accordion-heading>
                   <div class="col-md-6">
-                     <h4><i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
-                     <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i> {{offer.title}}</h4>
                      <p>{{offer.description}}</p>
+                     <dl class="dl">
+                          <dt>Categorie</dt>
+                          <dd><span class="label label-default">{{offer.category}}</span></dd>
+                         <dt>Aangemaakt</dt>
+                         <dd>{{offer.created | date: "dd-MM-yyyy 'om' hh:mm"}}</dd>
+                      </dl>
                   </div>
                   <div class="col-md-6">
                      <div class="panel panel-default">

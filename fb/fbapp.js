@@ -72,7 +72,8 @@ fbApp.directive('ngThumb', ['$window', function($window) {
 
 fbApp.factory('StepResourceService', function() {
    var need = {},
-      donation = {};
+      donation = {},
+      fbPage = {};
 
    return {
       setNeed: function(setNeed) { need = setNeed; },
@@ -81,6 +82,8 @@ fbApp.factory('StepResourceService', function() {
       getFB: function() { return donation.fb; },
       setDonation: function(setDonation) { donation = setDonation; },
       getDonation: function() { return donation; },
-      setDonationImage: function(setImage) { donation.image = { name: setImage } }
+      setDonationImage: function(setImage) { donation.image = { name: setImage } },
+      setFBPage: function(page) { fbPage = page },
+      getFBPage: function() { return fbPage; },
    }
 });

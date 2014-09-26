@@ -34,7 +34,7 @@
                         <td><img data-ng-src="{{page.picture}}" alt="" /></td>
                         <td>{{page.name}}</td>
                         <td>
-                           <button type="button" class="btn btn-default" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage()">{{FacebookStatus.connected && 'Reeds gekoppeld.' ||'Koppel'}}</button>
+                           <button type="button" class="btn btn-default" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage(page)">{{FacebookStatus.connected && 'Reeds gekoppeld.' ||'Koppel'}}</button>
                         </td>
                      </tr>
                   </tbody>

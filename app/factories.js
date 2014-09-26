@@ -5,10 +5,11 @@
 sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 	return {
 		Offer: $resource('api/v1/offers/:id', {}, { update: {	method: 'PUT' } }),
-		Need: $resource('api/v1/needs/:id', {}, { update: {	method: 'PUT' } }),
+		Need: $resource('api/v1/needs/:id', {}, { update: { method: 'PUT' } }),
 		Category: $resource('api/v1/categories/:id'),
 		Match: $resource('api/v1/matches/:id'),
-		User: $resource('api/v1/users/:userID', { userID: '@userID'}, { update: {	method: 'PUT' } })
+		User: $resource('api/v1/users/:userID', { userID: '@userID'}, { update: {	method: 'PUT' } }),
+		ReliefEffort: $resource('api/v1/reliefefforts/:id', {}, { update: { method: 'PUT' } })
 	};
 }]);
 

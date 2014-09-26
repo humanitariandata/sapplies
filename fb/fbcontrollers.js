@@ -26,6 +26,11 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
       }
    });
 
+   Facebook.api('339468399539706/?fields=link,id', function(response) {
+      StepResourceService.setFBPage(response);
+      console.log(StepResourceService.getFBPage());
+   });
+
    $scope.pickedNeed = function(pickedNeed, index) {
       StepResourceService.setNeed(pickedNeed);
       StepResourceService.setFB($scope.createDonation.fb);
@@ -70,6 +75,7 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
 
    $scope.pickedNeed = StepResourceService.getNeed();
    $scope.createDonation = StepResourceService.getDonation();
+   $scope.fbPage = StepResourceService.getFBPage();
 
    $scope.goBack = function() {
       StepResourceService.setDonation($scope.createDonation);
@@ -86,6 +92,9 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
          resolve: {
             donation: function () {
                return $scope.createDonation;
+            },
+            fbPageLink: function() {
+               return $scope.fbPage.link;
             }
          }
       });
@@ -93,8 +102,18 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
 
 }]);
 
-var ConfirmationModalInstanceCtrl = function($scope, $modalInstance, $location, donation) {
+var ConfirmationModalInstanceCtrl = function($scope, $modalInstance, $location, donation, fbPageLink, Facebook) {
+
    $scope.donation = donation;
+   $scope.fbPageLink = fbPageLink;
+
+   $scope.shareOnFacebook = function() {
+      Facebook.ui({
+         method: 'share',
+         href: $scope.fbPageLink,
+      }, function(response){});
+   }
+
    $scope.ok = function() {
       $location.path('/main');
       $modalInstance.dismiss();
@@ -118,43 +137,7 @@ var UploadController = function($scope, FileUploader, StepResourceService) {
    });
 
    // CALLBACKS
-
-   // uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-   //    console.info('onWhenAddingFileFailed', item, filter, options);
-   // };
-   // uploader.onAfterAddingFile = function(fileItem) {
-   //    console.info('onAfterAddingFile', fileItem);
-   // };
-   // uploader.onAfterAddingAll = function(addedFileItems) {
-   //    console.info('onAfterAddingAll', addedFileItems);
-   // };
-   // uploader.onBeforeUploadItem = function(item) {
-   //    console.info('onBeforeUploadItem', item);
-   // };
-   // uploader.onProgressItem = function(fileItem, progress) {
-   //    console.info('onProgressItem', fileItem, progress);
-   // };
-   // uploader.onProgressAll = function(progress) {
-   //    console.info('onProgressAll', progress);
-   // };
    uploader.onSuccessItem = function(fileItem, response, status, headers) {
-      console.log(response);
       StepResourceService.setDonationImage(response.file.name);
-      console.log('###');
-      console.log(StepResourceService.getDonation());
    };
-   // uploader.onErrorItem = function(fileItem, response, status, headers) {
-   //    console.info('onErrorItem', fileItem, response, status, headers);
-   // };
-   // uploader.onCancelItem = function(fileItem, response, status, headers) {
-   //    console.info('onCancelItem', fileItem, response, status, headers);
-   // };
-   // uploader.onCompleteItem = function(fileItem, response, status, headers) {
-   //    console.info('onCompleteItem', fileItem, response, status, headers);
-   // };
-   // uploader.onCompleteAll = function() {
-   //    console.info('onCompleteAll');
-   // };
-   //
-   // console.info('uploader', uploader);
 };

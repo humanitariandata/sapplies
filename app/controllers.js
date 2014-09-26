@@ -234,6 +234,7 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
 
    function isAppConnectedToPage(pageid) {
       Facebook.api('/'+pageid+'/tabs', function(response) {
+         console.log(response);
          if (response && !response.error) {
             response.data.some(function(tab) {
                if(tab.hasOwnProperty('application')) {
@@ -277,12 +278,12 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
       });
    }());
 
-   $scope.connectAppToPage = function() {
+   $scope.connectAppToPage = function(page) {
       Facebook.ui({
          method: 'pagetab',
          redirect_uri: 'https://sapplies.rodekruis.nl/fb'
-      }, function(response) {
-         // UPDATE UI
+      }, function() {
+         RESTResourceProvider.ReliefEffort.save({ facebookPage: page.name, pageId: page.id });
       });
    }
 
@@ -334,16 +335,14 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
             $scope.FacebookStatus.loggedIn = true;
 
             // Save to the database if not already exists (upsert true)
-            RESTResourceProvider.User.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID, blaat: 'blaat' }, function() {
-               // done
-            });
+            RESTResourceProvider.User.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID });
          } else {
             FB.login(function(response) {
                if (response.status === 'connected') {
                   $scope.FacebookStatus.loggedIn = true;
 
                   // Save to the database if not already exists (upsert true)
-                  RESTResourceProvider.User.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID, blaat: 'blaat' });
+                  RESTResourceProvider.User.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID });
                } else {
                   $scope.FacebookStatus.loggedIn = false;
                }

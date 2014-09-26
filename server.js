@@ -70,6 +70,7 @@ db.bind('needs');
 db.bind('categories');
 db.bind('matches');
 db.bind('users');
+db.bind('reliefefforts');
 
 // Root uri for the Angular webapp
 app.get('/', function(req, res) {
@@ -86,12 +87,13 @@ app.post('/fb/', function(req, res) {
    res.sendfile(__dirname + '/fb/index.html');
 });
 
+// Route for a page when the user clicked on a notification in Facebook
 app.get('/fb/notification', function(req, res) {
    res.sendfile(__dirname + '/fb/notification.html');
 });
 
 /*
-* CRUD: Needs
+* Model routes: Needs
 */
 
 // FIND
@@ -137,14 +139,8 @@ app.delete(apiPrefix+'/needs/:id', function(req, res) {
    });
 });
 
-// UPLOAD NEED IMAGE
-app.post(apiPrefix+'/offers/upload', function(req, res) {
-   console.log(req.files);
-   res.send(req.files);
-});
-
 /*
-* CRUD: Offers
+* Model routes: Offers
 */
 
 // FIND
@@ -188,15 +184,22 @@ app.delete(apiPrefix+'/offers/:id', function(req, res) {
    });
 });
 
+// UPLOAD IMAGE
+app.post(apiPrefix+'/offers/upload', function(req, res) {
+   console.log(req.files);
+   res.send(req.files);
+});
+
 /*
-* CRUD: Matches
+* Model routes: Matches
 */
 
+// CREATE a new match. Insert if not exists otherwise update the document
 app.post(apiPrefix+'/matches', function(req, res) {
    var postData = req.body;
 
-   db.matches.find({ "need.title": postData.need.title}).count(function(err, c) {
-      if(c == 0) {
+   db.matches.find({ "need.title": postData.need.title}).count(function(err, m) {
+      if(m == 0) {
          db.matches.insert(postData, function(err, docs) {
             if(err) throw err;
             res.send(200);
@@ -219,7 +222,7 @@ app.get(apiPrefix+'/matches', function(req, res) {
 });
 
 /*
-* Categories
+* Model routes: Categories
 */
 
 // FIND
@@ -231,8 +234,17 @@ app.get(apiPrefix+'/categories', function(req, res) {
 });
 
 /*
-* Facebook users
+* Model routes: Users
 */
+
+// CREATE
+app.post(apiPrefix+'/users', function(req, res) {
+   db.users.insert(req.body, function(err, docs) {
+      if(err) throw err;
+      res.send(200);
+   });
+});
+
 // FINE ONE
 app.get(apiPrefix+'/users/:id', function(req, res) {
    db.users.findOne({ userID: req.params.userID }, function(err, docs) {
@@ -250,6 +262,26 @@ app.put(apiPrefix+'/users/:userID', function(req, res) {
    });
 });
 
+/*
+* Model routes: ReliefEfforts
+*/
+
+// CREATE
+app.post(apiPrefix+'/reliefefforts', function(req, res) {
+   db.reliefefforts.insert(req.body, function(err, docs) {
+      if(err) throw err;
+      res.send(200);
+   });
+});
+
+// FIND
+app.get(apiPrefix+'/reliefefforts', function(req, res) {
+   db.reliefefforts.find().sort({ id: -1 }).toArray(function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
+});
+
 // A route for resetting the database and injecting fake data
 app.get(apiPrefix+'/resetdb', function(req, res) {
 
@@ -257,7 +289,6 @@ app.get(apiPrefix+'/resetdb', function(req, res) {
    db.offers.remove({}, function() {});
    db.matches.remove({}, function() {});
    db.categories.remove({}, function() {});
-   db.users.remove({}, function() {});
 
    db.needs.insert([
       { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten", created: new Date() },
@@ -313,8 +344,6 @@ db.categories.insert([
 
 // Close the db connection
 db.close();
-
-/* Get Facebook app acces token server side. Because it is
 
 /*
 * HTTPS and SSL configuration

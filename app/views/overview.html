@@ -26,7 +26,7 @@
    <div class="row">
       <div class="col-md-6">
          <div class="panel panel-default">
-            <div class="panel-heading"><h4>Hulpvragen <span class="label label-primary">{{filteredNeeds.length}}</span></h4></div>
+            <div class="panel-heading"><h4>Hulpvragen <span class="badge">{{filteredNeeds.length}}</span></h4></div>
 
             <div class="list-group overflow-column">
                <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in filteredNeeds = (needs | filter:byText | filter:byCategory | filter:bySuppliesServices)">
@@ -52,7 +52,7 @@
 
          <div class="col-md-6">
             <div class="panel panel-default">
-               <div class="panel-heading"><h4>Hulpaanbod <span class="label label-primary">{{filteredOffers.length}}</span></h4></div>
+               <div class="panel-heading"><h4>Hulpaanbod <span class="badge">{{filteredOffers.length}}</span></h4></div>
                <div class="list-group overflow-column">
                   <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices)">
                      <h4 class="list-group-item-heading">
@@ -69,7 +69,7 @@
                         <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
                            <span class="glyphicon glyphicon-remove"></span> Verwijder
                         </button>
-                        <span class="glyphicon glyphicon-ok pull-right" data-ng-show="offer.matched"></span>
+                        <span class="glyphicon glyphicon-link pull-right" data-ng-show="offer.matched"></span>
                      </p>
                      <p class="list-group-item-text">
                         <button type="submit" class="btn btn-primary btn-sm"
@@ -94,14 +94,21 @@
        <i class="fa fa-user-md" data-ng-show="detailItem.type == 'Diensten'"></i>
        {{detailItem.title}}</h3>
        <p>{{detailItem.description}}</p>
-       <span class="label label-default">{{detailItem.category}}</span>
-       <dl class="dl dl-horizontal">
-        <dt>Gekoppeld</dt>
-        <dd>{{detailItem.matched && 'Ja' || 'Nee' }}</dd>
-        <dt>Aangemaakt</dt>
-        <dd>{{detailItem.created | date: "dd-MM-yyyy 'om' hh:mm"}}</dd>
-      </dl>
-      <img class="img-responsive img-rounded" data-ng-show="detailItem.image" width="100%" data-ng-src="./uploads/{{detailItem.image.name}}" alt="" />
+       <div class="row">
+       <div class="col-sm-6">
+          <dl class="dl">
+               <dt>Categorie</dt>
+               <dd><span class="label label-default">{{detailItem.category}}</span></dd>
+              <dt data-ng-show="detailItem.matched">Gekoppeld</dt>
+              <dd data-ng-show="detailItem.matched"><span class="glyphicon glyphicon-link"></span></dd>
+              <dt>Aangemaakt</dt>
+              <dd>{{detailItem.created | date: "dd-MM-yyyy 'om' hh:mm"}}</dd>
+            </dl>
+         </div>
+         <div class="col-sm-6">
+            <img class="img-responsive img-rounded image-preview" data-ng-show="detailItem.image" data-ng-src="./uploads/{{detailItem.image.name}}" alt="" />
+         </div>
+      </div>
    </div>
    <div class="modal-body">
       <h4 class="modal-title">Hulpaanbieder</h4>
