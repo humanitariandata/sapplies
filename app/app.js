@@ -26,7 +26,7 @@ sappliesApp.config(function($routeProvider, FacebookProvider) {
 		templateUrl: 'views/resetdb.html',
 		controller: 'ResetDBController'
 	}).
-	otherwise({ redirectTo: '/overview' });
+	otherwise({ redirectTo: '/login' });
 
 	// Init FacebookProvider with fb app id
 	FacebookProvider.init('339468399539706');
