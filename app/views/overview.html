@@ -8,7 +8,7 @@
    <div class="col-sm-3">
       <div class="form-group">
          <label for="form-category">Categorie</label>
-         <select data-ng-model="byCategory" data-ng-options="category.name as category.name group by category.type for category in categories" class="form-control" id="form-category">
+         <select data-ng-model="byCategory" data-ng-options="category.name as category.name group by category.type for category in categories | filter: bySuppliesServices" class="form-control" id="form-category">
             <option value="">Filter op categorie</option>
          </select>
       </div>
