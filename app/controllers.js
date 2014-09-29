@@ -3,7 +3,7 @@
 - Matching needs and offers
 - filtering / sorting
 */
-sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 'RESTResourceProvider', 'Facebook', 'AppSettings', function($scope, $location, $modal, RESTResourceProvider, Facebook, AppSettings) {
+sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', '$cookieStore', 'RESTResourceProvider', 'Facebook', 'AppSettings', function($scope, $location, $modal, $cookieStore, RESTResourceProvider, Facebook, AppSettings) {
    // Query the resources
    $scope.offers = RESTResourceProvider.Offer.query();
    $scope.needs = RESTResourceProvider.Need.query();
@@ -118,7 +118,9 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
    }
 
    $scope.confirmMatch = function(offer) {
+      console.log();
       var postPayload = {
+         FBPageId: $cookieStore.get('selectedPage').id,
          need: $scope.match.need,
          offers: [$scope.match.offer] // has to be an array
       };
@@ -130,9 +132,9 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       $scope.match.offer = null;
 
       // Facebook Notification
-      Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Jouw hulpaanbod is gekoppeld aan de hulpvraag. De initiatiefnemer neemt binnenkort contact met je op!'},function(response) {
-         console.log(response);
-      });
+      // Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Jouw hulpaanbod is gekoppeld aan de hulpvraag. De initiatiefnemer neemt binnenkort contact met je op!'},function(response) {
+      //    console.log(response);
+      // });
    }
 }]);
 
@@ -160,7 +162,7 @@ var EditNeedModalInstanceCtrl = function($scope, $modalInstance, editItem, categ
 };
 
 // Controller for viewing and creating needs.
-sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
+sappliesApp.controller('CreateNeedController', [ '$scope', '$cookieStore', 'RESTResourceProvider', function($scope, $cookieStore, RESTResourceProvider) {
 
    $scope.categories = RESTResourceProvider.Category.query();
    $scope.alerts = [];
@@ -177,6 +179,7 @@ sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider
    $scope.saveNeed = function() {
       if ($scope.createNeedForm.$valid) {
          $scope.createNeed.created = new Date();
+         $scope.createNeed.FBPageId = $cookieStore.get('selectedPage').id;
 
          RESTResourceProvider.Need.save($scope.createNeed);
          $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
@@ -190,14 +193,16 @@ sappliesApp.controller('CreateNeedController', [ '$scope', 'RESTResourceProvider
    };
 }]);
 
-sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebook', function($scope, $location, Facebook) {
+sappliesApp.controller('FBManagementController', ['$scope', '$location', '$cookieStore', 'Facebook', function($scope, $location, $cookieStore, Facebook) {
+
+   $scope.selectedPage = $cookieStore.get('selectedPage');
 
    // Simple solution for authentication with Facebook.
    // This kind of checks should be handled by the $routeProvider in app.js or as a factory/service
    (function() {
       Facebook.getLoginStatus(function(response) {
          if(response.status === 'connected') {
-            $scope.loggedIn = true;
+            $scope.FacebookStatus = { loggedIn: true };
             fetchFBPages();
          } else {
             $location.path('/login');
@@ -240,17 +245,21 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', 'Facebo
                if(tab.hasOwnProperty('application')) {
                   // if facebook page has sapplies added
                   if(tab.application.id === '339468399539706') {
-                     $scope.connected = true;
+                     $scope.FacebookStatus.connected = true;
                      return true;
                   } else {
-                     $scope.connected = false;
+                     $scope.FacebookStatus.connected = false;
                      return false;
                   }
                }
             })
          }
       });
-   }
+   };
+
+   $scope.selectPage = function(page, index) {
+      $cookieStore.put('selectedPage', { id: page.id, name: page.name });
+   };
 }]);
 
 sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
@@ -259,7 +268,7 @@ sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', 
    });
 }]);
 
-sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceProvider', function($scope, Facebook, RESTResourceProvider) {
+sappliesApp.controller('LoginController', [ '$scope', '$cookieStore', 'Facebook', 'RESTResourceProvider', function($scope, $cookieStore, Facebook, RESTResourceProvider) {
 
    // Set default te prevent UI distortion by async calls
    $scope.FacebookStatus = { loggedIn: true };
@@ -283,6 +292,7 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
          method: 'pagetab',
          redirect_uri: 'https://sapplies.rodekruis.nl/fb'
       }, function() {
+         $scope.FacebookStatus.connected = true;
          RESTResourceProvider.ReliefEffort.save({ facebookPage: page.name, pageId: page.id });
       });
    }
@@ -336,6 +346,8 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
 
             // Save to the database if not already exists (upsert true)
             RESTResourceProvider.User.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID });
+
+            fetchPages();
          } else {
             FB.login(function(response) {
                if (response.status === 'connected') {
@@ -343,6 +355,8 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
 
                   // Save to the database if not already exists (upsert true)
                   RESTResourceProvider.User.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID });
+
+                  fetchPages();
                } else {
                   $scope.FacebookStatus.loggedIn = false;
                }
@@ -350,6 +364,10 @@ sappliesApp.controller('LoginController', [ '$scope', 'Facebook', 'RESTResourceP
          }
       });
    }
+
+   $scope.selectPage = function(page) {
+      $cookieStore.put('selectedPage', { id: page.id, name: page.name });
+   };
 }]);
 
 sappliesApp.controller('NavController', [ '$scope', '$location', function($scope, $location) {

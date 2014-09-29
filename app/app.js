@@ -1,4 +1,4 @@
-var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ngAnimate', 'ui.bootstrap', 'facebook']);
+var sappliesApp = angular.module('sapplies', ['ngRoute', 'ngResource', 'ngCookies', 'ngAnimate', 'ui.bootstrap', 'facebook']);
 sappliesApp.config(function($routeProvider, FacebookProvider) {
 	$routeProvider
 	.when('/login', {

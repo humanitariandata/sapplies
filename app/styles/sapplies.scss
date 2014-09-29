@@ -13,6 +13,10 @@ dd {
    margin-bottom: 20px;
 }
 
+.glyphicon-lg {
+   font-size: 2em;
+}
+
 .nav-bar {
    padding-top: 70px;
 }
@@ -20,7 +24,7 @@ dd {
 .overflow-column {
    overflow-y: auto;
    overflow-x: hidden;
-   height: 400px;
+   max-height: 800px;
 }
 
 .space-buffer {
@@ -37,6 +41,10 @@ dd {
          color: #fff;
       }
    }
+}
+
+.list-item-img {
+   margin-right: 10px;
 }
 
 .fb-btn, .fb-btn:focus, .fb-btn:hover {

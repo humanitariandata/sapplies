@@ -6,6 +6,7 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
    Facebook.getLoginStatus(function(response) {
       if(response.status === 'connected') {
          Facebook.api('me?fields=name,link,picture', { access_token: response.authResponse.accessToken }, function(response) {
+
             if (response && !response.error) {
 
                $scope.createDonation = {
@@ -83,6 +84,7 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
    }
 
    $scope.confirm = function() {
+      $scope.createDonation.FBPageId
       $resource('api/v1/offers/:id').save($scope.createDonation);
 
       var modalInstance = $modal.open({

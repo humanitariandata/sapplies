@@ -1,22 +1,12 @@
 <div class="row">
    <div class="col-md-12">
       <h2>Facebook-pagina hulpacties</h2>
-      <table class="table" data-ng-show="loggedIn">
-         <thead>
-            <tr>
-               <th colspan="2">Facebook-pagina</th>
-               <th>Status</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr data-ng-repeat="page in pages">
-               <td><img data-ng-src="{{page.picture}}" alt="" /></td>
-               <td>{{page.name}}</td>
-               <td>
-                  <button type="button" class="btn btn-default" data-ng-disabled="connected">{{connected && 'sApplies is reeds gekoppeld.' ||'Koppel'}}</button>
-               </td>
-            </tr>
-         </tbody>
-      </table>
+      <div class="list-group">
+        <a data-ng-click="selectPage(page, $index)" class="list-group-item" data-ng-repeat="page in pages">
+            <img class="img-thumbnail list-item-img pull-left" data-ng-src="{{page.picture}}" alt="">
+            <h4>{{page.name}}</h4>
+            <button type="button" class="btn btn-primary btn-sm" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage(page)">{{FacebookStatus.connected && 'Reeds gekoppeld.' ||'Koppel'}}</button>
+        </a>
+      </div>
    </div>
 </div>
