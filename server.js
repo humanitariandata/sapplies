@@ -72,21 +72,25 @@ db.bind('matches');
 db.bind('users');
 db.bind('reliefefforts');
 
-var SignedRequest = require('facebook-signed-request');
-SignedRequest.secret = "24f0ea5457d2e41bb5ca6aa84adf5eb4";
-var request = "stIFgpwKY3hrK2g93orgJ_NLo5Ubgf1gGjpR8bga7yA.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImNvZGUiOiJBUUE4SGc4QnA3eklJZHBBN0N0NjczMHlMTmlSUDhBdlJ1RjQyZmRabmVzZGsxMEdyRU9Vd2lNZWUtcGZRdUplaDJHQjVJX3FkU01qRTBzTlU1ak9zdFlsZFdkbWZDdHVDZ3k2a1k5Y3ktUmtrR193TFFqb3d4QzFYdFZLYUtBa0VRcnlqRzdWOXByODd6VGxsNk5Ed0hoWkhzbGNZdVA2MGotWFV5aXVEVjlYUlhyWXZWZzlHUW1wMUZPNjIxZmNVeElkR3g4STFJOWY2czVkN0FyeXV2NzNyM21ydmRLMmpTckpScnl0SlNuWXlRUHc4a2Y4RXRERlVMVG1uMFFtaGNERUpMTzBEaVFfaUV4N0JUeGNSVXVDbGxGX2Z6ZlV3QUJfYnVkdzhiZFh5TmNlV3hVQTNTZUV0REwwWGpOS09oV2pXRWNUOERiWHJUVTJaczUtTUt6XyIsImlzc3VlZF9hdCI6MTQxMjA3MjYxOCwidXNlcl9pZCI6IjkxNTA0NjA1NTE3ODY2MiJ9";
-var signedRequest = new SignedRequest( request );
+app.post('page', function(req, res) {
+   var SignedRequest = require('facebook-signed-request');
+   SignedRequest.secret = "24f0ea5457d2e41bb5ca6aa84adf5eb4";
+   var request = "stIFgpwKY3hrK2g93orgJ_NLo5Ubgf1gGjpR8bga7yA.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImNvZGUiOiJBUUE4SGc4QnA3eklJZHBBN0N0NjczMHlMTmlSUDhBdlJ1RjQyZmRabmVzZGsxMEdyRU9Vd2lNZWUtcGZRdUplaDJHQjVJX3FkU01qRTBzTlU1ak9zdFlsZFdkbWZDdHVDZ3k2a1k5Y3ktUmtrR193TFFqb3d4QzFYdFZLYUtBa0VRcnlqRzdWOXByODd6VGxsNk5Ed0hoWkhzbGNZdVA2MGotWFV5aXVEVjlYUlhyWXZWZzlHUW1wMUZPNjIxZmNVeElkR3g4STFJOWY2czVkN0FyeXV2NzNyM21ydmRLMmpTckpScnl0SlNuWXlRUHc4a2Y4RXRERlVMVG1uMFFtaGNERUpMTzBEaVFfaUV4N0JUeGNSVXVDbGxGX2Z6ZlV3QUJfYnVkdzhiZFh5TmNlV3hVQTNTZUV0REwwWGpOS09oV2pXRWNUOERiWHJUVTJaczUtTUt6XyIsImlzc3VlZF9hdCI6MTQxMjA3MjYxOCwidXNlcl9pZCI6IjkxNTA0NjA1NTE3ODY2MiJ9";
+   var signedRequest = new SignedRequest( request );
 
-signedRequest.parse(function(errors, request){
-  // check if request was valid
-  console.log(request.isValid());
+   signedRequest.parse(function(errors, request){
+     // check if request was valid
+     console.log(request.isValid());
 
-  // access errors
-  console.log(errors);
+     // access errors
+     console.log(errors);
 
-  // this is your data object
-  console.log(request.data);
+     // this is your data object
+     console.log(request.data);
+     res.send(request.data);
+   });
 });
+
 
 // Root uri for the Angular webapp
 app.get('/', function(req, res) {
