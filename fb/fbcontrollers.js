@@ -2,6 +2,7 @@
 fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', 'StepResourceService', 'Facebook', function($scope, $location, $resource, $timeout, StepResourceService, Facebook) {
 
    Facebook.getLoginStatus(function(response) {
+      console.log(response);
       if(response.status === 'connected') {
          Facebook.api('me?fields=name,link,picture', { access_token: response.authResponse.accessToken }, function(response) {
 
