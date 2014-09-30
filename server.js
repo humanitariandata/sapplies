@@ -97,15 +97,15 @@ app.get('/fb/notification', function(req, res) {
 */
 
 // FIND
-app.get(apiPrefix+'/needs', function(req, res) {
-   db.needs.find().sort({_id:-1}).toArray(function(err, docs) {
+app.get(apiPrefix+'/:FBPageId/needs', function(req, res) {
+   db.needs.find({ FBPageId: req.params.FBPageId }).sort({_id:-1}).toArray(function(err, docs) {
       if(err) throw err;
       res.send(docs);
    });
 });
 
 // UPDATE
-app.put(apiPrefix+'/needs/:id', function(req, res) {
+app.put(apiPrefix+'/:FBPageId/needs/:id', function(req, res) {
    db.needs.update({ _id: new ObjectID(req.params.id)}, { $set: req.body }, function(err, docs) {
       if(err) throw err;
       res.send(200);
@@ -144,8 +144,8 @@ app.delete(apiPrefix+'/needs/:id', function(req, res) {
 */
 
 // FIND
-app.get(apiPrefix+'/offers', function(req, res) {
-   db.offers.find().sort({_id:-1}).toArray(function(err, docs) {
+app.get(apiPrefix+'/:FBPageId/offers', function(req, res) {
+   db.offers.find({ FBPageId: req.params.FBPageId }).sort({_id:-1}).toArray(function(err, docs) {
       if(err) throw err;
       res.send(docs);
    });
@@ -168,7 +168,7 @@ app.post(apiPrefix+'/offers', function(req, res) {
 });
 
 // UPDATE
-app.put(apiPrefix+'/offers/:id', function(req, res) {
+app.put(apiPrefix+'/:FBPageId/offers/:id', function(req, res) {
    db.offers.update({ _id: new ObjectID(req.params.id)}, { $set: req.body }, function(err, docs) {
       if(err) throw err;
       res.send(200);
@@ -214,8 +214,8 @@ app.post(apiPrefix+'/matches', function(req, res) {
 });
 
 // FIND
-app.get(apiPrefix+'/matches', function(req, res) {
-   db.matches.find().sort({ id: -1 }).toArray(function(err, docs) {
+app.get(apiPrefix+'/:FBPageId/matches', function(req, res) {
+   db.matches.find({ FBPageId: "1460231750899428" }).sort({ id: -1 }).toArray(function(err, docs) {
       if(err) throw err;
       res.send(docs);
    });
@@ -291,26 +291,26 @@ app.get(apiPrefix+'/resetdb', function(req, res) {
    db.categories.remove({}, function() {});
 
    db.needs.insert([
-      { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten", created: new Date() },
-      { title : "Tweepersoonsbank", description : "Het liefst een bank die ook te demonteren is.", category : "Meubilair", type: "Goederen", created: new Date() },
-      { title : "Keukengerei", description : "Diverse keukenhulpmiddelen zijn nodig. Bestek, pannen, borden, koppen en mokken.", category : "Keuken", type: "Goederen", created: new Date() },
-      { title : "Vervangende laptop", description : "Een tijdelijk laptop waarop internetverbinding werkt.", category : "Elektronica", type: "Goederen", created: new Date() }
+      { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten", created: new Date(), FBPageId: "1460231750899428" },
+      { title : "Tweepersoonsbank", description : "Het liefst een bank die ook te demonteren is.", category : "Meubilair", type: "Goederen", created: new Date(), FBPageId: "1460231750899428" },
+      { title : "Keukengerei", description : "Diverse keukenhulpmiddelen zijn nodig. Bestek, pannen, borden, koppen en mokken.", category : "Keuken", type: "Goederen", created: new Date(), FBPageId: "1460231750899428" },
+      { title : "Vervangende laptop", description : "Een tijdelijk laptop waarop internetverbinding werkt.", category : "Elektronica", type: "Goederen", created: new Date(), FBPageId: "1460231750899428" }
       ], function(err, docs) {
          if(err) throw err;
       });
 
       db.offers.insert([
-         { title: "Ik kan helpen met het leggen van laminaat", description: "Op woensdagen zou ik kunnen komen helpen", category: "Bouw", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+         { title: "Ik kan helpen met het leggen van laminaat", description: "Op woensdagen zou ik kunnen komen helpen", category: "Bouw", type: "Diensten", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
       },
-      { title: "Leren fauteuil met uiklapbaar voetenbankje", description: "Weegt ongeveer 15kg in de kleur bruin", category: "Meubilair", deliver: true, type: "Goederen", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+      { title: "Leren fauteuil met uiklapbaar voetenbankje", description: "Weegt ongeveer 15kg in de kleur bruin", category: "Meubilair", deliver: true, type: "Goederen", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
    },
-   { title: "Pannenset van Ikea", description: "De pannen passen in elkaar.", category: "Keuken", deliver: true, type: "Goederen", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+   { title: "Pannenset van Ikea", description: "De pannen passen in elkaar.", category: "Keuken", deliver: true, type: "Goederen", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-{ title: "Kluservaring", description: "Ik heb ervaring met het monteren en verbouwen van keukens.", category: "Keuken", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+{ title: "Kluservaring", description: "Ik heb ervaring met het monteren en verbouwen van keukens.", category: "Keuken", type: "Diensten", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-{ title: "Bordenset", description: "Het zijn witte diepe borden", category: "Keuken", type: "Diensten", created: new Date(), fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+{ title: "Bordenset", description: "Het zijn witte diepe borden", category: "Keuken", type: "Diensten", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-{ title: "Koken", description: "Iedere dinsdag en donderdag biedt ik mij aan om een maaltijd voor te bereiden", created: new Date(), category: "Maaltijden", type: "Diensten", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+{ title: "Koken", description: "Iedere dinsdag en donderdag biedt ik mij aan om een maaltijd voor te bereiden", created: new Date(), category: "Maaltijden", type: "Diensten", FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
 ], function(err, docs) {
    if(err) throw err;

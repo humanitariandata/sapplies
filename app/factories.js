@@ -4,10 +4,10 @@
 */
 sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 	return {
-		Offer: $resource('api/v1/offers/:id', {}, { update: {	method: 'PUT' } }),
-		Need: $resource('api/v1/needs/:id', {}, { update: { method: 'PUT' } }),
+		Offer: $resource('api/v1/:FBPageId/offers/:id', { FBPageId: '@FBPageId'}, { update: {	method: 'PUT' } }),
+		Need: $resource('api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId' }, { update: { method: 'PUT' } }),
 		Category: $resource('api/v1/categories/:id'),
-		Match: $resource('api/v1/matches/:id'),
+		Match: $resource('api/v1/:FBPageId/matches/:id', { FBPageId: '@FBPageId' }),
 		User: $resource('api/v1/users/:userID', { userID: '@userID'}, { update: {	method: 'PUT' } }),
 		ReliefEffort: $resource('api/v1/reliefefforts/:id', {}, { update: { method: 'PUT' } })
 	};

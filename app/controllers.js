@@ -4,13 +4,17 @@
 - filtering / sorting
 */
 sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', '$cookieStore', 'RESTResourceProvider', 'Facebook', 'AppSettings', function($scope, $location, $modal, $cookieStore, RESTResourceProvider, Facebook, AppSettings) {
+   var fbPage = { FBPageId: $cookieStore.get('selectedPage').id };
+
    // Query the resources
-   $scope.offers = RESTResourceProvider.Offer.query();
-   $scope.needs = RESTResourceProvider.Need.query();
+   $scope.offers = RESTResourceProvider.Offer.query(fbPage);
+   $scope.needs = RESTResourceProvider.Need.query(fbPage);
    $scope.categories = RESTResourceProvider.Category.query();
 
    // Set de default to empty object
    $scope.match = {};
+
+   console.log($cookieStore.get('selectedPage'));
 
    // Event listener for selecting a need fromt the list-group
    $scope.selectNeed = function(selectedNeed, index) {
@@ -262,13 +266,13 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', '$cooki
    };
 }]);
 
-sappliesApp.controller('MatchesController', [ '$scope', 'RESTResourceProvider', function($scope, RESTResourceProvider) {
-   RESTResourceProvider.Match.query(function(matches) {
+sappliesApp.controller('MatchesController', [ '$scope', '$cookieStore', 'RESTResourceProvider', function($scope, $cookieStore, RESTResourceProvider) {
+   RESTResourceProvider.Match.query({ FBPageId: $cookieStore.get('selectedPage').id }, function(matches) {
       $scope.matches = matches;
    });
 }]);
 
-sappliesApp.controller('LoginController', [ '$scope', '$cookieStore', 'Facebook', 'RESTResourceProvider', function($scope, $cookieStore, Facebook, RESTResourceProvider) {
+sappliesApp.controller('LoginController', [ '$scope', '$cookieStore', '$location', 'Facebook', 'RESTResourceProvider', function($scope, $cookieStore, $location, Facebook, RESTResourceProvider) {
 
    // Set default te prevent UI distortion by async calls
    $scope.FacebookStatus = { loggedIn: true };
@@ -367,6 +371,7 @@ sappliesApp.controller('LoginController', [ '$scope', '$cookieStore', 'Facebook'
 
    $scope.selectPage = function(page) {
       $cookieStore.put('selectedPage', { id: page.id, name: page.name });
+      $location.path('/overview');
    };
 }]);
 
