@@ -1,11 +1,7 @@
 // Step 1
 fbApp.controller('FBMainController', ['$http', '$scope', '$location', '$resource', '$timeout', 'StepResourceService', 'Facebook', function($http, $scope, $location, $resource, $timeout, StepResourceService, Facebook) {
-
+   console.log(document.URL);
    Facebook.getLoginStatus(function(response) {
-      console.log(response);
-      $http.post('https://sapplies.rodekruis.nl/page', response.authResponse).success(function(data, status, headers, config) {
-         console.log(data);
-      });
       if(response.status === 'connected') {
          Facebook.api('me?fields=name,link,picture', { access_token: response.authResponse.accessToken }, function(response) {
 
@@ -29,7 +25,7 @@ fbApp.controller('FBMainController', ['$http', '$scope', '$location', '$resource
       }
    });
 
-   Facebook.api('339468399539706/?fields=link,id', function(response) {
+   Facebook.api('1460231750899428/?fields=link,id', function(response) {
       StepResourceService.setFBPage(response);
       console.log(StepResourceService.getFBPage());
       $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: StepResourceService.getFBPage().id});
