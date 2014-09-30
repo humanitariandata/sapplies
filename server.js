@@ -343,22 +343,28 @@ db.categories.insert([
 });
 
 app.post('/page', function(req, res) {
-   var SignedRequest = require('facebook-signed-request');
-   SignedRequest.secret = "24f0ea5457d2e41bb5ca6aa84adf5eb4";
-   var request = req.body.signedRequest;
-   var signedRequest = new SignedRequest( request );
+   // var SignedRequest = require('facebook-signed-request');
+   // SignedRequest.secret = "24f0ea5457d2e41bb5ca6aa84adf5eb4";
+   // var request = req.body.signedRequest;
+   // var signedRequest = new SignedRequest( request );
+   //
+   // signedRequest.parse(function(errors, request){
+   //   // check if request was valid
+   //   console.log(request.isValid());
+   //
+   //   // access errors
+   //   console.log(errors);
+   //
+   //   // this is your data object
+   //   console.log(request.data);
+   //   res.send(request.data);
+   // });
+   var fb_parser = require('fb-signed-parser');
 
-   signedRequest.parse(function(errors, request){
-     // check if request was valid
-     console.log(request.isValid());
-
-     // access errors
-     console.log(errors);
-
-     // this is your data object
-     console.log(request.data);
-     res.send(request.data);
-   });
+   var signed_request = req.body.signedRequest;
+   var data = fb_parser.parse(signed_request, '24f0ea5457d2e41bb5ca6aa84adf5eb4');
+   console.log(data);
+   res.send(data)
 });
 
 // Close the db connection
