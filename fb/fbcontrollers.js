@@ -1,6 +1,6 @@
 // Step 1
 fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', 'StepResourceService', 'Facebook', function($scope, $location, $resource, $timeout, StepResourceService, Facebook) {
-console.log(document.referrer + ' ' +document.location+ ' '+ window.parent.location+ ' '+ window.top.location);
+console.log(window.top.location);
 
    Facebook.getLoginStatus(function(response) {
       if(response.status === 'connected') {
