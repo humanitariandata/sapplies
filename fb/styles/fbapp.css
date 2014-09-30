@@ -17,7 +17,7 @@ a {
 .overflow-column {
    overflow-y: auto;
    overflow-x: hidden;
-   height: 400px;
+   max-height: 400px;
 }
 /* Turn off animation modal
  http://stackoverflow.com/questions/18873428/turn-off-animation-modal-angular-ui

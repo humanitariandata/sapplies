@@ -1,7 +1,6 @@
 // Step 1
 fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', 'StepResourceService', 'Facebook', function($scope, $location, $resource, $timeout, StepResourceService, Facebook) {
-
-   $scope.needs = $resource('/api/v1/needs/:id').query();
+console.log(window.location.href);
 
    Facebook.getLoginStatus(function(response) {
       if(response.status === 'connected') {
@@ -30,7 +29,9 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
    Facebook.api('339468399539706/?fields=link,id', function(response) {
       StepResourceService.setFBPage(response);
       console.log(StepResourceService.getFBPage());
+      $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: StepResourceService.getFBPage().id});
    });
+
 
    $scope.pickedNeed = function(pickedNeed, index) {
       StepResourceService.setNeed(pickedNeed);
