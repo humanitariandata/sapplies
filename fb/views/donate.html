@@ -1,12 +1,10 @@
 <ul class="pager">
-   <li class="previous"><a href="fb#/main">&larr; Andere hulpvraag</a></li>
+   <li class="previous"><a href="fb#/main">&larr; Terug naar <strong>stap 1: selecteer een hulpvraag</strong></a></li>
 </ul>
-
-<h2>Stap 2: Noteer je hulpaanbod</h2>
 
 <div class="panel panel-default">
    <div class="panel-heading">
-      <h3 class="panel-title">Hulpvraag</h3>
+      <h3 class="panel-title">Geselecteerde hulpvraag</h3>
    </div>
    <div class="panel-body">
       <h4>
@@ -35,23 +33,9 @@
    </div>
 </div>
 
+<h2>Stap 2: Noteer je hulpaanbod</h2>
+
 <form role="form" name="createDonationForm" data-ng-hide="send" novalidate>
-
-   <div class="form-group" data-ng-controller="UploadController">
-      <label for="form-need-image">Afbeelding</label>
-      <progressbar ng-show="item.isReady" max="100" value="item.progress"><span style="color:white; white-space:nowrap;">{{item.progress}}%</span></progressbar>
-      <input type="file" nv-file-select="" uploader="uploader" /><br/>
-
-      <div ng-repeat="item in uploader.queue">
-         <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 150 }"></div>
-         <button type="button" class="btn btn-success" ng-click="item.upload()" ng-hide="item.isReady || item.isUploading || item.isSuccess">
-            <span class="glyphicon glyphicon-upload"></span> Upload
-         </button>
-         <button type="button" class="btn btn-danger" ng-click="item.remove()">
-            <span class="glyphicon glyphicon-remove"></span> Remove
-         </button>
-      </div>
-   </div>
 
    <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.title.$invalid && submitted }">
       <label for="form-donation-title">Wat bied je aan?</label>
@@ -74,6 +58,22 @@
        </div>
     </div>
 
+    <div class="form-group" data-ng-controller="UploadController">
+      <label for="form-need-image">Afbeelding</label>
+      <progressbar ng-show="item.isReady" max="100" value="item.progress"><span style="color:white; white-space:nowrap;">{{item.progress}}%</span></progressbar>
+      <input type="file" nv-file-select="" uploader="uploader" /><br/>
+
+      <div ng-repeat="item in uploader.queue">
+          <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 150 }"></div>
+          <button type="button" class="btn btn-success" ng-click="item.upload()" ng-hide="item.isReady || item.isUploading || item.isSuccess">
+             <span class="glyphicon glyphicon-upload"></span> Upload
+          </button>
+          <button type="button" class="btn btn-danger" ng-click="item.remove()">
+             <span class="glyphicon glyphicon-remove"></span> Remove
+          </button>
+      </div>
+    </div>
+
    <div class="panel panel-default">
       <div class="panel-heading">
          <h3 class="panel-title">Facebook</h3>
@@ -85,6 +85,6 @@
          <p><a href="{{createDonation.fb.link}}">Link van je Facebook-profiel</a></p>
       </div>
    </div>
-   <button type="button" class="btn btn-primary" data-ng-click="saveDonation()">Bevestig je aanbod</button>
+   <button type="button" class="btn btn-primary" data-ng-click="saveDonation()">Ga hulpaanbod bevestigen <span class="glyphicon glyphicon-chevron-right"></span></button>
 </form>
 </div>

@@ -122,7 +122,7 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
    }
 
    $scope.confirmMatch = function(offer) {
-      console.log();
+
       var postPayload = {
          FBPageId: $cookieStore.get('selectedPage').id,
          need: $scope.match.need,

@@ -168,7 +168,7 @@ app.post(apiPrefix+'/offers', function(req, res) {
 });
 
 // UPDATE
-app.put(apiPrefix+'/:FBPageId/offers/:id', function(req, res) {
+app.put(apiPrefix+'/offers/:id', function(req, res) {
    db.offers.update({ _id: new ObjectID(req.params.id)}, { $set: req.body }, function(err, docs) {
       if(err) throw err;
       res.send(200);
@@ -195,18 +195,20 @@ app.post(apiPrefix+'/offers/upload', function(req, res) {
 */
 
 // CREATE a new match. Insert if not exists otherwise update the document
-app.post(apiPrefix+'/matches', function(req, res) {
+app.post(apiPrefix+'/:FBPageId/matches', function(req, res) {
    var postData = req.body;
 
-   db.matches.find({ "need.title": postData.need.title}).count(function(err, m) {
+   db.matches.find({ "need._id": new ObjectID(postData.need._id) }).count(function(err, m) {
       if(m == 0) {
          db.matches.insert(postData, function(err, docs) {
             if(err) throw err;
+            console.log(postData)
             res.send(200);
          });
       } else {
-         db.matches.update({ "need.title": postData.need.title}, { $push: { offers: { $each: postData.offers }}}, function(err, docs) {
+         db.matches.update({ "need._id": new ObjectID(postData.need._id) }, { $push: { offers: { $each: postData.offers }}}, function(err, docs) {
             if(err) throw err;
+            console.log('bestaat al')
             res.send(200);
          });
       }

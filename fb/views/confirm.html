@@ -1,5 +1,5 @@
 <ul class="pager">
-   <li class="previous"><a data-ng-click="goBack()">&larr; Ik wil het aanbod wijzigen</a></li>
+   <li class="previous"><a data-ng-click="goBack()">&larr; Terug naar <strong>stap 2: noteer je hulpaanbod</strong></a></li>
 </ul>
 
 <h2>Stap 3: Bevestig je hulpaanbod</h2>
@@ -30,7 +30,7 @@
             <p>{{createDonation.description}}</p>
             <p><strong>Vervoer:</strong> {{createDonation.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.'}}</p>
             <button type="button" class="btn btn-primary" data-ng-click="confirm()">
-               <span class="glyphicon glyphicon-ok"></span> Verstuur naar de hulpactie
+               <span class="glyphicon glyphicon-ok"></span> Verstuur je hulpaanbod
             </button>
          </div>
       </div>
@@ -58,6 +58,6 @@
    <p><button class="btn btn-default" data-ng-click="shareOnFacebook()"><i class="fa fa-facebook-square fa-lg"></i> Deel je hulpaanbod</button></p>
 </div>
 <div class="modal-footer">
-   <button class="btn btn-primary" ng-click="ok()">Ok, bekijk nog wat de hulpactie nog meer nodig heeft</button>
+   <button class="btn btn-primary" ng-click="ok()">Oke, bekijk wat de hulpactie nog meer nodig heeft</button>
 </div>
 </script>
