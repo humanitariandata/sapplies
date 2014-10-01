@@ -54,7 +54,7 @@
             <div class="panel panel-default">
                <div class="panel-heading"><h4>Hulpaanbod <span class="badge">{{filteredOffers.length}}</span></h4></div>
                <div class="list-group overflow-column">
-                  <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions | filter:bySuppliesServices)">
+                  <a data-ng-click="selectOffer(offer, $index)" data-ng-class="{'active': $index == pickedOffer && !offer.matched, 'disabled': offer.matched }" class="list-group-item" data-ng-repeat="offer in filteredOffers = (offers | filter:byText | filter:byCategory | filter:bySuggestions.category | filter:bySuggestions.type | filter:bySuppliesServices)">
                      <h4 class="list-group-item-heading">
                         <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
                         <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
@@ -66,7 +66,7 @@
                         <button type="button" class="btn btn-link btn-sm" data-ng-click="showDetailOfferModal(offer);$event.stopPropagation()">
                            <span class="glyphicon glyphicon-cog"></span> Bekijk details
                         </button>
-                        <button type="button" class="btn btn-link btn-sm" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
+                        <button type="button" class="btn btn-link btn-sm" data-ng-hide="offer.matched" data-ng-click="deleteOffer($index, offer);$event.stopPropagation()">
                            <span class="glyphicon glyphicon-remove"></span> Verwijder
                         </button>
                         <span class="glyphicon glyphicon-link glyphicon-lg pull-right" data-ng-show="offer.matched"></span>
@@ -149,9 +149,9 @@
            </select>
            <p class="help-block" data-ng-show="editNeedForm.category.$invalid && submitted">Selecteer een passende categorie.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group" data-ng-show="editNeed.location.formatted_address">
            <label for="form-need-category">Locatie</label>
-           <input id="form-need-location" class="form-control" disabled name="location" type="text" placeholder="Locatie van de hulpvraag" data-ng-model="editNeed.location.formatted_address" />
+           <p>{{editNeed.location.formatted_address}}</p>
         </div>
         <div class="form-group"><strong>Aangeboden op</strong> <p>{{editNeed.created | date:'MM/dd/yy HH:mm'}}</p></div>
       </form>

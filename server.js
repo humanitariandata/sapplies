@@ -106,8 +106,19 @@ app.get(apiPrefix+'/:FBPageId/needs', function(req, res) {
 
 // UPDATE
 app.put(apiPrefix+'/:FBPageId/needs/:id', function(req, res) {
-   db.needs.update({ _id: new ObjectID(req.params.id)}, { $set: req.body }, function(err, docs) {
+   var payLoad = req.body;
+   db.needs.update({ _id: new ObjectID(req.params.id)}, { $set: payLoad }, function(err, docs) {
       if(err) throw err;
+
+      // Update matches as well if they exists
+      db.matches.find({ "need._id": req.params.id }).count(function(err, m) {
+         if(m > 0) {
+            db.matches.update({ "need._id": req.params.id }, { $set: { "need": payLoad } }, function(err, docs) {
+               if(err) throw err;
+               console.log(docs);
+            });
+         }
+      });
       res.send(200);
    });
 });
@@ -122,7 +133,7 @@ app.get(apiPrefix+'/needs/:id', function(req, res) {
 });
 
 // CREATE
-app.post(apiPrefix+'/needs', function(req, res) {
+app.post(apiPrefix+'/:FBPageId/needs', function(req, res) {
    db.needs.insert(req.body, function(err, docs) {
       if(err) throw err;
       console.log(docs);
@@ -310,7 +321,7 @@ app.get(apiPrefix+'/resetdb', function(req, res) {
 },
 { title: "Kluservaring", description: "Ik heb ervaring met het monteren en verbouwen van keukens.", category: "Keuken", type: "Diensten", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
-{ title: "Bordenset", description: "Het zijn witte diepe borden", category: "Keuken", type: "Diensten", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
+{ title: "Bordenset", description: "Het zijn witte diepe borden", category: "Keuken", type: "Goederen", created: new Date(), FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },
 { title: "Koken", description: "Iedere dinsdag en donderdag biedt ik mij aan om een maaltijd voor te bereiden", created: new Date(), category: "Maaltijden", type: "Diensten", FBPageId: "1460231750899428", fb: { name: "David van de Vondervoort", picture: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p50x50/12515_918039444879323_7060095987986880215_n.jpg?oh=475dab5e45566856dd5e5ea6f28023c5&oe=547A5B3B&__gda__=1417673494_cbd74c7ee2bee553be2f77e56740b285", link: "https://www.facebook.com/app_scoped_user_id/915046055178662/", userID: "915046055178662" }
 },

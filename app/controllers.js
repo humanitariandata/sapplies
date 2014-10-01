@@ -14,8 +14,6 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
    // Set de default to empty object
    $scope.match = {};
 
-   console.log($cookieStore.get('selectedPage'));
-
    // Event listener for selecting a need fromt the list-group
    $scope.selectNeed = function(selectedNeed, index) {
       // Set the match model
@@ -33,7 +31,7 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
          $scope.match.need = null;
       } else { // Not yet selected
          // Set the suggestions by category
-         $scope.bySuggestions = selectedNeed.category;
+         $scope.bySuggestions = selectedNeed;
          $scope.pickedNeed = index;
          $scope.pickedOffer = null;
 
