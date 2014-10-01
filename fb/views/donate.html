@@ -38,14 +38,14 @@
 <form role="form" name="createDonationForm" data-ng-hide="send" novalidate>
 
    <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.title.$invalid && submitted }">
-      <label for="form-donation-title">Wat bied je aan?</label>
+      <label for="form-donation-title">Wat bied je aan? *</label>
       <input required type="text" class="form-control" name="title" id="form-donation-title" data-ng-model="createDonation.title" placeholder="Bijvoorbeeld: Met spoed is een tweepersoonsbed nodig.">
       <p class="help-block" data-ng-show="createDonationForm.title.$invalid && submitted">Vul een duidelijk hulpvraag in.</p>
    </div>
 
    <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.description.$invalid && submitted }">
-      <label for="form-donation-description">Beschrijving</label>
-      <textarea data-ng-minlength="5" class="form-control" name="description" id="form-donation-description" data-ng-model="createDonation.description" placeholder="Bijvoorbeeld: Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
+      <label for="form-donation-description">Beschrijving *</label>
+      <textarea required class="form-control" name="description" id="form-donation-description" data-ng-model="createDonation.description" placeholder="Bijvoorbeeld: Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
       <p class="help-block" data-ng-show="createDonationForm.description.$invalid && submitted">Geef detailinformatie over wat je aanbiedt.</p>
    </div>
 
@@ -56,6 +56,11 @@
            <label class="btn btn-default" ng-model="createDonation.deliver" btn-radio="true" uncheckable>Ik kan bezorgen</label>
            <label class="btn btn-default" ng-model="createDonation.deliver" btn-radio="false" uncheckable>Ik heb hulp nodig met het vervoer</label>
        </div>
+    </div>
+
+    <div class="form-group" data-ng-show="createDonation.location">
+      <label>Beschrijving</label>
+      <p>{{createDonation.location}}</p>
     </div>
 
     <div class="form-group" data-ng-controller="UploadController">

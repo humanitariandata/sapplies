@@ -198,7 +198,7 @@ app.post(apiPrefix+'/offers/upload', function(req, res) {
 app.post(apiPrefix+'/:FBPageId/matches', function(req, res) {
    var postData = req.body;
 
-   db.matches.find({ "need._id": new ObjectID(postData.need._id) }).count(function(err, m) {
+   db.matches.find({ "need._id": postData.need._id }).count(function(err, m) {
       if(m == 0) {
          db.matches.insert(postData, function(err, docs) {
             if(err) throw err;
@@ -206,7 +206,7 @@ app.post(apiPrefix+'/:FBPageId/matches', function(req, res) {
             res.send(200);
          });
       } else {
-         db.matches.update({ "need._id": new ObjectID(postData.need._id) }, { $push: { offers: { $each: postData.offers }}}, function(err, docs) {
+         db.matches.update({ "need._id": postData.need._id }, { $push: { offers: { $each: postData.offers }}}, function(err, docs) {
             if(err) throw err;
             console.log('bestaat al')
             res.send(200);
