@@ -11,6 +11,10 @@ var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'ngAnimate', 'face
       controller: 'ConfirmationController',
       templateUrl: 'views/confirm.html'
    })
+   .when('/mydonations', {
+      controller: 'MyDonationsController',
+      templateUrl: 'views/mydonations.html'
+   })
    .otherwise({
      redirectTo: '/main'
    });
@@ -70,7 +74,7 @@ fbApp.directive('ngThumb', ['$window', function($window) {
 }]);
 
 
-fbApp.factory('StepResourceService', function() {
+fbApp.factory('ResourceService', function() {
    var need = {},
       donation = {},
       fbPage = {};

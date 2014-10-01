@@ -4,19 +4,19 @@
 
       <hr>
 
-      <h3>Stap 1: Selecteer een hulpvraag</h3>
-
-      <div class="row space-buffer">
-         <div class="col-sm-6 col-sm-offset-4">
-            <div class="btn-group">
-               <label class="btn btn-primary btn-sm" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Toon goederen</label>
-               <label class="btn btn-primary btn-sm" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Toon diensten</label>
-            </div>
-         </div>
+      <div class="text-center space-buffer" data-ng-show="userOffers.length">
+         <button class="btn btn-default" data-ng-click="showMyDonations()">Mijn hulpaanbod <span class="badge">{{userOffers.length}}</span></button>
       </div>
 
+      <h3>Stap 1: Selecteer een hulpvraag</h3>
+
       <div class="panel panel-default">
-         <div class="panel-heading"><h4>Laatste hulpvragen</h4></div>
+         <div class="panel-heading text-center">
+            <div class="btn-group">
+               <label class="btn btn-primary btn-sm" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Toon gevraagde goederen</label>
+               <label class="btn btn-primary btn-sm" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Toon gevraagde diensten</label>
+            </div>
+         </div>
          <div class="list-group overflow-column">
             <a data-ng-click="pickedNeed(need, $index)" data-ng-class="{active: $index == selectedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter: bySuppliesServices">
                <h4 class="list-group-item-heading">

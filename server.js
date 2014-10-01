@@ -162,6 +162,14 @@ app.get(apiPrefix+'/:FBPageId/offers', function(req, res) {
    });
 });
 
+// FIND BY USER ID
+app.get(apiPrefix+'/:FBPageId/:userID/offers/', function(req, res) {
+   db.offers.find({ "fb.userID": req.params.userID }).sort({_id:-1}).toArray(function(err, docs) {
+      if(err) throw err;
+      res.send(docs);
+   });
+});
+
 // FIND ONE
 app.get(apiPrefix+'/offers/:id', function(req, res) {
    db.offers.findOne({ _id: new ObjectID(req.params.id) }, function(err, docs) {

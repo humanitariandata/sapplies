@@ -1,36 +1,40 @@
 // Step 1
-fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', 'StepResourceService', 'Facebook', function($scope, $location, $resource, $timeout, StepResourceService, Facebook) {
+fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', 'ResourceService', 'Facebook', function($scope, $location, $resource, $timeout, ResourceService, Facebook) {
    Facebook.getLoginStatus(function(response) {
       if(response.status === 'connected') {
-         Facebook.api('me?fields=name,link,picture', { access_token: response.authResponse.accessToken }, function(response) {
-            if (response && !response.error) {
-
-               $scope.createDonation = {
-                  fb: {
-                     name: response.name,
-                     link: response.link,
-                     picture: response.picture.data.url
-                  }
-               }
-            }
-         });
+         setUpApp(response);
       } else {
          Facebook.login(function(response) {
-            console.log(response.authResponse.accessToken);
+            setUpApp(response);
          }, {
             scope: 'manage_pages,public_profile'
          });
       }
    });
 
-   Facebook.api('1460231750899428/?fields=link,id', function(response) {
-      StepResourceService.setFBPage(response);
-      $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: StepResourceService.getFBPage().id});
-   });
+   function setUpApp(r) {
+      Facebook.api('me?fields=name,link,picture', { access_token: r.authResponse.accessToken }, function(response) {
+         if (response && !response.error) {
+            $scope.createDonation = {
+               fb: {
+                  name: response.name,
+                  link: response.link,
+                  picture: response.picture.data.url
+               }
+            }
+            Facebook.api('1460231750899428/?fields=link,id', function(response) {
+               ResourceService.setFBPage(response);
+               ResourceService.setFB($scope.createDonation.fb);
+
+               $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: ResourceService.getFBPage().id});
+               $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query({ FBPageId: ResourceService.getFBPage().id, userID: ResourceService.getFB().userID});
+            });
+         }
+      });
+   }
 
    $scope.pickedNeed = function(pickedNeed, index) {
-      StepResourceService.setNeed(pickedNeed);
-      StepResourceService.setFB($scope.createDonation.fb);
+      ResourceService.setNeed(pickedNeed);
 
       $scope.selectedNeed = index;
 
@@ -39,13 +43,17 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
          $location.path('/donate');
       }, 300);
    }
+
+   $scope.showMyDonations = function() {
+      $location.path('/mydonations');
+   }
 }]);
 
 // Step 2
-fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'StepResourceService', function($scope, $timeout, $location, StepResourceService) {
+fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'ResourceService', function($scope, $timeout, $location, ResourceService) {
 
-   $scope.pickedNeed = StepResourceService.getNeed();
-   $scope.createDonation = StepResourceService.getDonation();
+   $scope.pickedNeed = ResourceService.getNeed();
+   $scope.createDonation = ResourceService.getDonation();
    $scope.createDonation.deliver = true;
    $scope.createDonation.type = $scope.pickedNeed.type;
    $scope.createDonation.created = new Date();
@@ -55,7 +63,7 @@ fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'Step
    $scope.saveDonation = function() {
       if ($scope.createDonationForm.$valid) {
 
-         StepResourceService.setDonation($scope.createDonation);
+         ResourceService.setDonation($scope.createDonation);
 
          // Little delay for better user experience
          $timeout(function() {
@@ -68,15 +76,15 @@ fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'Step
 }]);
 
 // Step 3
-fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$location', 'StepResourceService', function($scope, $resource, $modal, $location, StepResourceService) {
+fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$location', 'ResourceService', function($scope, $resource, $modal, $location, ResourceService) {
 
-   $scope.pickedNeed = StepResourceService.getNeed();
-   $scope.createDonation = StepResourceService.getDonation();
-   $scope.createDonation.FBPageId = StepResourceService.getFBPage().id;
-   $scope.fbPageLink = StepResourceService.getFBPage().link;
+   $scope.pickedNeed = ResourceService.getNeed();
+   $scope.createDonation = ResourceService.getDonation();
+   $scope.createDonation.FBPageId = ResourceService.getFBPage().id;
+   $scope.fbPageLink = ResourceService.getFBPage().link;
 
    $scope.goBack = function() {
-      StepResourceService.setDonation($scope.createDonation);
+      ResourceService.setDonation($scope.createDonation);
       $location.path('/donate');
    }
 
@@ -101,6 +109,11 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
 
 }]);
 
+fbApp.controller('MyDonationsController', ['$scope', '$resource', 'ResourceService', function($scope, $resource, ResourceService) {
+   console.log(ResourceService.getFB());
+   $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query({ FBPageId: ResourceService.getFBPage().id, userID: ResourceService.getFB().userID});
+}]);
+
 var ConfirmationModalInstanceCtrl = function($scope, $modalInstance, $location, donation, fbPageLink, Facebook) {
 
    $scope.donation = donation;
@@ -119,7 +132,7 @@ var ConfirmationModalInstanceCtrl = function($scope, $modalInstance, $location, 
    }
 }
 
-var UploadController = function($scope, FileUploader, StepResourceService) {
+var UploadController = function($scope, FileUploader, ResourceService) {
 
    var uploader = $scope.uploader = new FileUploader({
       url: 'api/v1/offers/upload'
@@ -137,6 +150,6 @@ var UploadController = function($scope, FileUploader, StepResourceService) {
 
    // CALLBACKS
    uploader.onSuccessItem = function(fileItem, response, status, headers) {
-      StepResourceService.setDonationImage(response.file.name);
+      ResourceService.setDonationImage(response.file.name);
    };
 };

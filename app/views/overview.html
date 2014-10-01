@@ -101,6 +101,8 @@
                <dd><span class="label label-default">{{detailItem.category}}</span></dd>
               <dt data-ng-show="detailItem.matched">Gekoppeld</dt>
               <dd data-ng-show="detailItem.matched"><span class="glyphicon glyphicon-link"></span></dd>
+              <dt>Vervoer</dt>
+              <dd>{{detailItem.deliver && 'Wordt bezorgd.' || 'Heeft hulp nodig met het vervoer.'}}</dd>
               <dt>Aangemaakt</dt>
               <dd>{{detailItem.created | date: "dd-MM-yyyy 'om' hh:mm"}}</dd>
             </dl>
