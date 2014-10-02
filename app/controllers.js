@@ -358,7 +358,21 @@ sappliesApp.controller('LoginController', [ '$scope', '$cookieStore', '$location
                   // Save to the database if not already exists (upsert true)
                   RESTResourceProvider.User.update({ userID: response.authResponse.userID }, { userID: response.authResponse.userID });
 
-                  fetchPages();
+                  $scope.pages = [];
+
+                  Facebook.api('me/accounts', function(response) {
+                     if (response && !response.error) {
+                        response.data.forEach(function(page) {
+                           if(page.hasOwnProperty('category') && page.category === 'Community') {
+                              Facebook.api('/'+page.id+'/picture', { "type": "small" }, function(pic) {
+                                 page.picture = pic.data.url;
+                              });
+                              $scope.pages.push(page);
+                              isAppConnectedToPage(page.id);
+                           }
+                        });
+                     }
+                  });
                } else {
                   $scope.FacebookStatus.loggedIn = false;
                }
