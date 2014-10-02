@@ -94,6 +94,10 @@ if (config.usessl) {
     sslconfig.cert = fs.readFileSync(path.resolve(__dirname, config.cert_file), 'UTF-8');
   }
 
+  if(config.hasOwnProperty('ca_file')){
+              sslconfig.ca = fs.readFileSync(path.resolve(__dirname, config.ca_file), 'UTF-8');
+  }
+    
   if(secrets.certificate.passphrase) {
     sslconfig.passphrase = secrets.certificate.passphrase;
   }
