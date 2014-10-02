@@ -29,11 +29,12 @@ app.use(express.static(__dirname + '/app'));
 app.use(express.static(__dirname + '/fb'));
 app.use(express.static(__dirname + '/')); // to reach the /uploads folder
 
+console.log(process.env.NODE_ENV);
 /*
 To run local use http://localhost instead of https. Otherwise ssl error.
 Comment app.enable('trust proxy'); and the app.use(function(req, res, next) function
 */
-if(process.env.NODE_ENV === 'production') {
+
 
    // Enable reverse proxy
    app.enable('trust proxy');
@@ -56,7 +57,7 @@ if(process.env.NODE_ENV === 'production') {
          return next();
       }
    });
-}
+
 
 // Set a prefix for the REST API
 var apiPrefix = '/api/v1';
@@ -370,6 +371,11 @@ db.close();
 * HTTPS and SSL configuration
 * Set certicicates and start SSL server
 */
+
+// http start as well
+console.log('Application started on port ' + config.mainPort);
+app.listen(config.mainPort);
+
 if (config.usessl) {
 
    var sslconfig = {};
@@ -383,8 +389,8 @@ if (config.usessl) {
 
    if(config.hasOwnProperty('ca_file') && config.hasOwnProperty('ca2_file')){
       sslconfig.ca = [
-      fs.readFileSync(path.resolve(__dirname, config.ca_file), 'UTF-8'),
-      fs.readFileSync(path.resolve(__dirname, config.ca2_file), 'UTF-8')
+         fs.readFileSync(path.resolve(__dirname, config.ca_file), 'UTF-8'),
+         fs.readFileSync(path.resolve(__dirname, config.ca2_file), 'UTF-8')
       ]
    } else if(config.hasOwnProperty('ca_file')){
       sslconfig.ca = fs.readFileSync(path.resolve(__dirname, config.ca_file), 'UTF-8');
@@ -399,7 +405,3 @@ if (config.usessl) {
    // https start
    console.log('Application started on port ' + config.sslport);
 }
-
-// http start as well
-console.log('Application started on port ' + config.mainPort);
-app.listen(config.mainPort);
