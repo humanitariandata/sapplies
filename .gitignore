@@ -1,3 +1,5 @@
 *.pem
 secrets.json
 .DS_Store
+.sass-cache
+/uploads

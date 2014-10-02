@@ -1,15 +1,43 @@
-'use-strict';
-
 module.exports = function(grunt) {
   grunt.initConfig({
 
     nodemon: {
       dev: {
-        script: 'server.js'
+        script: 'server.js',
       }
-    }
+    },
+
+    sass: {
+      dist: {
+        options: {
+          style: 'compressed'
+        },
+        files: {
+          'app/styles/sapplies.css': 'app/styles/sapplies.scss'
+        }
+      }
+    },
+
+    watch: {
+      sass: {
+        files: 'app/styles/sapplies.scss',
+        tasks: 'sass'
+      }
+    },
+
+    concurrent: {
+      tasks: ['nodemon', 'watch'],
+      options: {
+          //limit: 5,
+          logConcurrentOutput: true
+      }
+  }
 
   });
+
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-nodemon');
-  grunt.registerTask('default', ['nodemon']);
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
+  grunt.registerTask('default', ['concurrent']);
 }

@@ -1,0 +1,29 @@
+<ul class="pager">
+   <li class="previous"><a href="/fb">&larr; Terug</a></li>
+</ul>
+
+<h2>Mijn hulpaanbod</h2>
+
+<div class="panel panel-default">
+   <div class="panel-heading"><h4>Door jou aangeboden hulp</h4></div>
+   <div class="list-group overflow-column">
+      <a class="list-group-item" data-ng-repeat="offer in userOffers">
+         <h4 class="list-group-item-heading">
+            <i class="fa fa-archive" data-ng-show="offer.type == 'Goederen'"></i>
+            <i class="fa fa-user-md" data-ng-show="offer.type == 'Diensten'"></i>
+            {{offer.title}}
+         </h4>
+         <p>{{offer.description}}</p>
+         <p>
+            <strong>Categorie</strong><span class="label label-default">{{offer.category}}</span>
+         </p>
+         <p>
+            <strong>Vervoer</strong> {{detailItem.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.' }}
+         </p>
+         <p class="list-group-item-text text-right">
+            <strong>Aangeboden op</strong> {{offer.created | date:'MM/dd/yy HH:mm'}}
+         </p>
+      </a>
+      <p class="help-block text-center" data-ng-hide="userOffers.length"><strong>Je hebt nog geen hulp aangeboden.</strong></p>
+   </div>
+</div>

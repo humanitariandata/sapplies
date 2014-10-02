@@ -4,12 +4,5 @@ sApplies helps organizers of relief efforts during disaster recovery to manage n
 
 ## Prototype
 
-* Facebook-app which can be linked to a Facebook-page for submitting supplies or services.
-* A tool to manage needs and offers.
-
-## Dependicies
-To install the dependencies run:
->npm install
-
-And:
->bower install
+* Facebook-app which can be linked to a Facebook-page for submitting supplies or services by the responding community.
+* A webapp to manage needs and offers.

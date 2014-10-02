@@ -1,0 +1,150 @@
+/* Style and bootstrap adjustments */
+$base-color: #DC281E;
+
+body {
+   padding-top: 70px;
+}
+
+a {
+   cursor: pointer;
+}
+
+dd {
+   margin-bottom: 20px;
+}
+
+.glyphicon-lg {
+   font-size: 2em;
+}
+
+.nav-bar {
+   padding-top: 70px;
+}
+
+.overflow-column {
+   overflow-y: auto;
+   overflow-x: hidden;
+   max-height: 800px;
+}
+
+.space-buffer {
+   margin-bottom:20px;
+}
+
+.panel-title>a {
+   display: block;
+}
+
+.list-group-item {
+   &.active {
+      .btn-link {
+         color: #fff;
+      }
+   }
+}
+
+.list-item-img {
+   margin-right: 10px;
+}
+
+.fb-btn, .fb-btn:focus, .fb-btn:hover {
+   background-color:#3b5998;
+}
+
+.fb-profilepic {
+   float:left;
+   margin-right:10px;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+   background-color: lighten($base-color, 15%) !important;
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+}
+
+.image-preview {
+   width: 200px;
+}
+
+/* Animations - default from: https://docs.angularjs.org/guide/animations */
+
+/*
+We're using CSS transitions for when
+the enter and move events are triggered
+for the element that has the .list-group-item
+class
+*/
+.list-group-item {
+   &.ng-enter, &.ng-move {
+      -webkit-transition:0.3s linear all;
+      -moz-transition:0.3s linear all;
+      -o-transition:0.3s linear all;
+      transition:0.3s linear all;
+      opacity:0;
+   }
+}
+
+/*
+The ng-enter-active and ng-move-active
+are where the transition destination properties
+are set so that the animation knows what to
+animate.
+*/
+.list-group-item.ng-enter.ng-enter-active,
+.list-group-item.ng-move.ng-move-active {
+   opacity:1;
+}
+
+/*
+We're using CSS keyframe animations for when
+the leave event is triggered for the element
+that has the .list-group-item class
+*/
+.list-group-item {
+   &.ng-leave {
+      -webkit-animation:0.3s fadeout;
+      -moz-animation:0.3s fadeout;
+      -o-animation:0.3s fadeout;
+      animation:0.3s fadeout;
+   }
+}
+
+@keyframes fadeout {
+   from { opacity:1; }
+   to { opacity:0; }
+}
+
+/*
+Unfortunately each browser vendor requires
+its own definition of keyframe animation code...
+*/
+@-webkit-keyframes fadeout {
+   from { opacity:1; }
+   to { opacity:0; }
+}
+
+@-moz-keyframes fadeout {
+   from { opacity:1; }
+   to { opacity:0; }
+}
+
+@-o-keyframes fadeout {
+   from { opacity:1; }
+   to { opacity:0; }
+}
+
+// Turn off animation modal
+// http://stackoverflow.com/questions/18873428/turn-off-animation-modal-angular-ui
+.modal.fade {
+   opacity: 1;
+}
+
+.modal.fade .modal-dialog, .modal.in .modal-dialog {
+   -webkit-transform: translate(0, 0);
+   -webkit-transform: translate(0, 0);
+   -ms-transform: translate(0, 0);
+   transform: translate(0, 0);
+}

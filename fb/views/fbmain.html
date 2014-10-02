@@ -1,0 +1,35 @@
+<div class="row">
+   <div class="col-md-12">
+      <p class="lead text-center">Gebruik de sApplies Facebook-app om hulpgoederen en/of vrijwillige diensten aan te bieden voor de hulpactie.</p>
+
+      <hr>
+
+      <div class="text-center space-buffer" data-ng-show="userOffers.length">
+         <button class="btn btn-default" data-ng-click="showMyDonations()">Mijn hulpaanbod <span class="badge">{{userOffers.length}}</span></button>
+      </div>
+
+      <h3>Stap 1: Selecteer een hulpvraag</h3>
+
+      <div class="panel panel-default">
+         <div class="panel-heading text-center">
+            <div class="btn-group">
+               <label class="btn btn-primary btn-sm" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Toon gevraagde goederen</label>
+               <label class="btn btn-primary btn-sm" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Toon gevraagde diensten</label>
+            </div>
+         </div>
+         <div class="list-group overflow-column">
+            <a data-ng-click="pickedNeed(need, $index)" data-ng-class="{active: $index == selectedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter: bySuppliesServices">
+               <h4 class="list-group-item-heading">
+               <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
+               <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
+               {{need.title}}</h4>
+               <p>{{need.description}}</p>
+               <p class="list-group-item-text">
+                  <span class="label label-default">{{need.category}}</span>
+               </p>
+            </a>
+            <p class="help-block text-center" data-ng-hide="needs.length"><strong>Deze hulpactie heeft nog specifieke hulpvragen.</strong></p>
+         </div>
+      </div>
+   </div>
+</div>

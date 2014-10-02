@@ -1,0 +1,64 @@
+<ul class="pager">
+   <li class="previous"><a data-ng-click="goBack()">&larr; Terug naar <strong>stap 2: noteer je hulpaanbod</strong></a></li>
+</ul>
+
+<h2>Stap 3: Bevestig je hulpaanbod</h2>
+
+<div class="panel panel-default">
+   <div class="panel-heading">
+      <h3 class="panel-title">Hulpvraag</h3>
+   </div>
+   <div class="panel-body">
+      <h4>
+         <i class="fa fa-archive" data-ng-show="pickedNeed.type == 'Goederen'"></i>
+         <i class="fa fa-user-md" data-ng-show="pickedNeed.type == 'Diensten'"></i>
+         {{pickedNeed.title}}
+      </h4>
+
+      <p>{{pickedNeed.description}}</p>
+
+      <p class="list-group-item-text">
+         <span class="label label-default">{{pickedNeed.category}}</span>
+      </p>
+      <hr />
+      <div class="media" data-ng-show="createDonation.title">
+         <a class="pull-left" href="#">
+            <img class="media-object img-thumbnail" data-ng-src="{{createDonation.fb.picture}}" alt="">
+         </a>
+         <div class="media-body">
+            <h4 class="media-heading">{{createDonation.title}}</h4>
+            <p>{{createDonation.description}}</p>
+            <p><strong>Vervoer:</strong> {{createDonation.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.'}}</p>
+            <button type="button" class="btn btn-primary" data-ng-click="confirm()">
+               <span class="glyphicon glyphicon-ok"></span> Verstuur je hulpaanbod
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script type="text/ng-template" id="confirmationModalContent.html">
+<div class="modal-header">
+   <h3 class="modal-title">Bedankt voor je donatie</h3>
+</div>
+<div class="modal-body">
+   <div class="media">
+      <a class="pull-left" href="#">
+         <img class="media-object img-thumbnail" data-ng-src="{{donation.fb.picture}}" alt="">
+      </a>
+      <div class="media-body">
+         <h4 class="media-heading">{{donation.title}}</h4>
+         <p>{{donation.description}}</p>
+         <p><strong>Vervoer:</strong> {{createDonation.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.'}}</p>
+      </div>
+   </div>
+   <hr />
+   <p>Hartelijk dank voor je donatie! De hulpactie neemt via Facebook contact met je op voor verdere afhandeling van je hulpaanbod.</p>
+
+   <p>Deel je hulpaanbod op je tijdlijn om de hulpactie meer bekendheid te geven.</p>
+   <p><button class="btn btn-default" data-ng-click="shareOnFacebook()"><i class="fa fa-facebook-square fa-lg"></i> Deel je hulpaanbod</button></p>
+</div>
+<div class="modal-footer">
+   <button class="btn btn-primary" ng-click="ok()">Oke, bekijk wat de hulpactie nog meer nodig heeft</button>
+</div>
+</script>

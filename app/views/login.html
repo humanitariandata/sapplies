@@ -1,0 +1,42 @@
+<div class="row">
+   <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default">
+         <div class="panel-heading">
+            <h3 class="text-center">Login met Facebook en configuur de Facebook-app</h3>
+         </div>
+         <div class="panel-body" data-ng-hide="FacebookStatus.loggedIn">
+            <p>Login met Facebook om:</p>
+            <ul>
+               <li>sApplies te gebruiken om jouw hulpactie op Facebook te ondersteunen</li>
+               <li>sApplies is jouw eigen marktplaats om eenvoudig en onbeperkt je vraag voor hulp te plaatsen</li>
+               <li>sApplies zorgt voor overzicht tussen jouw hulpvraag en het hulpaanbod van aanbieders op Facebook</li>
+            </ul>
+         </div>
+         <div class="panel-body" data-ng-show="FacebookStatus.loggedIn">
+            <section>
+               <p><strong>Je bent reeds ingelogd met Facebook.</strong></p>
+            </section>
+            <button data-ng-hide="FacebookStatus.loggedIn" data-ng-click="loginWithFacebook()" type="button" class="btn btn-default fb-btn"><i class="fa fa-facebook fa-lg"></i> Login met Facebook</button>
+            <hr />
+            <section data-ng-show="FacebookStatus.loggedIn">
+               <h4>Koppel sApplies aan de Facebook-pagina en kies een hulpactie</h4>
+
+               <div class="list-group">
+                 <a class="list-group-item" data-ng-repeat="page in pages">
+                     <img class="img-thumbnail list-item-img pull-left" data-ng-src="{{page.picture}}" alt="">
+                     <h4>{{page.name}}</h4>
+                     <button type="button" class="btn btn-primary btn-sm" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage(page);$event.stopPropagation()">{{FacebookStatus.connected && 'sApplies is reeds gekoppeld' ||'Koppel aan de Facebook-pagina'}}</button>
+                     <button type="button" class="btn btn-primary btn-sm pull-right" data-ng-click="selectPage(page);$event.stopPropagation()" data-ng-show="FacebookStatus.connected">Kies <i class="glyphicon glyphicon-arrow-right"></i></button>
+                 </a>
+               </div>
+
+               <p>De koppeling zorgt ervoor dat de sApplies Facebook-app in de navigatiebalk verschijnt van de Facebook-pagina, zodat hulpaanbieders hulpaanbieding kunnen insturen.
+               </p>
+               <p class="text-center">
+                  <img class="img-thumbnail" src="./images/fb-nav-app.png" alt="" />
+               </p>
+            </section>
+         </div>
+      </div>
+   </div>
+</div>

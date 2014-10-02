@@ -1,0 +1,95 @@
+<ul class="pager">
+   <li class="previous"><a href="fb#/main">&larr; Terug naar <strong>stap 1: selecteer een hulpvraag</strong></a></li>
+</ul>
+
+<div class="panel panel-default">
+   <div class="panel-heading">
+      <h3 class="panel-title">Geselecteerde hulpvraag</h3>
+   </div>
+   <div class="panel-body">
+      <h4>
+         <i class="fa fa-archive" data-ng-show="pickedNeed.type == 'Goederen'"></i>
+         <i class="fa fa-user-md" data-ng-show="pickedNeed.type == 'Diensten'"></i>
+         {{pickedNeed.title}}
+      </h4>
+
+      <p>{{pickedNeed.description}}</p>
+
+      <p class="list-group-item-text">
+         <span class="label label-default">{{pickedNeed.category}}</span>
+      </p>
+
+      <hr data-ng-show="createDonation.title" />
+      <div class="media" data-ng-show="createDonation.title">
+         <a class="pull-left" href="#">
+            <img class="media-object img-thumbnail" data-ng-src="{{createDonation.fb.picture}}" alt="">
+         </a>
+         <div class="media-body">
+            <h4 class="media-heading">{{createDonation.title}}</h4>
+            <p>{{createDonation.description}}</p>
+            <p><strong>Vervoer:</strong> {{createDonation.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.'}}</p>
+         </div>
+      </div>
+   </div>
+</div>
+
+<h2>Stap 2: Noteer je hulpaanbod</h2>
+
+<form role="form" name="createDonationForm" data-ng-hide="send" novalidate>
+
+   <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.title.$invalid && submitted }">
+      <label for="form-donation-title">Wat bied je aan? *</label>
+      <input required type="text" class="form-control" name="title" id="form-donation-title" data-ng-model="createDonation.title" placeholder="Bijvoorbeeld: Met spoed is een tweepersoonsbed nodig.">
+      <p class="help-block" data-ng-show="createDonationForm.title.$invalid && submitted">Vul een duidelijk hulpvraag in.</p>
+   </div>
+
+   <div class="form-group" data-ng-class="{ 'has-error': createDonationForm.description.$invalid && submitted }">
+      <label for="form-donation-description">Beschrijving *</label>
+      <textarea required class="form-control" name="description" id="form-donation-description" data-ng-model="createDonation.description" placeholder="Bijvoorbeeld: Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
+      <p class="help-block" data-ng-show="createDonationForm.description.$invalid && submitted">Geef detailinformatie over wat je aanbiedt.</p>
+   </div>
+
+   <div class="form-group" data-ng-show="createDonation.type == 'Goederen'">
+      <p><strong>Bezorging</strong></p>
+
+      <div class="btn-group">
+           <label class="btn btn-default" ng-model="createDonation.deliver" btn-radio="true" uncheckable>Ik kan bezorgen</label>
+           <label class="btn btn-default" ng-model="createDonation.deliver" btn-radio="false" uncheckable>Ik heb hulp nodig met het vervoer</label>
+       </div>
+    </div>
+
+    <div class="form-group" data-ng-show="createDonation.location">
+      <label>Beschrijving</label>
+      <p>{{createDonation.location}}</p>
+    </div>
+
+    <div class="form-group" data-ng-controller="UploadController">
+      <label for="form-need-image">Afbeelding</label>
+      <progressbar ng-show="item.isReady" max="100" value="item.progress"><span style="color:white; white-space:nowrap;">{{item.progress}}%</span></progressbar>
+      <input type="file" nv-file-select="" uploader="uploader" /><br/>
+
+      <div ng-repeat="item in uploader.queue">
+          <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 150 }"></div>
+          <button type="button" class="btn btn-success" ng-click="item.upload()" ng-hide="item.isReady || item.isUploading || item.isSuccess">
+             <span class="glyphicon glyphicon-upload"></span> Upload
+          </button>
+          <button type="button" class="btn btn-danger" ng-click="item.remove()">
+             <span class="glyphicon glyphicon-remove"></span> Remove
+          </button>
+      </div>
+    </div>
+
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <h3 class="panel-title">Facebook</h3>
+      </div>
+      <div class="panel-body">
+         <p>Alleen je naam en een link naar je Facebook-profiel wordt opgeslagen, zodat de hulpactie contact met je kan opnemen.</p>
+         <img class="img-thumbnail fb-profilepic" data-ng-src="{{createDonation.fb.picture}}" alt="" />
+         <span>{{createDonation.fb.name}}</span>
+         <p><a href="{{createDonation.fb.link}}">Link van je Facebook-profiel</a></p>
+      </div>
+   </div>
+   <button type="button" class="btn btn-primary" data-ng-click="saveDonation()">Ga hulpaanbod bevestigen <span class="glyphicon glyphicon-chevron-right"></span></button>
+</form>
+</div>

@@ -1,0 +1,13 @@
+<div class="row">
+   <div class="col-md-8 col-md-offset-2">
+      <h3>Selecteer een hulpactie Facebook-pagina</h3>
+      <div class="list-group">
+        <a data-ng-click="selectPage(page, $index)" class="list-group-item" data-ng-repeat="page in pages">
+            <img class="img-thumbnail list-item-img pull-left" data-ng-src="{{page.picture}}" alt="">
+            <h4>{{page.name}}</h4>
+            <button type="button" class="btn btn-primary btn-sm" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage(page)">{{FacebookStatus.connected && 'Reeds gekoppeld.' ||'Koppel'}}</button>
+            <span data-ng-show="selectedPage.id == page.id" class="glyphicon glyphicon-ok glyphicon-lg pull-right"></span>
+        </a>
+      </div>
+   </div>
+</div>
