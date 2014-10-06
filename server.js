@@ -29,13 +29,13 @@ app.use(express.static(__dirname + '/app'));
 app.use(express.static(__dirname + '/fb'));
 app.use(express.static(__dirname + '/')); // to reach the /uploads folder
 
-console.log(process.env.NODE_ENV);
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 /*
 To run local use http://localhost instead of https. Otherwise ssl error.
-Comment app.enable('trust proxy'); and the app.use(function(req, res, next) function
 */
 
-
+if(process.env.NODE_ENV === 'production') {
    // Enable reverse proxy
    app.enable('trust proxy');
 
@@ -57,7 +57,7 @@ Comment app.enable('trust proxy'); and the app.use(function(req, res, next) func
          return next();
       }
    });
-
+}
 
 // Set a prefix for the REST API
 var apiPrefix = '/api/v1';

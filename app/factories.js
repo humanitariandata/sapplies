@@ -13,6 +13,10 @@ sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 	};
 }]);
 
+sappliesApp.factory('socketFactory', function (socketFactory) {
+  return socketFactory();
+});
+
 sappliesApp.factory('AppSettings', function() {
 	return {
 		appId: '339468399539706',

@@ -4,6 +4,11 @@
 - filtering / sorting
 */
 sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', '$cookieStore', 'RESTResourceProvider', 'Facebook', 'AppSettings', function($scope, $location, $modal, $cookieStore, RESTResourceProvider, Facebook, AppSettings) {
+   
+   if(!$cookieStore.get('selectedPage')) {
+      $location.path('/login');
+   }
+
    var fbPage = { FBPageId: $cookieStore.get('selectedPage').id };
 
    // Query the resources
@@ -261,6 +266,7 @@ sappliesApp.controller('FBManagementController', ['$scope', '$location', '$cooki
 
    $scope.selectPage = function(page, index) {
       $cookieStore.put('selectedPage', { id: page.id, name: page.name });
+      $scope.selectedPage = $cookieStore.get('selectedPage');
    };
 }]);
 
