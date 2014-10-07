@@ -4,9 +4,9 @@
 - filtering / sorting
 */
 sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', '$cookieStore', 'RESTResourceProvider', 'Facebook', 'AppSettings', function($scope, $location, $modal, $cookieStore, RESTResourceProvider, Facebook, AppSettings) {
-   
+
    if(!$cookieStore.get('selectedPage')) {
-      $location.path('/login');
+      return $location.path('/login'); // return, to prevent executing the rest of this controller
    }
 
    var fbPage = { FBPageId: $cookieStore.get('selectedPage').id };
@@ -118,9 +118,9 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
          $scope.offers.splice(index, 1);
 
          // NOTIFICATION: BEDANKT VOOR JE HULPAANBOD, MAAR WE HEBBEN ER NU GEEN GEBRUIK VAN GEMAAKT O.I.D.
-         Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Bedankt voor je hulpaanbod, maar we hebben er nu geen gebruik van gemaakt!'},function(response) {
-            console.log(response);
-         });
+        //  Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Bedankt voor je hulpaanbod, maar we hebben er nu geen gebruik van gemaakt!'},function(response) {
+        //     console.log(response);
+        //  });
       }
    }
 
@@ -139,9 +139,9 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       $scope.match.offer = null;
 
       // Facebook Notification
-      // Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Jouw hulpaanbod is gekoppeld aan de hulpvraag. De initiatiefnemer neemt binnenkort contact met je op!'},function(response) {
-      //    console.log(response);
-      // });
+      Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Jouw hulpaanbod is gekoppeld aan de hulpvraag. De initiatiefnemer neemt binnenkort contact met je op!'},function(response) {
+         console.log(response);
+      });
    }
 }]);
 
