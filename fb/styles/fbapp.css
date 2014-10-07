@@ -12,7 +12,7 @@ a {
    margin-right:10px;
 }
 .img-thumbnail {
-  max-width: 100%;
+  width: inherit; /*IE fix*/
 }
 .space-buffer {
    margin-bottom:20px;
