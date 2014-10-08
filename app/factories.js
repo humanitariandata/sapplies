@@ -13,10 +13,7 @@ sappliesApp.factory('RESTResourceProvider', [ '$resource', function($resource) {
 	};
 }]);
 
-sappliesApp.factory('socketFactory', function (socketFactory) {
-  return socketFactory();
-});
-
+// Factory for getting Facebook info
 sappliesApp.factory('AppSettings', function() {
 	return {
 		appId: '339468399539706',

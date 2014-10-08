@@ -73,7 +73,7 @@ fbApp.directive('ngThumb', ['$window', function($window) {
    };
 }]);
 
-
+// A factory for getting and saving data in the fbapp until saved in the db
 fbApp.factory('ResourceService', function() {
    var need = {},
       donation = {},

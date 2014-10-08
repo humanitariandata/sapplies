@@ -10,7 +10,7 @@ path = require('path'),
 bodyParser = require('body-parser'),
 config = require('./config/config.js'),
 secrets = require('./config/secrets.json'),
-multer = require('multer');
+multer = require('multer'); // For getting the image send by a POST-request
 
 // ObjectID for casting a number in an ObjectID
 var ObjectID = mongo.ObjectID;
@@ -219,6 +219,7 @@ app.post(apiPrefix+'/:FBPageId/matches', function(req, res) {
    var postData = req.body;
 
    db.matches.find({ "need._id": postData.need._id }).count(function(err, m) {
+     // if no results create a match doc
       if(m == 0) {
          db.matches.insert(postData, function(err, docs) {
             if(err) throw err;
@@ -226,6 +227,7 @@ app.post(apiPrefix+'/:FBPageId/matches', function(req, res) {
             res.send(200);
          });
       } else {
+        // update the current match
          db.matches.update({ "need._id": postData.need._id }, { $push: { offers: { $each: postData.offers }}}, function(err, docs) {
             if(err) throw err;
             console.log('bestaat al')
@@ -357,6 +359,7 @@ db.categories.insert([
    { type: 'Diensten', name: "Juridisch"},
    { type: 'Diensten', name: "Medische begeleiding"},
    { type: 'Diensten', name: "Vertaling"},
+   { type: 'Diensten', name: "Schoonmaak"},
    { type: 'Diensten', name: "Vervoer"},
    ], function(err, docs) {
       if(err) throw err;
