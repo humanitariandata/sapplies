@@ -315,7 +315,7 @@ app.get(apiPrefix+'/resetdb', function(req, res) {
    db.categories.remove({}, function() {});
 
    db.needs.insert([
-      { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten", created: new Date(), FBPageId: "1460231750899428" },
+      { title : "Helpen met klussen", description : "Er is iemand nodig om te helpen met klussen.", category : "Bouw", type: "Diensten", location: { formatted_address: "Molenstraat 79, Gorinchem" }, created: new Date(), FBPageId: "1460231750899428" },
       { title : "Tweepersoonsbank", description : "Het liefst een bank die ook te demonteren is.", category : "Meubilair", type: "Goederen", created: new Date(), FBPageId: "1460231750899428" },
       { title : "Keukengerei", description : "Diverse keukenhulpmiddelen zijn nodig. Bestek, pannen, borden, koppen en mokken.", category : "Keuken", type: "Goederen", created: new Date(), FBPageId: "1460231750899428" },
       { title : "Vervangende laptop", description : "Een tijdelijk laptop waarop internetverbinding werkt.", category : "Elektronica", type: "Goederen", created: new Date(), FBPageId: "1460231750899428" }
