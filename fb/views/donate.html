@@ -15,9 +15,15 @@
 
       <p>{{pickedNeed.description}}</p>
 
-      <p class="list-group-item-text">
+      <p>
+          <label>Categorie</label>
          <span class="label label-default">{{pickedNeed.category}}</span>
       </p>
+
+      <div class="form-group" data-ng-show="pickedNeed.location.formatted_address">
+         <label for="form-need-category">Locatie</label>
+         <p>{{pickedNeed.location.formatted_address}}</p>
+      </div>
 
       <hr data-ng-show="createDonation.title" />
       <div class="media" data-ng-show="createDonation.title">

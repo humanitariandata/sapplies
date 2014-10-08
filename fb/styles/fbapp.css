@@ -1,6 +1,10 @@
 a {
    cursor: pointer;
 }
+dt, label { text-transform: uppercase; }
+dd {
+   margin-bottom: 20px;
+}
 .container {
    width: 800px !important;
 }
