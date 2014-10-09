@@ -1,4 +1,4 @@
-var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'ngAnimate', 'facebook', 'ui.bootstrap', 'angularFileUpload']).config(function($routeProvider, FacebookProvider) {
+var fbApp = angular.module('fbapp', ['ngRoute', 'ngResource', 'ngAnimate', 'ngCookies', 'facebook', 'ui.bootstrap', 'angularFileUpload']).config(function($routeProvider, FacebookProvider) {
    $routeProvider.when('/main', {
       controller: 'FBMainController',
       templateUrl: 'views/fbmain.html'

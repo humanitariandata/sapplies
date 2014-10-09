@@ -1,5 +1,5 @@
 // Step 1 - selecting a need
-fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', 'ResourceService', 'Facebook', function($scope, $location, $resource, $timeout, ResourceService, Facebook) {
+fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$timeout', '$cookieStore', 'Facebook', function($scope, $location, $resource, $timeout, $cookieStore, Facebook) {
   // Check the login status of facebook to make sure the setup succeed
   Facebook.getLoginStatus(function(response) {
     if(response.status === 'connected') {
@@ -25,16 +25,17 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
             picture: response.picture.data.url
           }
         }
+        $cookieStore.put('userID', response.id);
 
         // Get information of the page
         Facebook.api('1460231750899428/?fields=link,id', function(res) {
           // Save the data tmp in the service
-          ResourceService.setFBPage(res);
-          ResourceService.setFB($scope.createDonation.fb);
+          $cookieStore.put('FBPage', res);
+          $cookieStore.put('donation', $scope.createDonation);
 
           // Get the current needs and offers of the relief effort
-          $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: ResourceService.getFBPage().id});
-          $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query({ FBPageId: ResourceService.getFBPage().id, userID: ResourceService.getFB().userID});
+          $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: res.id});
+          $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query({ FBPageId: res.id, userID: $scope.createDonation.fb.userID});
         });
       }
     });
@@ -43,7 +44,7 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
   // When the use select a need
   $scope.pickedNeed = function(pickedNeed, index) {
     // Tmp save the need for the next step
-    ResourceService.setNeed(pickedNeed);
+    $cookieStore.put('need', pickedNeed);
 
     $scope.selectedNeed = index;
 
@@ -60,11 +61,11 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
 }]);
 
 // Step 2 - note donation information
-fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'ResourceService', function($scope, $timeout, $location, ResourceService) {
+fbApp.controller('DonationController', ['$scope', '$timeout', '$location', '$cookieStore', function($scope, $timeout, $location, $cookieStore) {
 
   // Get the resources of the prev step
-  $scope.pickedNeed = ResourceService.getNeed();
-  $scope.createDonation = ResourceService.getDonation();
+  $scope.pickedNeed = $cookieStore.get('need');
+  $scope.createDonation = $cookieStore.get('donation');
   $scope.createDonation.deliver = true;
   $scope.createDonation.type = $scope.pickedNeed.type;
   $scope.createDonation.created = new Date();
@@ -75,7 +76,7 @@ fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'Reso
   $scope.saveDonation = function() {
     if ($scope.createDonationForm.$valid) {
 
-      ResourceService.setDonation($scope.createDonation);
+      $cookieStore.put('donation', $scope.createDonation);
 
       // Little delay for better user experience
       $timeout(function() {
@@ -88,23 +89,24 @@ fbApp.controller('DonationController', ['$scope', '$timeout', '$location', 'Reso
 }]);
 
 // Step 3 - confirmation
-fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$location', 'ResourceService', function($scope, $resource, $modal, $location, ResourceService) {
+fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$location', '$cookieStore', function($scope, $resource, $modal, $location, $cookieStore) {
 
   // Get the resources
-  $scope.pickedNeed = ResourceService.getNeed();
-  $scope.createDonation = ResourceService.getDonation();
-  $scope.createDonation.FBPageId = ResourceService.getFBPage().id;
-  $scope.fbPageLink = ResourceService.getFBPage().link;
+  $scope.pickedNeed = $cookieStore.get('need');
+  $scope.createDonation = $cookieStore.get('donation');
+  $scope.createDonation.FBPageId = $cookieStore.get('FBPage').id;
+  $scope.fbPageLink = $cookieStore.get('FBPage').link;
 
   // Save the data of the step and go back to the prev step
   $scope.goBack = function() {
-    ResourceService.setDonation($scope.createDonation);
+    $cookieStore.put('donation', $scope.createDonation);
     $location.path('/donate');
   }
 
   // confirm the donation/offer
   $scope.confirm = function() {
     $resource('api/v1/offers/:id').save($scope.createDonation);
+    $cookieStore.remove('donation');
 
     var modalInstance = $modal.open({
       templateUrl: 'confirmationModalContent.html',
@@ -124,8 +126,8 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
 }]);
 
 // Show the donations/offers of the user
-fbApp.controller('MyDonationsController', ['$scope', '$resource', 'ResourceService', function($scope, $resource, ResourceService) {
-   var q = { FBPageId: ResourceService.getFBPage().id, userID: ResourceService.getFB().userID};
+fbApp.controller('MyDonationsController', ['$scope', '$resource', '$cookieStore', function($scope, $resource, $cookieStore) {
+   var q = { FBPageId: $cookieStore.get('FBPage').id, userID: $cookieStore.get('userID')};
    $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query(q);
 }]);
 
@@ -134,6 +136,7 @@ var ConfirmationModalInstanceCtrl = function($scope, $modalInstance, $location, 
 
   $scope.donation = donation;
   $scope.fbPageLink = fbPageLink;
+
 
   // Option to share the offer on the Facebook-page
   $scope.shareOnFacebook = function() {
@@ -150,7 +153,7 @@ var ConfirmationModalInstanceCtrl = function($scope, $modalInstance, $location, 
 }
 
 // Controller for uploading an image
-var UploadController = function($scope, FileUploader, ResourceService) {
+var UploadController = function($scope, $cookieStore, FileUploader) {
 
   var uploader = $scope.uploader = new FileUploader({
     url: 'api/v1/offers/upload'
@@ -168,6 +171,8 @@ var UploadController = function($scope, FileUploader, ResourceService) {
 
   // CALLBACKS
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
-    ResourceService.setDonationImage(response.file.name);
+    var donation = $cookieStore.get('donation');
+    donation.image = { name: response.file.name };
+    $cookieStore.put('donation', donation);
   };
 };

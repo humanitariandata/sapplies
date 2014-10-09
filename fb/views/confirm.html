@@ -29,6 +29,7 @@
             <h4 class="media-heading">{{createDonation.title}}</h4>
             <p>{{createDonation.description}}</p>
             <p><strong>Vervoer:</strong> {{createDonation.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.'}}</p>
+            <p><img class="img-responsive img-rounded image-preview" data-ng-show="createDonation.image" data-ng-src="./uploads/{{createDonation.image.name}}" alt="" /></p>
             <button type="button" class="btn btn-primary" data-ng-click="confirm()">
                <span class="glyphicon glyphicon-ok"></span> Verstuur je hulpaanbod
             </button>
