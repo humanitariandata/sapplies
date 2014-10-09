@@ -8,7 +8,7 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
       Facebook.login(function(response) {
         setUpApp(response); // set up the app
       }, {
-        scope: 'manage_pages,public_profile'
+        scope: 'public_profile,manage_pages'
       });
     }
   });
@@ -24,11 +24,12 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
             picture: response.picture.data.url
           }
         }
+        ResourceService.setFB($scope.createDonation.fb);
+
         // Get information of the page
         Facebook.api('1460231750899428/?fields=link,id', function(response) {
           // Save the data tmp in the service
           ResourceService.setFBPage(response);
-          ResourceService.setFB($scope.createDonation.fb);
 
           // Get the current needs and offers of the relief effort
           $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: ResourceService.getFBPage().id});
@@ -123,7 +124,8 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
 
 // Show the donations/offers of the user
 fbApp.controller('MyDonationsController', ['$scope', '$resource', 'ResourceService', function($scope, $resource, ResourceService) {
-  $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query({ FBPageId: ResourceService.getFBPage().id, userID: ResourceService.getFB().userID});
+   var q = { FBPageId: ResourceService.getFBPage().id, userID: ResourceService.getFB().userID};
+   $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query(q);
 }]);
 
 // Modal for the confirmation at step 3

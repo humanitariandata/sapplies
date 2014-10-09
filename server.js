@@ -165,6 +165,7 @@ app.get(apiPrefix+'/:FBPageId/offers', function(req, res) {
 
 // FIND BY USER ID
 app.get(apiPrefix+'/:FBPageId/:userID/offers/', function(req, res) {
+   console.log(req.params);
    db.offers.find({ "fb.userID": req.params.userID }).sort({_id:-1}).toArray(function(err, docs) {
       if(err) throw err;
       res.send(docs);
