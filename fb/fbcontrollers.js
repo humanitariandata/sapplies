@@ -15,21 +15,22 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
 
   function setUpApp(r) {
     // Get the requested information of the user and the fb-page
-    Facebook.api('me?fields=name,link,picture', { access_token: r.authResponse.accessToken }, function(response) {
+    Facebook.api('me?fields=id,name,link,picture', { access_token: r.authResponse.accessToken }, function(response) {
       if (response && !response.error) {
         $scope.createDonation = {
           fb: {
+            userID: response.id,
             name: response.name,
             link: response.link,
             picture: response.picture.data.url
           }
         }
-        ResourceService.setFB($scope.createDonation.fb);
 
         // Get information of the page
-        Facebook.api('1460231750899428/?fields=link,id', function(response) {
+        Facebook.api('1460231750899428/?fields=link,id', function(res) {
           // Save the data tmp in the service
-          ResourceService.setFBPage(response);
+          ResourceService.setFBPage(res);
+          ResourceService.setFB($scope.createDonation.fb);
 
           // Get the current needs and offers of the relief effort
           $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: ResourceService.getFBPage().id});
