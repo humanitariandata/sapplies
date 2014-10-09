@@ -35,7 +35,7 @@ fbApp.controller('FBMainController', ['$scope', '$location', '$resource', '$time
 
           // Get the current needs and offers of the relief effort
           $scope.needs = $resource('/api/v1/:FBPageId/needs/:id', { FBPageId: '@FBPageId'}).query({ FBPageId: res.id});
-          $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}, { cache: false }).query({ FBPageId: res.id, userID: $scope.createDonation.fb.userID});
+          $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query({ FBPageId: res.id, userID: $scope.createDonation.fb.userID});
         });
       }
     });
@@ -128,7 +128,7 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
 // Show the donations/offers of the user
 fbApp.controller('MyDonationsController', ['$scope', '$resource', '$cookieStore', function($scope, $resource, $cookieStore) {
    var q = { FBPageId: $cookieStore.get('FBPage').id, userID: $cookieStore.get('userID')};
-   $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}, { cache: false }).query(q);
+   $scope.userOffers = $resource('/api/v1/:FBPageId/:userID/offers/:id', { FBPageId: '@FBPageId', userID: '@userID'}).query(q);
 }]);
 
 // Modal for the confirmation at step 3
