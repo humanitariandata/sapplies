@@ -18,13 +18,13 @@
             <p><strong>Je bent reeds ingelogd met Facebook.</strong></p>
             <hr />
             <section>
-               <h4>Koppel sApplies aan de Facebook-pagina en kies een hulpactie</h4>
+               <h4>Koppel sApplies Facebook-app aan de Facebook-pagina en kies een hulpactie</h4>
 
                <div class="list-group">
                  <a class="list-group-item" data-ng-repeat="page in pages">
                      <img class="img-thumbnail list-item-img pull-left" data-ng-src="{{page.picture}}" alt="">
                      <h4>{{page.name}}</h4>
-                     <button type="button" class="btn btn-primary btn-sm" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage(page);$event.stopPropagation()">{{FacebookStatus.connected && 'sApplies is reeds gekoppeld' ||'Koppel aan de Facebook-pagina'}}</button>
+                     <button type="button" class="btn btn-primary btn-sm" data-ng-disabled="FacebookStatus.connected" data-ng-click="connectAppToPage(page);$event.stopPropagation()">{{FacebookStatus.connected && 'Facebook-app is reeds gekoppeld' ||'Koppel aan de Facebook-pagina'}}</button>
                      <button type="button" class="btn btn-primary btn-sm pull-right" data-ng-click="selectPage(page);$event.stopPropagation()" data-ng-show="FacebookStatus.connected">Kies <i class="glyphicon glyphicon-arrow-right"></i></button>
                  </a>
                </div>
