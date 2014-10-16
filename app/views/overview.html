@@ -29,7 +29,7 @@
             <div class="panel-heading"><h4>Hulpvragen <span class="badge">{{filteredNeeds.length}}</span></h4></div>
 
             <div class="list-group overflow-column">
-               <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in filteredNeeds = (needs | filter:byText | filter:byCategory | filter:bySuppliesServices)">
+               <a data-ng-click="selectNeed(need, $index)" data-ng-class="{active: $index == pickedNeed}" class="list-group-item" data-ng-repeat="need in filteredNeeds = (needs | filter:byCategory | filter:bySuppliesServices)">
                   <h4 class="list-group-item-heading">
                      <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
                      <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>

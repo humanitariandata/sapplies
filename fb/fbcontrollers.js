@@ -174,5 +174,6 @@ var UploadController = function($scope, $cookieStore, FileUploader) {
       var donation = $cookieStore.get('donation');
       donation.image = { name: response.file.name };
       $cookieStore.put('donation', donation);
+      console.log($cookieStore.get('donation'))
    };
 };
