@@ -1,7 +1,6 @@
 <div class="row">
    <div class="col-md-12">
       <p class="lead text-center">Gebruik de sApplies Facebook-app om hulpgoederen en/of vrijwillige diensten aan te bieden voor de hulpactie.</p>
-
       <hr>
 
       <div class="text-center space-buffer">
@@ -16,10 +15,10 @@
                <label class="btn btn-default btn-sm" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Toon gevraagde goederen</label>
                <label class="btn btn-default btn-sm" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Toon gevraagde diensten</label>
             </div>
-            <input type="text" data-ng-model="byText">
+            <input type="text" data-ng-model="byText" placeholder="Zoek een hulpvraag">
          </div>
          <div class="list-group overflow-column">
-            <a data-ng-click="pickedNeed(need, $index)" data-ng-class="{active: $index == selectedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter: bySuppliesServices">
+            <a data-ng-click="pickedNeed(need, $index)" data-ng-class="{active: $index == selectedNeed}" class="list-group-item" data-ng-repeat="need in filteredNeeds = (needs | filter: bySuppliesServices | filter: byText)">
                <h4 class="list-group-item-heading">
                <i class="fa fa-archive" data-ng-show="need.type == 'Goederen'"></i>
                <i class="fa fa-user-md" data-ng-show="need.type == 'Diensten'"></i>
@@ -29,7 +28,7 @@
                   <span class="label label-default">{{need.category}}</span>
                </p>
             </a>
-            <p class="help-block text-center" data-ng-hide="needs.length"><strong>Deze hulpactie heeft nog specifieke hulpvragen.</strong></p>
+            <p class="help-block text-center" data-ng-hide="filteredNeeds.length"><strong>Geen hulpvragen gevonden.</strong></p>
          </div>
       </div>
    </div>
