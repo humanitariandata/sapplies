@@ -2,18 +2,16 @@
    <div class="col-md-6 col-md-offset-3">
       <h2>Voeg een hulpvraag toe</h2>
 
-      <alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-
       <form role="form" name="createNeedForm" data-ng-submit="saveNeed()" novalidate>
 
          <div class="form-group" data-ng-class="{ 'has-error': createNeedForm.title.$invalid && submitted }">
             <label for="form-need-title">Titel</label>
-            <input required type="text" class="form-control" name="title" id="form-need-title" data-ng-model="createNeed.title" placeholder="Met spoed is een tweepersoonsbed nodig.">
+            <input required type="text" class="form-control" name="title" id="form-need-title" data-ng-model="createNeed.title" placeholder="Bijvoorbeeld: Met spoed is een tweepersoonsbed nodig.">
             <p class="help-block" data-ng-show="createNeedForm.title.$invalid && submitted">Vul een duidelijk hulpvraag in.</p>
          </div>
          <div class="form-group">
             <label for="form-need-description">Beschrijving</label>
-            <textarea class="form-control" id="form-need-description" data-ng-model="createNeed.description" placeholder="Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
+            <textarea class="form-control" id="form-need-description" data-ng-model="createNeed.description" placeholder="Bijvoorbeeld: Het liefst een bed wat te demonteren is. Eventueel met matras."></textarea>
          </div>
          <div class="form-group">
             <div class="btn-group">
@@ -33,7 +31,8 @@
             <input id="form-need-location" class="form-control" name="location" type="text" placeholder="Locatie van de hulpvraag" data-ng-model="createNeed.location.formatted_address" />
          </div>
          <div class="form-group">
-            <button type="button" data-ng-click="saveNeed()" class="btn btn-primary">Bewaar hulpvraag</button>
+            <button type="button" data-ng-disabled="savingNeed" data-ng-click="saveNeed()" class="btn btn-primary">
+               <i data-ng-if="savingNeed" class="fa fa-circle-o-notch fa-spin"></i> {{ savingNeed && "Hulpvraag opslaan" || "Bewaar hulpvraag" }}</button>
          </div>
       </form>
    </div>

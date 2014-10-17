@@ -16,6 +16,7 @@
                <label class="btn btn-default btn-sm" ng-model="bySuppliesServices" btn-radio="'Goederen'" uncheckable>Toon gevraagde goederen</label>
                <label class="btn btn-default btn-sm" ng-model="bySuppliesServices" btn-radio="'Diensten'" uncheckable>Toon gevraagde diensten</label>
             </div>
+            <input type="text" data-ng-model="byText">
          </div>
          <div class="list-group overflow-column">
             <a data-ng-click="pickedNeed(need, $index)" data-ng-class="{active: $index == selectedNeed}" class="list-group-item" data-ng-repeat="need in needs | filter: bySuppliesServices">

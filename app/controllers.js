@@ -147,7 +147,7 @@ sappliesApp.controller('OverviewController', [ '$scope', '$location', '$modal', 
       $scope.match.offer = null;
 
       // Facebook Notification
-      Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Jouw hulpaanbod is gekoppeld aan de hulpvraag. De initiatiefnemer neemt binnenkort contact met je op!'},function(response) {
+      Facebook.api('/'+offer.fb.userID+'/notifications', 'post', { access_token: AppSettings.appId+'|'+AppSettings.appSecret, href: '#', template: 'Jouw hulpaanbod is gekoppeld aan de hulpvraag. De hulpactie neemt binnenkort contact met je op!'},function(response) {
          console.log(response);
       });
    }
@@ -179,7 +179,7 @@ var EditNeedModalInstanceCtrl = function($scope, $modalInstance, editItem, categ
 };
 
 // Controller for viewing and creating needs.
-sappliesApp.controller('CreateNeedController', [ '$scope', '$cookieStore', 'RESTResourceProvider', function($scope, $cookieStore, RESTResourceProvider) {
+sappliesApp.controller('CreateNeedController', [ '$scope', '$cookieStore', '$location', '$timeout', 'RESTResourceProvider', function($scope, $cookieStore, $location, $timeout, RESTResourceProvider) {
    // Get and set resources
    $scope.categories = RESTResourceProvider.Category.query();
    $scope.alerts = [];
@@ -199,9 +199,14 @@ sappliesApp.controller('CreateNeedController', [ '$scope', '$cookieStore', 'REST
       if ($scope.createNeedForm.$valid) {
          $scope.createNeed.created = new Date();
          $scope.createNeed.FBPageId = $cookieStore.get('selectedPage').id;
+         $scope.savingNeed = true;
 
          RESTResourceProvider.Need.save($scope.createNeed);
-         $scope.alerts.push({ type: 'success', msg: '"'+$scope.createNeed.title +'" is toegegoegd!'});
+
+         // Add some delay for better UX
+         $timeout(function() {
+            $location.path('/overview');
+         }, 2000);
       } else {
          $scope.submitted = true;
       }

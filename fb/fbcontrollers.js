@@ -75,7 +75,6 @@ fbApp.controller('DonationController', ['$scope', '$timeout', '$location', '$coo
    // save the donation when the form is valid
    $scope.saveDonation = function() {
       if ($scope.createDonationForm.$valid) {
-
          $cookieStore.put('donation', $scope.createDonation);
 
          // Little delay for better user experience
@@ -106,7 +105,6 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
    // confirm the donation/offer
    $scope.confirm = function() {
       $resource('api/v1/offers/:id').save($scope.createDonation);
-      $cookieStore.remove('donation');
 
       var modalInstance = $modal.open({
          templateUrl: 'confirmationModalContent.html',
@@ -121,6 +119,7 @@ fbApp.controller('ConfirmationController', ['$scope', '$resource', '$modal', '$l
             }
          }
       });
+      $cookieStore.remove('donation');
    };
 
 }]);
