@@ -33,7 +33,7 @@
          <div class="media-body">
             <h4 class="media-heading">{{createDonation.title}}</h4>
             <p>{{createDonation.description}}</p>
-            <p><strong>Vervoer:</strong> {{createDonation.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.'}}</p>
+            <p data-ng-show="createDonation.type == 'Goederen'"><strong>Vervoer:</strong> {{createDonation.deliver && 'Ik kan bezorgen.' || 'Ik heb hulp nodig met het vervoer.'}}</p>
          </div>
       </div>
    </div>
