@@ -32,6 +32,7 @@ $ bower install
 
 Install (front-end) dependicies of the Facebook-app by going back to the /fb folder
 
+```
 $ cd ../fb
 $ bower install
 ```
