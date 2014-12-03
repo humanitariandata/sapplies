@@ -2,5 +2,5 @@
 secrets.json
 .DS_Store
 .sass-cache
-/uploads
+/uploads/*.png
 *.ca

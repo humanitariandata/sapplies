@@ -11,5 +11,8 @@
     "angular-resource": "~1.2",
     "angular-animate": "~1.2",
     "angular-facebook": "~0.2"
+  },
+  "resolutions": {
+    "angular": "1.2.27"
   }
 }
