@@ -15,22 +15,22 @@ Components:
 
 ### Installation
 
-Before installation, make sure you installed [NodeJS](http://nodejs.org/) and [MongoDB](http://www.mongodb.com/).
+Before installing dependencies, make sure you have installed [NodeJS](http://nodejs.org/) and [MongoDB](http://www.mongodb.com/).
 
-#### Dependicies
+#### Dependencies
 
-Install server dependicies
+Install server dependencies
 ```
 $ npm install
 ```
 
-Install (front-end) dependicies of the web app by going into the /app folder.
+Install (front-end) dependencies of the web app by going into the /app folder.
 ```
 $ cd app
 $ bower install
 ```
 
-Install (front-end) dependicies of the Facebook-app by going back to the /fb folder
+Install (front-end) dependencies of the Facebook-app by going back to the /fb folder
 
 ```
 $ cd ../fb
