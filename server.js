@@ -10,6 +10,8 @@ path = require('path'),
 bodyParser = require('body-parser'),
 config = require('./config/config.js'),
 secrets = require('./config/secrets.json'),
+constants = require('constants'),
+tls = require('tls'),
 multer = require('multer'); // For getting the image send by a POST-request
 
 // ObjectID for casting a number in an ObjectID
@@ -404,6 +406,10 @@ if (config.usessl) {
       sslconfig.passphrase = secrets.certificate.passphrase;
    }
 
+   sslconfig.secureProtocol = 'SSLv23_method';
+   sslconfig.secureOptions = constants.SSL_OP_NO_SSLv3;
+    
+    
    https.createServer(sslconfig, app).listen(config.sslport);
 
    // https start
