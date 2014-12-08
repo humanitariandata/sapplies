@@ -9,9 +9,6 @@ fs = require('fs'),
 path = require('path'),
 bodyParser = require('body-parser'),
 config = require('./config/config.js'),
-secrets = require('./config/secrets.json'),
-constants = require('constants'),
-tls = require('tls'),
 multer = require('multer'); // For getting the image send by a POST-request
 
 // ObjectID for casting a number in an ObjectID
@@ -383,6 +380,10 @@ console.log('Application started on port ' + config.mainPort);
 app.listen(config.mainPort);
 
 if (config.usessl) {
+
+   var secrets = require('./config/secrets.json'),
+   constants = require('constants'),
+   tls = require('tls');
 
    var sslconfig = {};
    if(config.hasOwnProperty('pfx_file')){

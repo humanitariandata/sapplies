@@ -1,5 +1,5 @@
 module.exports = {
-    usessl: true,
+    usessl: false,
     sslport: 445, // 443?
     mainPort: 3001,
     key_file: './config/cert/localhost-key.pem',
