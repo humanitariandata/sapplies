@@ -19,12 +19,14 @@ Before installing dependencies, make sure you have installed [NodeJS](http://nod
 
 #### Dependencies
 
+**For production purpose on the red cross server, the dependencies are already included in this repository. If you still want to maintain or update you can do so: **
+
 Install server dependencies
 ```
 $ npm install
 ```
 
-Install (front-end) dependencies of the web app by going into the /app folder.
+Install (front-end) dependencies of the web app by going into the /app folder. Make sure you have installed [bower package manager](http://bower.io).
 ```
 $ cd app
 $ bower install
