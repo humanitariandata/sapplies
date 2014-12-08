@@ -19,7 +19,7 @@ Before installing dependencies, make sure you have installed [NodeJS](http://nod
 
 #### Dependencies
 
-**For production purpose on the red cross server, the dependencies are already included in this repository. If you still want to maintain or update you can do so: **
+__For production purpose on the red cross server, the dependencies are already included in this repository. If you still want to maintain or update you can do so:__
 
 Install server dependencies
 ```
