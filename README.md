@@ -15,11 +15,18 @@ Components:
 
 ### Installation
 
-Before installing dependencies, make sure you have installed [NodeJS](http://nodejs.org/) and [MongoDB](http://www.mongodb.com/).
+Make sure you have installed [NodeJS](http://nodejs.org/) and [MongoDB](http://www.mongodb.com/).
+
+Get the prototype by running:
+
+```
+$ git clone https://github.com/rodekruis/sapplies.git
+$ cd sapplies/
+```
 
 #### Dependencies
 
-__For production purpose on the red cross server, the dependencies are already included in this repository. If you still want to maintain or update you can do so:__
+__For production purpose regarding the red cross server, the dependencies are already included in this repository. It is not required to install the dependencies yourself. If you still want to maintain or update you can do so. Otherwise you can skip installing dependencies and run the application__
 
 Install server dependencies
 ```
